@@ -1,0 +1,12 @@
+Theme (
+    resources: {
+        "BLACK": "#000000",
+        "WHITE": "#ffffff",
+        "JADX_BACKGROUND": "#ffffff",
+        "LIGHT_GREY": "#F0F0F0",
+        "DARK_GREY": "#A0A0A0",
+        "TOP_MENU_GREY": "#F2F2F2",
+        "WIN_BUTTON_HOVER": "#E6F3FF",
+        "WIN_BUTTON_SELECTED": "#CCE8FF",
+    },
+)

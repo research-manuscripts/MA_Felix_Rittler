@@ -87,6 +87,13 @@ Theme (
                 "padding_right": 0,
             }
         ),
+        "numeric_button_small": (
+            base: "button_small",
+            properties: {
+                "icon_brush": "#000000",
+                "icon_size": 12,
+            }
+        ),
         "windows_button": (
             base: "button",
             properties: {

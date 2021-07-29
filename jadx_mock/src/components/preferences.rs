@@ -1,5 +1,6 @@
 use crate::elements::structured_item_box;
 use crate::elements::CustomCheckBox;
+use crate::elements::SmallNumericBox;
 use orbtk::prelude::*;
 
 widget!(Preferences);
@@ -261,7 +262,7 @@ impl Template for Preferences {
                         .build(ctx),
                 )
                 .child(
-                    NumericBox::new()
+                    SmallNumericBox::new()
                         .style("preference_numeric_box")
                         .val(1)
                         .min(1)

@@ -3,6 +3,7 @@ use orbtk::prelude::themes::orbtk_fonts;
 use orbtk::prelude::*;
 
 use crate::components::ProjectTreeNode;
+use crate::elements::ProjectNodeDescription;
 
 #[derive(Default, AsAny)]
 pub struct ProjectTreeElementState {}
@@ -135,12 +136,13 @@ impl Template for ProjectTreeElement {
                             .target(id.0)
                             .child(
                                 Grid::new()
-                                    .columns("20, 20, *")
+                                    .columns("20, *")
                                     .child(
                                         Container::new()
                                             .border_brush("#000000")
                                             .border_radius(0)
                                             .margin((5, 3, 5, 2))
+                                            .attach(Grid::column(0))
                                             .border_width(1)
                                             .child(
                                                 TextBlock::new()
@@ -153,19 +155,10 @@ impl Template for ProjectTreeElement {
                                             .build(ctx),
                                     )
                                     .child(
-                                        ImageWidget::new()
+                                        ProjectNodeDescription::new()
                                             .attach(Grid::column(1))
-                                            .v_align("center")
-                                            .h_align("start")
-                                            .image(("image", id))
-                                            .build(ctx),
-                                    )
-                                    .child(
-                                        TextBlock::new()
-                                            .style("text")
-                                            .v_align("center")
-                                            .attach(Grid::column(2))
                                             .text(id)
+                                            .image(id)
                                             .build(ctx),
                                     )
                                     .build(ctx),

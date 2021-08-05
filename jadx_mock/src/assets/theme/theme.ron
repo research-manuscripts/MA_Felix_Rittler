@@ -16,12 +16,12 @@ Theme (
             base: "check_box",
             properties: {
                 "border_radius": 0.0,
-                "border_brush": "#000000",
+                "border_brush": "$BLACK",
                 "border_width": 1.0,
                 "font_size": 6,
                 "height": 6.0,
-                "background": "#FFFFFF",
-                "icon_brush": "#FFFFFF",
+                "background": "$WHITE",
+                "icon_brush": "$WHITE",
                 "icon_font": "MaterialIcons-Regular",
                 "icon_size": 8,
                 "icon": "\u{e137}",
@@ -30,29 +30,58 @@ Theme (
                 (
                     key: "selected",
                     properties: {
-                        "background": "#FFFFFF",
-                        "icon_brush": "#000000",
+                        "background": "$WHITE",
+                        "icon_brush": "$BLACK",
                     }
                 )
             ]
         ),
-        "input": (
-            // based on body style the of default_theme
-            base: "body",
-            properties: {
-                "foreground": "#9dafbf"
-            }
-        ),
         "box_heading": (
             properties: {
-                "foreground": "#000000"
+                "foreground": "$BLACK"
             }
         ),
         "text": (
             properties: {
                 "font_size": 10,
-                "foreground": "#000000"
+                "foreground": "$BLACK"
             }
+        ),
+        "windows_textbox": (
+            base: "text_box",
+            properties: {
+                "font_size": 12,
+                "border_radius": 0.0,
+                "border_brush": "$BLACK",
+                "height": 16.0,
+            },
+               states: [
+                (
+                    key: "not_empty",
+                    properties: {
+                        "foreground": "$BLACK",
+                    }
+                ),
+                (
+                    key: "hover",
+                    properties: {
+                         "background": "$WHITE"
+                    }
+                ),
+                (
+                    key: "focused",
+                    properties: {
+                         "border_brush": "$BLACK",
+                    }
+                ),
+                (
+                    key: "not_empty_focused",
+                    properties: {
+                        "foreground": "$BLACK",
+                        "border_brush": "$BLACK",
+                    }
+                ),
+            ]
         ),
         "result": (
             // based on body style the of default_theme
@@ -90,9 +119,48 @@ Theme (
         "numeric_button_small": (
             base: "button_small",
             properties: {
-                "icon_brush": "#000000",
+                "icon_brush": "$BLACK",
                 "icon_size": 12,
             }
+        ),
+        "wide_windows_button": (
+            base: "button",
+            properties: {
+                "background": "$JADX_BACKGROUND",
+                "height": 22.0,
+                "width": 50.0,
+            },
+            states: [
+                (
+                    key: "selected",
+                    properties: {
+                        "background": "$WIN_BUTTON_SELECTED",
+                    }
+                ),
+                (
+                    key: "hover",
+                    properties: {
+                        "background": "$WIN_BUTTON_HOVER",
+                        "border_brush": "$WIN_BUTTON_SELECTED",
+                        "border_width": 1
+                    }
+                ),
+                (
+                    key: "pressed",
+                    properties: {
+                        "background": "$WIN_BUTTON_SELECTED",
+                    }
+                ),
+                (
+                    key: "disabled",
+                    properties: {
+                        "opacity": 1,
+                        "background": "$BUTTON_BACKGROUND_DISABLED",
+                        "foreground": "$BUTTON_FOREGROUND_DISABLED",
+                        "icon_brush": "$BUTTON_FOREGROUND_DISABLED"
+                    }
+                ),
+            ],
         ),
         "windows_button": (
             base: "button",

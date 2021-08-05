@@ -1,6 +1,7 @@
 use orbtk::prelude::*;
 
 use crate::elements::TopMenuEntryButton;
+use crate::components::About;
 
 #[derive(PartialEq, Copy, Clone)]
 enum TopMenuAction {
@@ -22,6 +23,7 @@ struct TopMenuState {
     action: Option<TopMenuAction>,
     opened_menu: Option<TopMenuType>,
     popup: Option<Entity>,
+    show_about: bool,
 }
 
 impl TopMenuState {
@@ -33,6 +35,10 @@ impl TopMenuState {
         }
 
         false
+    }
+
+    fn show_about(&mut self) {
+        self.show_about = true;
     }
 
     fn is_menu_opened(self, menu: TopMenuType) -> bool {
@@ -101,6 +107,21 @@ impl State for TopMenuState {
             }
 
             self.action = None;
+        }
+
+        if self.show_about {
+            ctx.show_window(|ctx| {
+                let height = 220;
+                Window::new()
+                    .title("About")
+                    .style("popup_window")
+                    .position((120.0, 120.0))
+                    .size(250.0, height)
+                    .resizeable(true)
+                    .child(About::new().height(height).build(ctx))
+                    .build(ctx)
+            });
+            self.show_about = false;
         }
     }
 }
@@ -404,6 +425,11 @@ fn create_help_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
                         .child(
                             TopMenuEntryButton::new().column_layout(column_layout)
                                 .text("Über")
+                                .on_click(move |states, _| -> bool {
+                                    let state = states.get_mut::<TopMenuState>(target);
+                                    state.show_about();
+                                    false
+                                })
                                 .image("src/assets/icons-16/grey_background/jadx-logo.png")
                                 .build(ctx),
                         )

@@ -2,7 +2,6 @@ use crate::elements::structured_item_box;
 use crate::elements::CustomCheckBox;
 use crate::elements::ProjectNodeDescription;
 use orbtk::prelude::*;
-use rust_decimal::prelude::ToPrimitive;
 
 widget!(TextSearch {
     class_checkbox_selected: bool,
@@ -20,6 +19,9 @@ impl Template for TextSearch {
             "Showing results {} to {} of {}",
             lower_border, higher_border, item_count
         );
+
+        let height = self.height.expect("Height of text search has to be set.");
+        let table_height = height - 270.0;
 
         let definitions_container = Container::new().child(
             Stack::new()
@@ -125,7 +127,7 @@ impl Template for TextSearch {
                             Container::new()
                                 .style("rule")
                                 .background("#ffffff")
-                                .height(400.0)
+                                .height(table_height)
                                 .child(
                                     Grid::new()
                                         .columns(table_grid_columns)

@@ -4,9 +4,13 @@ Theme (
         "WHITE": "#ffffff",
         "JADX_BACKGROUND": "#ffffff",
         "LIGHT_GREY": "#F0F0F0",
+        "UI_ELEMENT_BACKGROUND_GREY": "#E1E1E1",
+        "GREY": "#ADADAD",
         "DARK_GREY": "#A0A0A0",
         "TOP_MENU_GREY": "#F2F2F2",
         "WIN_BUTTON_HOVER": "#E6F3FF",
         "WIN_BUTTON_SELECTED": "#CCE8FF",
+        "WIN_BLUE": "#0087D7",
+        "UI_ELEMENT_BACKGROUND_GREY": "#E1E1E1",
     },
 )

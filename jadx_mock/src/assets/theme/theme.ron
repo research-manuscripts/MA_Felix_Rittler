@@ -104,6 +104,9 @@ Theme (
             base: "combo_box",
             properties: {
                 "height": 20,
+                "background": "$UI_ELEMENT_BACKGROUND_GREY",
+                "border_brush": "$GREY",
+                "border_width": 1
             }
         ),
         "preference_numeric_box": (
@@ -273,5 +276,32 @@ Theme (
                 "height": 18,
             }
         ),
-    }
+        "custom_combo_box_item": (
+            properties: {
+                "font_size": "$FONT_SIZE_12",
+                "foreground": "$CONTENT_FOREGROUND",
+                "background": "transparent",
+                "padding_left": 3,
+                "padding_right": 3,
+            },
+            states: [
+                (
+                    key: "selected",
+                    properties: {
+                        "foreground": "$WHITE",
+                        "background": "$WIN_BLUE",
+                    }
+                ),
+                (
+                    key: "pressed",
+                    properties: {
+                        "foreground": "$CONTENT_FOREGROUND_INVERTED",
+                        "background": "$WIN_BLUE",
+                    }
+                )
+            ]
+        ),
+    },
+
+
 )

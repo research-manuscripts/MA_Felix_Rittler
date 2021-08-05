@@ -1,6 +1,7 @@
 use crate::elements::structured_item_box;
 use crate::elements::CustomCheckBox;
 use crate::elements::SmallNumericBox;
+use crate::elements::CustomComboBox;
 use orbtk::prelude::*;
 
 widget!(Preferences);
@@ -398,7 +399,7 @@ impl Template for Preferences {
                         .build(ctx),
                 )
                 .child(
-                    ComboBox::new()
+                    CustomComboBox::new()
                         .style("preference_combo_box")
                         .count(6)
                         .attach(Grid::column(1))
@@ -415,7 +416,7 @@ impl Template for Preferences {
                 .build(ctx),
         );
 
-        let languages = ["English", "中文（简体）", "Español", "Deutsch"];
+        let languages = ["English", "Español", "Deutsch"];
         let other_container = Container::new().child(
             Grid::new()
                 .columns("280, 50")
@@ -453,9 +454,9 @@ impl Template for Preferences {
                         .build(ctx),
                 )
                 .child(
-                    ComboBox::new()
+                    CustomComboBox::new()
                         .style("preference_combo_box")
-                        .count(4)
+                        .count(3)
                         .attach(Grid::column(1))
                         .attach(Grid::row(0))
                         .items_builder(move |bc, index| {

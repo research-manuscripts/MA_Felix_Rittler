@@ -11,8 +11,6 @@ use rust_decimal::prelude::*;
 // --- KEYS --
 
 pub static ID_INPUT: &str = "numeric_box_input";
-pub static STYLE_INPUT: &str = "numeric_box_input";
-pub static STYLE_BTN: &str = "numeric_box_button";
 
 // --- KEYS --
 

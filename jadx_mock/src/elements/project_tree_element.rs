@@ -49,7 +49,7 @@ impl ProjectTreeElementState {
 }
 
 impl State for ProjectTreeElementState {
-    fn init(&mut self, registry: &mut Registry, ctx: &mut Context) {
+    fn init(&mut self, _registry: &mut Registry, ctx: &mut Context) {
         self.generate(ctx);
     }
 

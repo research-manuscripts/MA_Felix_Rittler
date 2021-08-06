@@ -1,5 +1,7 @@
 use crate::components::Preferences;
+use crate::components::RenameDialogue;
 use crate::components::TextSearch;
+use crate::components::UsageSearch;
 use crate::elements::ImageButton;
 use orbtk::prelude::*;
 
@@ -7,7 +9,9 @@ use orbtk::prelude::*;
 struct ToolbarState {
     show_preferences: bool,
     show_text_search: bool,
-    show_class_search: bool
+    show_class_search: bool,
+    show_usage_search: bool,
+    show_rename_dialogue: bool,
 }
 
 impl ToolbarState {
@@ -21,6 +25,14 @@ impl ToolbarState {
 
     fn show_class_search(&mut self) {
         self.show_class_search = true;
+    }
+
+    fn show_usage_search(&mut self) {
+        self.show_usage_search = true;
+    }
+
+    fn show_rename_dialogue(&mut self) {
+        self.show_rename_dialogue = true;
     }
 }
 
@@ -49,7 +61,13 @@ impl State for ToolbarState {
                     .position((120.0, 120.0))
                     .size(width, height)
                     .resizeable(true)
-                    .child(TextSearch::new().width(width).height(height).code_checkbox_selected(true).build(ctx))
+                    .child(
+                        TextSearch::new()
+                            .width(width)
+                            .height(height)
+                            .code_checkbox_selected(true)
+                            .build(ctx),
+                    )
                     .build(ctx)
             });
             self.show_text_search = false;
@@ -64,10 +82,49 @@ impl State for ToolbarState {
                     .position((120.0, 120.0))
                     .size(width, height)
                     .resizeable(true)
-                    .child(TextSearch::new().width(width).height(height).class_checkbox_selected(true).build(ctx))
+                    .child(
+                        TextSearch::new()
+                            .width(width)
+                            .height(height)
+                            .class_checkbox_selected(true)
+                            .build(ctx),
+                    )
                     .build(ctx)
             });
-            self.show_text_search = false;
+            self.show_class_search = false;
+        }
+        if self.show_rename_dialogue {
+            ctx.show_window(|ctx| {
+                Window::new()
+                    .title("Rename")
+                    .style("popup_window")
+                    .position((120.0, 120.0))
+                    .size(250, 150)
+                    .resizeable(true)
+                    .child(
+                        RenameDialogue::new()
+                            .entity_icon("src/assets/icons-16/grey_background/package_obj.png")
+                            .entity_name("androidx")
+                            .build(ctx),
+                    )
+                    .build(ctx)
+            });
+            self.show_rename_dialogue = false;
+        }
+        if self.show_usage_search {
+            ctx.show_window(|ctx| {
+                let height = 450.0;
+                let width = 860.0;
+                Window::new()
+                    .title("Rename")
+                    .style("popup_window")
+                    .position((120.0, 120.0))
+                    .size(width, height)
+                    .resizeable(true)
+                    .child(UsageSearch::new().width(width).height(height).build(ctx))
+                    .build(ctx)
+            });
+            self.show_usage_search = false;
         }
     }
 }
@@ -93,6 +150,11 @@ impl Template for Toolbar {
                                     ImageButton::new()
                                         .image("src/assets/icons-16/grey_background/folder.png")
                                         .v_align("center")
+                                        .on_click(move |states, _| -> bool {
+                                            let state = states.get_mut::<ToolbarState>(id);
+                                            state.show_rename_dialogue();
+                                            false
+                                        })
                                         .height(20)
                                         .build(ctx),
                                 )
@@ -101,6 +163,11 @@ impl Template for Toolbar {
                                         .image("src/assets/icons-16/grey_background/folder_add.png")
                                         .v_align("center")
                                         .margin((0, 0, 5, 0))
+                                        .on_click(move |states, _| -> bool {
+                                            let state = states.get_mut::<ToolbarState>(id);
+                                            state.show_usage_search();
+                                            false
+                                        })
                                         .build(ctx),
                                 )
                                 .child(Container::new().style("small_rule").build(ctx))

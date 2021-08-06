@@ -4,6 +4,10 @@ mod preferences;
 mod project_tree_widget;
 mod text_search;
 mod about;
+mod rename_dialogue;
+mod search_result_table;
+mod usage_search;
+mod editor_tab_navigation_mock;
 
 pub use self::toolbar::*;
 pub use self::top_menu::*;
@@ -11,3 +15,7 @@ pub use self::preferences::*;
 pub use self::project_tree_widget::*;
 pub use self::text_search::*;
 pub use self::about::*;
+pub use self::rename_dialogue::*;
+pub use self::search_result_table::*;
+pub use self::usage_search::*;
+pub use self::editor_tab_navigation_mock::*;

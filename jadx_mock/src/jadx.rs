@@ -1,3 +1,4 @@
+use crate::components::EditorTabNavigationMock;
 use crate::components::ProjectTreeWidget;
 use crate::components::Toolbar;
 use crate::components::TopMenu;
@@ -6,7 +7,7 @@ use orbtk::prelude::*;
 widget!(Jadx);
 
 const DEMO_CONTENT: &str =
-"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+    "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
 invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
 et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
 Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
@@ -83,9 +84,16 @@ impl Template for Jadx {
                                         .height(800)
                                         .h_align("start")
                                         .child(
-                                            TextBlock::new()
-                                                .style("text").max_width(380)
-                                                .text(DEMO_CONTENT)
+                                            Stack::new()
+                                                .orientation("vertical")
+                                                .child(EditorTabNavigationMock::new().build(ctx))
+                                                .child(
+                                                    TextBlock::new()
+                                                        .style("text")
+                                                        .max_width(380)
+                                                        .text(DEMO_CONTENT)
+                                                        .build(ctx),
+                                                )
                                                 .build(ctx),
                                         )
                                         .build(ctx),

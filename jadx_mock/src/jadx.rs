@@ -48,6 +48,15 @@ amet. Lorem ipsum dolor sit amet, consetetur";
 
 impl Template for Jadx {
     fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {
+        let width = self.width.expect("Width has to be set");
+        let height = self.height.expect("Height has to be set");
+
+        let tree_width = 0.4 * width;
+        let editor_width = width - tree_width;
+        let grid_layout = format!("{}, {}", tree_width, editor_width);
+
+        let tabs = generate_editor_tabs();
+
         self.name("Jadx").child(
             Stack::new()
                 .orientation("vertical")
@@ -57,18 +66,18 @@ impl Template for Jadx {
                 .child(Container::new().style("rule").build(ctx))
                 .child(
                     Grid::new()
-                        .columns("330, auto")
+                        .columns(grid_layout)
                         .margin((0, 1, 0, 0))
                         .v_align("top")
                         .h_align("start")
                         .child(
                             Container::new()
+                                .attach(Grid::column(0))
                                 .h_align("start")
                                 .v_align("top")
-                                .attach(Grid::column(0))
                                 .style("rule")
-                                .width(325)
-                                .height(800)
+                                .width(tree_width)
+                                .height(height)
                                 .child(ProjectTreeWidget::new().build(ctx))
                                 .build(ctx),
                         )
@@ -77,20 +86,20 @@ impl Template for Jadx {
                                 .attach(Grid::column(1))
                                 .v_align("top")
                                 .h_align("start")
+                                // .margin((20, 0, 0, 0))
                                 .child(
                                     Container::new()
                                         .style("rule")
-                                        .width(670)
-                                        .height(800)
+                                        .width(editor_width)
+                                        .height(730)
                                         .h_align("start")
                                         .child(
                                             Stack::new()
                                                 .orientation("vertical")
-                                                .child(EditorTabNavigationMock::new().build(ctx))
+                                                .child(EditorTabNavigationMock::new().items(tabs).build(ctx))
                                                 .child(
                                                     TextBlock::new()
                                                         .style("text")
-                                                        .max_width(380)
                                                         .text(DEMO_CONTENT)
                                                         .build(ctx),
                                                 )
@@ -104,5 +113,54 @@ impl Template for Jadx {
                 )
                 .build(ctx),
         )
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct EditorTabItem {
+    pub name: String,
+    pub icon_path: String,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct EditorTabItems {
+    pub items: Vec<EditorTabItem>,
+}
+
+into_property_source!(EditorTabItems);
+
+impl Default for EditorTabItems {
+    fn default() -> Self {
+        EditorTabItems { items: vec![] }
+    }
+}
+
+fn generate_editor_tabs() -> EditorTabItems {
+    let item1 = EditorTabItem {
+        name: "Test".to_string(),
+        icon_path: "src/assets/icons-16/grey_background/class_obj.png".to_string(),
+    };
+    let item2 = EditorTabItem {
+        name: "Test2".to_string(),
+        icon_path: "src/assets/icons-16/grey_background/class_obj.png".to_string(),
+    };
+    let item3 = EditorTabItem {
+        name: "Test3".to_string(),
+        icon_path: "src/assets/icons-16/grey_background/class_obj.png".to_string(),
+    };
+    let item4 = EditorTabItem {
+        name: "Test4".to_string(),
+        icon_path: "src/assets/icons-16/grey_background/class_obj.png".to_string(),
+    };
+    let item5 = EditorTabItem {
+        name: "Test5".to_string(),
+        icon_path: "src/assets/icons-16/grey_background/class_obj.png".to_string(),
+    };
+    let item6 = EditorTabItem {
+        name: "Test6".to_string(),
+        icon_path: "src/assets/icons-16/grey_background/class_obj.png".to_string(),
+    };
+    EditorTabItems {
+        items: vec![item1, item2, item3, item4, item5, item6],
     }
 }

@@ -5,7 +5,7 @@ use orbtk::prelude::*;
 widget!(UsageSearch);
 
 impl Template for UsageSearch {
-    fn template(self, id: Entity, ctx: &mut BuildContext) -> Self {
+    fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {
         let height = self.height.expect("Height of usage search has to be set.");
         let table_height = height - 170.0;
 

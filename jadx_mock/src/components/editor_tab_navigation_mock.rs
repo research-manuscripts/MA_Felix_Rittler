@@ -1,133 +1,61 @@
-use crate::elements::ProjectNodeDescription;
+use crate::{
+    elements::ProjectNodeDescription,
+    jadx::{EditorTabItem, EditorTabItems},
+};
 use orbtk::prelude::*;
 
-widget!(EditorTabNavigationMock);
+type Items = EditorTabItems;
+
+widget!(EditorTabNavigationMock { items: Items });
 
 impl Template for EditorTabNavigationMock {
     fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {
+        let items_prop = self.items.as_ref().expect("Items have to be set.");
+        let items: Vec<EditorTabItem>;
+        match items_prop {
+            PropertySource::Source(_) => items = vec![],
+            PropertySource::KeySource(_, _) => items = vec![],
+            PropertySource::Value(t) => items = t.items.clone(),
+        }
+
+        let items = items
+            // iterate over all items
+            .iter()
+            // put every item into a container
+            .map(|item: &EditorTabItem| {
+                Container::new()
+                    .style("rule")
+                    .padding(5)
+                    .child(
+                        Stack::new()
+                            .orientation("horizontal")
+                            .spacing(10)
+                            .child(
+                                ProjectNodeDescription::new()
+                                    .text(item.name.clone())
+                                    .image(item.icon_path.clone())
+                                    .build(ctx),
+                            )
+                            .child(
+                                ImageWidget::new()
+                                    .image("src/assets/icons-16/grey_background/cross.png")
+                                    .build(ctx),
+                            )
+                            .build(ctx),
+                    )
+                    .build(ctx)
+            })
+            // create a stack that adds every container as a child
+            .fold(
+                Stack::new().orientation("horizontal"),
+                |stack: Stack, el: Entity| stack.child(el),
+            );
+
         self.name("EditorTabNavigationMock").child(
             Container::new()
+                .style("rule")
                 .background("#F0F0F0")
-                .child(
-                    Stack::new()
-                        .orientation("horizontal")
-                        .child(
-                            Container::new()
-                                .style("rule")
-                                .padding(5)
-                                .child(
-                                    Stack::new()
-                                        .orientation("horizontal")
-                                        .spacing(10)
-                                        .child(
-                                            ProjectNodeDescription::new()
-                                                .text("Test")
-                                                .image("src/assets/icons-16/grey_background/class_obj.png")
-                                                .build(ctx),
-                                        )
-                                        .child(
-                                            ImageWidget::new()
-                                                .image("src/assets/icons-16/grey_background/cross.png")
-                                                .build(ctx),
-                                        )
-                                        .build(ctx),
-                                )
-                                .build(ctx),
-                        )
-                        .child(
-                            Container::new()
-                                .style("rule")
-                                .padding(5)
-                                .child(
-                                    Stack::new()
-                                        .orientation("horizontal")
-                                        .spacing(10)
-                                        .child(
-                                            ProjectNodeDescription::new()
-                                                .text("Test")
-                                                .image("src/assets/icons-16/grey_background/class_obj.png")
-                                                .build(ctx),
-                                        )
-                                        .child(
-                                            ImageWidget::new()
-                                                .image("src/assets/icons-16/grey_background/cross.png")
-                                                .build(ctx),
-                                        )
-                                        .build(ctx),
-                                )
-                                .build(ctx),
-                        )
-                        .child(
-                            Container::new()
-                                .style("rule")
-                                .padding(5)
-                                .child(
-                                    Stack::new()
-                                        .spacing(10)
-                                        .orientation("horizontal")
-                                        .child(
-                                            ProjectNodeDescription::new()
-                                                .text("Test")
-                                                .image("src/assets/icons-16/grey_background/class_obj.png")
-                                                .build(ctx),
-                                        )
-                                        .child(
-                                            ImageWidget::new()
-                                                .image("src/assets/icons-16/grey_background/cross.png")
-                                                .build(ctx),
-                                        )
-                                        .build(ctx),
-                                )
-                                .build(ctx),
-                        )
-                        .child(
-                            Container::new()
-                                .style("rule")
-                                .padding(5)
-                                .child(
-                                    Stack::new()
-                                        .orientation("horizontal")
-                                        .spacing(10)
-                                        .child(
-                                            ProjectNodeDescription::new()
-                                                .text("Test")
-                                                .image("src/assets/icons-16/grey_background/class_obj.png")
-                                                .build(ctx),
-                                        )
-                                        .child(
-                                            ImageWidget::new()
-                                                .image("src/assets/icons-16/grey_background/cross.png")
-                                                .build(ctx),
-                                        )
-                                        .build(ctx),
-                                )
-                                .build(ctx),
-                        )
-                        .child(
-                            Container::new()
-                                .style("rule")
-                                .padding(5)
-                                .child(
-                                    Stack::new()
-                                        .orientation("horizontal")
-                                        .spacing(10)
-                                        .child(
-                                            ProjectNodeDescription::new()
-                                                .text("Test")
-                                                .image("src/assets/icons-16/grey_background/class_obj.png")
-                                                .build(ctx),
-                                        )
-                                        .child(
-                                            ImageWidget::new()
-                                                .image("src/assets/icons-16/grey_background/cross.png")
-                                                .build(ctx),
-                                        )
-                                        .build(ctx),
-                                )
-                                .build(ctx),
-                        )
-                        .build(ctx),
-                )
+                .child(items.build(ctx))
                 .build(ctx),
         )
     }

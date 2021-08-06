@@ -28,7 +28,7 @@ fn main() {
             .position((120.0, 120.0))
             .size(800.0, 730.0)
             .resizeable(true)
-            .child(Jadx::new().build(ctx))
+            .child(Jadx::new().height(730).width(800).build(ctx))
             .build(ctx)
     });
     app.run()

@@ -67,3 +67,4 @@ __pycache__/
 ## Rustdoc GUI tests
 src/test/rustdoc-gui/src/**.lock
 
+Cargo.lock

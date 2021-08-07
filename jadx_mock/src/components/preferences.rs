@@ -15,7 +15,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
-                        .text("Verarbeitungs-Thread-Anzahl")
+                        .text("Processing threads count")
                         .attach(Grid::column(0))
                         .attach(Grid::row(0))
                         .build(ctx),
@@ -23,7 +23,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
-                        .text("Ausgeschlossene Pakete")
+                        .text("Excluded packages")
                         .attach(Grid::column(0))
                         .attach(Grid::row(1))
                         .build(ctx),
@@ -31,7 +31,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
-                        .text("Autom. Hintergrunddekompilierung starten")
+                        .text("Auto start background decompilation")
                         .attach(Grid::column(0))
                         .attach(Grid::row(2))
                         .build(ctx),
@@ -39,7 +39,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
-                        .text("Inkonsistenten Code anzeigen")
+                        .text("Show inconsistent code")
                         .attach(Grid::column(0))
                         .attach(Grid::row(3))
                         .build(ctx),
@@ -47,7 +47,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
-                        .text("Escape Unicode")
+                        .text("Escape unicode")
                         .attach(Grid::column(0))
                         .attach(Grid::row(4))
                         .build(ctx),
@@ -55,7 +55,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
-                        .text("Konstanten ersetzen")
+                        .text("Replace constants")
                         .attach(Grid::column(0))
                         .attach(Grid::row(5))
                         .build(ctx),
@@ -63,7 +63,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
-                        .text("Modifikatoren für Bytecode-Zugriff beachten")
+                        .text("Respect bytecode access modifiers")
                         .attach(Grid::column(0))
                         .attach(Grid::row(6))
                         .build(ctx),
@@ -71,7 +71,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
-                        .text("Importauszüge verwenden")
+                        .text("Use import statements")
                         .attach(Grid::column(0))
                         .attach(Grid::row(7))
                         .build(ctx),
@@ -79,7 +79,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
-                        .text("Anonyme Inline-Klassen")
+                        .text("Inline anonymous classes")
                         .attach(Grid::column(0))
                         .attach(Grid::row(8))
                         .build(ctx),
@@ -87,7 +87,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
-                        .text("Dateisystem unterscheidet zwischen Groß/Kleinschreibung")
+                        .text("File system is case sensitive")
                         .attach(Grid::column(0))
                         .attach(Grid::row(9))
                         .build(ctx),
@@ -95,7 +95,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
-                        .text("Zwischencode ausgeben (einfacher Speicherauszug)")
+                        .text("Fallback mode (simple dump)")
                         .attach(Grid::column(0))
                         .attach(Grid::row(10))
                         .build(ctx),
@@ -103,7 +103,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
-                        .text("Keine Ressourcen dekodieren")
+                        .text("Don't decode resources")
                         .attach(Grid::column(0))
                         .attach(Grid::row(11))
                         .build(ctx),
@@ -203,7 +203,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
-                        .text("Deobfuscation aktivieren")
+                        .text("Enable deobfuscation")
                         .attach(Grid::column(0))
                         .attach(Grid::row(0))
                         .build(ctx),
@@ -377,6 +377,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
+                        // TODO Make font changeable
                         .text("Editor font: Consolas plain 13")
                         .attach(Grid::column(0))
                         .attach(Grid::row(0))
@@ -574,7 +575,7 @@ impl Template for Preferences {
                                         .child(structured_item_box(
                                             ctx,
                                             decompile_container,
-                                            "Dekompilierung",
+                                            "Decompilation",
                                             600,
                                             370,
                                         ))

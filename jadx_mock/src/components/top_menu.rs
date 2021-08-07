@@ -137,7 +137,7 @@ impl Template for TopMenu {
                 .child(
                     Button::new()
                         .style("top_menu_button")
-                        .text("Datei")
+                        .text("File")
                         .on_click(move |states, _| -> bool {
                             let state = states.get_mut::<TopMenuState>(id);
                             state.toggle_menu(TopMenuType::File)
@@ -147,7 +147,7 @@ impl Template for TopMenu {
                 .child(
                     Button::new()
                         .style("top_menu_button")
-                        .text("Anzeigen")
+                        .text("View")
                         .min_size(0, 0)
                         .on_click(move |states, _| -> bool {
                             let state = states.get_mut::<TopMenuState>(id);
@@ -178,7 +178,7 @@ impl Template for TopMenu {
                 .child(
                     Button::new()
                         .style("top_menu_button")
-                        .text("Hilfe")
+                        .text("Help")
                         .on_click(move |states, _| -> bool {
                             let state = states.get_mut::<TopMenuState>(id);
                             state.toggle_menu(TopMenuType::Help)
@@ -211,7 +211,7 @@ fn create_file_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
                         .child(
                             TopMenuEntryButton::new()
                                 .column_layout(column_layout)
-                                .text("Datei öffnen...")
+                                .text("Open file...")
                                 .shortcut_text("Strg+O")
                                 .image("src/assets/icons-16/grey_background/folder.png")
                                 .build(ctx),
@@ -219,32 +219,32 @@ fn create_file_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
                         .child(
                             TopMenuEntryButton::new()
                                 .column_layout(column_layout)
-                                .text("Datei hinzufügen...")
+                                .text("Add files...")
                                 .image("src/assets/icons-16/grey_background/folder_add.png")
                                 .build(ctx),
                         )
                         .child(
                             TopMenuEntryButton::new()
                                 .column_layout(column_layout)
-                                .text("Neues Projekt")
+                                .text("New project")
                                 .build(ctx),
                         )
                         .child(
                             TopMenuEntryButton::new()
                                 .column_layout(column_layout)
-                                .text("Projekt speichern")
+                                .text("Save project")
                                 .build(ctx),
                         )
                         .child(
                             TopMenuEntryButton::new()
                                 .column_layout(column_layout)
-                                .text("Projekt speichern als...")
+                                .text("Save project as...")
                                 .build(ctx),
                         )
                         .child(
                             TopMenuEntryButton::new()
                                 .column_layout(column_layout)
-                                .text("Alles speichern")
+                                .text("Save all")
                                 .shortcut_text("Strg+S")
                                 .image("src/assets/icons-16/grey_background/disk_multiple.png")
                                 .build(ctx),
@@ -252,7 +252,7 @@ fn create_file_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
                         .child(
                             TopMenuEntryButton::new()
                                 .column_layout(column_layout)
-                                .text("Als Gradle-Projekt speichern")
+                                .text("Save as gradle project")
                                 .shortcut_text("Strg+E")
                                 .image("src/assets/icons-16/grey_background/database_save.png")
                                 .build(ctx),
@@ -260,13 +260,13 @@ fn create_file_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
                         .child(
                             TopMenuEntryButton::new()
                                 .column_layout(column_layout)
-                                .text("Aktuelle Projekte")
+                                .text("Recent projects")
                                 .build(ctx),
                         )
                         .child(
                             TopMenuEntryButton::new()
                                 .column_layout(column_layout)
-                                .text("Präferenzen")
+                                .text("Preferences")
                                 .shortcut_text("Strg+Umschalt+P")
                                 .image("src/assets/icons-16/grey_background/wrench.png")
                                 .build(ctx),
@@ -274,7 +274,7 @@ fn create_file_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
                         .child(
                             TopMenuEntryButton::new()
                                 .column_layout(column_layout)
-                                .text("Beenden")
+                                .text("Exit")
                                 .image("src/assets/icons-16/grey_background/cross.png")
                                 .build(ctx),
                         )
@@ -301,20 +301,20 @@ fn create_view_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
                         .orientation("vertical")
                         .child(
                             TopMenuEntryButton::new().column_layout(column_layout)
-                                .text("Codepaket erweitern")
+                                .text("Show flatten packages")
                                 .image("src/assets/icons-16/grey_background/empty_logical_package_obj.png")
                                 .build(ctx),
                         )
                         .child(
                             TopMenuEntryButton::new().column_layout(column_layout)
-                                .text("Mit Editor synchronisieren")
+                                .text("Sync with editor")
                                 .image("src/assets/icons-16/grey_background/sync.png")
                                 .shortcut_text("Strg+T")
                                 .build(ctx),
                         )
                         .child(
                             TopMenuEntryButton::new().column_layout(column_layout)
-                                .text("Speicherverbrauchsleiste anzeigen")
+                                .text("Show memory usage bar")
                                 .build(ctx),
                         )
                         .build(ctx),
@@ -340,28 +340,28 @@ fn create_navigation_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
                         .orientation("vertical")
                         .child(
                             TopMenuEntryButton::new().column_layout(column_layout)
-                                .text("Textsuche")
+                                .text("Text search")
                                 .image("src/assets/icons-16/grey_background/wand.png")
                                 .shortcut_text("Strg+Umschalt+F")
                                 .build(ctx),
                         )
                         .child(
                             TopMenuEntryButton::new().column_layout(column_layout)
-                                .text("Klassen-Suche")
+                                .text("Class search")
                                 .image("src/assets/icons-16/grey_background/magnifier.png")
                                 .shortcut_text("Strg+N")
                                 .build(ctx),
                         )
                         .child(
                             TopMenuEntryButton::new().column_layout(column_layout)
-                                .text("Zurück")
+                                .text("Back")
                                 .image("src/assets/icons-16/grey_background/icon_back.png")
                                 .shortcut_text("Strg+Alt+Links")
                                 .build(ctx),
                         )
                         .child(
                             TopMenuEntryButton::new().column_layout(column_layout)
-                                .text("Vorwärts")
+                                .text("Forward")
                                 .image("src/assets/icons-16/grey_background/icon_forward.png")
                                 .shortcut_text("Strg+Alt+Rechts")
                                 .build(ctx),
@@ -396,7 +396,7 @@ fn create_tools_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
                         )
                         .child(
                             TopMenuEntryButton::new().column_layout(column_layout)
-                                .text("Log-Anzeige")
+                                .text("Log Viewer")
                                 .image("src/assets/icons-16/grey_background/report.png")
                                 .shortcut_text("Strg+Umschalt+L")
                                 .build(ctx),
@@ -424,7 +424,7 @@ fn create_help_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
                         .orientation("vertical")
                         .child(
                             TopMenuEntryButton::new().column_layout(column_layout)
-                                .text("Über")
+                                .text("About")
                                 .on_click(move |states, _| -> bool {
                                     let state = states.get_mut::<TopMenuState>(target);
                                     state.show_about();

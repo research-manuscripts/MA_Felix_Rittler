@@ -1,5 +1,6 @@
 use crate::components::SearchResultTable;
 use crate::elements::ProjectNodeDescription;
+use crate::mock_data_generator::generate_search_results;
 use orbtk::prelude::*;
 
 widget!(UsageSearch);
@@ -46,6 +47,7 @@ impl Template for UsageSearch {
                         .child(
                             SearchResultTable::new()
                                 .table_height(table_height)
+                                .items(generate_search_results())
                                 .width(table_width)
                                 .build(ctx),
                         )

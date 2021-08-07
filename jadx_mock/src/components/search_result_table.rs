@@ -1,7 +1,10 @@
-use crate::elements::ProjectNodeDescription;
+use crate::elements::SearchResultTableEntry;
 use orbtk::prelude::*;
 
-widget!(SearchResultTable { table_height: f64 });
+widget!(SearchResultTable {
+    table_height: f64,
+    items: SearchResults
+});
 
 impl Template for SearchResultTable {
     fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {
@@ -13,7 +16,10 @@ impl Template for SearchResultTable {
             lower_border, higher_border, item_count
         );
 
-        let table_height_prop = self.table_height.as_ref().expect("Height of text search has to be set.");
+        let table_height_prop = self
+            .table_height
+            .as_ref()
+            .expect("Height of text search has to be set.");
         let table_height: f64;
         match table_height_prop {
             PropertySource::Source(_) => table_height = 0.0,
@@ -24,6 +30,39 @@ impl Template for SearchResultTable {
         let width = self.width.expect("Width has to be set");
         let table_column_width = 0.5 * width;
         let table_grid_columns = format!("{}, {}", table_column_width, table_column_width);
+
+        // create table entries
+        let items_prop = self.items.as_ref().expect("Items have to be set.");
+        let items: Vec<SearchResult>;
+        match items_prop {
+            PropertySource::Source(_) => items = vec![],
+            PropertySource::KeySource(_, _) => items = vec![],
+            PropertySource::Value(t) => items = t.items.clone(),
+        }
+
+        let items = items
+            // iterate over all items
+            .iter()
+            // put every item into a container
+            .map(|item: &SearchResult| {
+                Container::new()
+                    .height(30.0)
+                    .child(
+                        SearchResultTableEntry::new()
+                            .entry_name(item.name.clone())
+                            .code_snippet(item.code_snippet.clone())
+                            .image(item.icon_path.clone())
+                            .width_column_1(table_column_width)
+                            .width_column_2(table_column_width)
+                            .build(ctx),
+                    )
+                    .build(ctx)
+            })
+            // create a stack that adds every container as a child
+            .fold(
+                Stack::new().orientation("vertical"),
+                |stack: Stack, el: Entity| stack.child(el),
+            );
 
         self.name("Preferences").child(
             Container::new()
@@ -39,7 +78,7 @@ impl Template for SearchResultTable {
                                 .child(
                                     Grid::new()
                                         .columns(table_grid_columns)
-                                        .rows("30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30")
+                                        .rows("30, *")
                                         .child(
                                             TextBlock::new()
                                                 .style("text")
@@ -58,63 +97,7 @@ impl Template for SearchResultTable {
                                                 .attach(Grid::row(0))
                                                 .build(ctx),
                                         )
-                                        .child(
-                                            ProjectNodeDescription::new()
-                                                .margin((5, 0, 10, 0))
-                                                .attach(Grid::column(0))
-                                                .attach(Grid::row(1))
-                                                .text("Test")
-                                                .image("src/assets/icons-16/class_obj.png")
-                                                .build(ctx),
-                                        )
-                                        .child(
-                                            ProjectNodeDescription::new()
-                                                .margin((5, 0, 10, 0))
-                                                .attach(Grid::column(0))
-                                                .attach(Grid::row(2))
-                                                .text("Test")
-                                                .image("src/assets/icons-16/methpub_obj.png")
-                                                .build(ctx),
-                                        )
-                                        .child(
-                                            ProjectNodeDescription::new()
-                                                .margin((5, 0, 10, 0))
-                                                .attach(Grid::column(0))
-                                                .attach(Grid::row(3))
-                                                .text("Test")
-                                                .image("src/assets/icons-16/methpri_obj.png")
-                                                .build(ctx),
-                                        )
-                                        .child(
-                                            TextBlock::new()
-                                                .margin(5)
-                                                .attach(Grid::column(1))
-                                                .attach(Grid::row(1))
-                                                .style("text")
-                                                .v_align("center")
-                                                .text("Log.e(f308TAG, Could not retrieve Resources field")
-                                                .build(ctx),
-                                        )
-                                        .child(
-                                            TextBlock::new()
-                                                .margin(5)
-                                                .attach(Grid::column(1))
-                                                .attach(Grid::row(2))
-                                                .style("text")
-                                                .v_align("center")
-                                                .text("Log.e(f308TAG, Could not retrieve Resources field")
-                                                .build(ctx),
-                                        )
-                                        .child(
-                                            TextBlock::new()
-                                                .margin(5)
-                                                .attach(Grid::column(1))
-                                                .attach(Grid::row(3))
-                                                .style("text")
-                                                .v_align("center")
-                                                .text("Log.e(f308TAG, Could not retrieve Resources field")
-                                                .build(ctx),
-                                        )
+                                        .child(items.attach(Grid::row(1)).build(ctx))
                                         .build(ctx),
                                 )
                                 .build(ctx),
@@ -138,5 +121,25 @@ impl Template for SearchResultTable {
                 )
                 .build(ctx),
         )
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct SearchResult {
+    pub name: String,
+    pub icon_path: String,
+    pub code_snippet: String,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct SearchResults {
+    pub items: Vec<SearchResult>,
+}
+
+into_property_source!(SearchResults);
+
+impl Default for SearchResults {
+    fn default() -> Self {
+        SearchResults { items: vec![] }
     }
 }

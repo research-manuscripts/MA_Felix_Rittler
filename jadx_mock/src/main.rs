@@ -1,6 +1,7 @@
 mod components;
 mod elements;
 mod jadx;
+mod mock_data_generator;
 
 use crate::jadx::Jadx;
 use orbtk::{

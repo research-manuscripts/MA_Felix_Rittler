@@ -1,6 +1,7 @@
 use crate::components::SearchResultTable;
 use crate::elements::structured_item_box;
 use crate::elements::CustomCheckBox;
+use crate::mock_data_generator::generate_search_results;
 use orbtk::prelude::*;
 
 widget!(TextSearch {
@@ -118,7 +119,13 @@ impl Template for TextSearch {
                                 )
                                 .build(ctx),
                         )
-                        .child(SearchResultTable::new().table_height(table_height).width(table_width).build(ctx))
+                        .child(
+                            SearchResultTable::new()
+                                .table_height(table_height)
+                                .items(generate_search_results())
+                                .width(table_width)
+                                .build(ctx),
+                        )
                         .child(
                             Stack::new()
                                 .orientation("horizontal")

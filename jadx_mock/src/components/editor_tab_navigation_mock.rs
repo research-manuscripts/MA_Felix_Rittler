@@ -4,9 +4,7 @@ use crate::{
 };
 use orbtk::prelude::*;
 
-type Items = EditorTabItems;
-
-widget!(EditorTabNavigationMock { items: Items });
+widget!(EditorTabNavigationMock { items: EditorTabItems });
 
 impl Template for EditorTabNavigationMock {
     fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {

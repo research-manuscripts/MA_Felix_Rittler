@@ -1,6 +1,6 @@
 use crate::{
     elements::ProjectNodeDescription,
-    jadx::{EditorTabItem, EditorTabItems},
+    // jadx::{EditorTabItem, EditorTabItems},
 };
 use orbtk::prelude::*;
 
@@ -58,5 +58,25 @@ impl Template for EditorTabNavigationMock {
                 .child(items.build(ctx))
                 .build(ctx),
         )
+    }
+}
+
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct EditorTabItem {
+    pub name: String,
+    pub icon_path: String,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct EditorTabItems {
+    pub items: Vec<EditorTabItem>,
+}
+
+into_property_source!(EditorTabItems);
+
+impl Default for EditorTabItems {
+    fn default() -> Self {
+        EditorTabItems { items: vec![] }
     }
 }

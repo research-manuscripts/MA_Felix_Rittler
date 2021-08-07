@@ -1,3 +1,5 @@
+use crate::components::EditorTabItem;
+use crate::components::EditorTabItems;
 use crate::components::EditorTabNavigationMock;
 use crate::components::ProjectTreeWidget;
 use crate::components::Toolbar;
@@ -113,25 +115,6 @@ impl Template for Jadx {
                 )
                 .build(ctx),
         )
-    }
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub struct EditorTabItem {
-    pub name: String,
-    pub icon_path: String,
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub struct EditorTabItems {
-    pub items: Vec<EditorTabItem>,
-}
-
-into_property_source!(EditorTabItems);
-
-impl Default for EditorTabItems {
-    fn default() -> Self {
-        EditorTabItems { items: vec![] }
     }
 }
 

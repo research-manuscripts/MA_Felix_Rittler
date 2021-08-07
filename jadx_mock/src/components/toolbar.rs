@@ -41,7 +41,7 @@ impl State for ToolbarState {
         if self.show_preferences {
             ctx.show_window(|ctx| {
                 Window::new()
-                    .title("Präferenzen")
+                    .title("Preferences")
                     .style("popup_window")
                     .position((120.0, 120.0))
                     .size(860.0, 740.0)
@@ -116,7 +116,7 @@ impl State for ToolbarState {
                 let height = 450.0;
                 let width = 860.0;
                 Window::new()
-                    .title("Rename")
+                    .title("Usage Search")
                     .style("popup_window")
                     .position((120.0, 120.0))
                     .size(width, height)

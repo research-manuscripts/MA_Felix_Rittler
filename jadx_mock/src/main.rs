@@ -25,11 +25,11 @@ fn main() {
     let app = Application::new().theme(theme()).window(|ctx| {
         Window::new()
             .style("windows_window")
-            .title("OrbTk - PasswordBox example")
+            .title("New Project - jadx-gui")
             .position((120.0, 120.0))
-            .size(800.0, 730.0)
+            .size(800.0, 800.0)
             .resizeable(true)
-            .child(Jadx::new().height(730).width(800).build(ctx))
+            .child(Jadx::new().height(1200).width(1500).build(ctx))
             .build(ctx)
     });
     app.run()

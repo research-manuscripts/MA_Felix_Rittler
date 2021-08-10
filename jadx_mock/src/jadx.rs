@@ -1,3 +1,5 @@
+use std::cmp::min;
+
 use crate::components::EditorTabNavigationMock;
 use crate::components::ProjectTreeWidget;
 use crate::components::Toolbar;
@@ -12,7 +14,7 @@ impl Template for Jadx {
         let width = self.width.expect("Width has to be set");
         let height = self.height.expect("Height has to be set");
 
-        let tree_width = 0.4 * width;
+        let tree_width = (0.4 * width).min(250.0);
         let editor_width = width - tree_width;
         let grid_layout = format!("{}, {}", tree_width, editor_width);
 
@@ -52,17 +54,15 @@ impl Template for Jadx {
                                     Container::new()
                                         .style("rule")
                                         .width(editor_width)
-                                        .height(730)
+                                        .height(height)
                                         .h_align("start")
+                                        .v_align("top")
                                         .child(
                                             Stack::new()
                                                 .orientation("vertical")
                                                 .child(EditorTabNavigationMock::new().items(tabs).build(ctx))
                                                 .child(
-                                                    TextBlock::new()
-                                                        .style("text")
-                                                        .text(DEMO_TEXT)
-                                                        .build(ctx),
+                                                    ImageWidget::new().image("src/assets/editor_screenshots/enum.png").build(ctx)
                                                 )
                                                 .build(ctx),
                                         )

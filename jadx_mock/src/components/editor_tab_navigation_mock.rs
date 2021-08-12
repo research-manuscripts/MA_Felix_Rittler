@@ -1,10 +1,9 @@
-use crate::{
-    elements::ProjectNodeDescription,
-    // jadx::{EditorTabItem, EditorTabItems},
-};
+use crate::elements::ProjectNodeDescription;
 use orbtk::prelude::*;
 
-widget!(EditorTabNavigationMock { items: EditorTabItems });
+widget!(EditorTabNavigationMock {
+    items: EditorTabItems
+});
 
 impl Template for EditorTabNavigationMock {
     fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {
@@ -21,8 +20,20 @@ impl Template for EditorTabNavigationMock {
             .iter()
             // put every item into a container
             .map(|item: &EditorTabItem| {
+                let container_theme = if item.selected {
+                    "tab_navi_container_selected"
+                } else {
+                    "tab_navi_container"
+                };
+
+                let close_icon = if item.selected {
+                    "src/assets/icons-16/cross.png"
+                } else {
+                    "src/assets/icons-16/grey_background/cross.png"
+                };
+
                 Container::new()
-                    .style("rule")
+                    .style(container_theme)
                     .padding(5)
                     .child(
                         Stack::new()
@@ -36,7 +47,7 @@ impl Template for EditorTabNavigationMock {
                             )
                             .child(
                                 ImageWidget::new()
-                                    .image("src/assets/icons-16/grey_background/cross.png")
+                                    .image(close_icon)
                                     .build(ctx),
                             )
                             .build(ctx),
@@ -59,11 +70,11 @@ impl Template for EditorTabNavigationMock {
     }
 }
 
-
 #[derive(Debug, Clone, PartialEq)]
 pub struct EditorTabItem {
     pub name: String,
     pub icon_path: String,
+    pub selected: bool,
 }
 
 #[derive(Debug, Clone, PartialEq)]

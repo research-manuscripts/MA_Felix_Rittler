@@ -15,7 +15,6 @@ const PROJECT_TREE_ICONS: [&str; 7] = [
     "src/assets/icons-16/java_model_obj.png",
 ];
 
-
 pub fn generate_project_tree() -> ProjectTreeNode {
     let node111 = ProjectTreeNode {
         image: "src/assets/icons-16/int_obj.png".to_string(),
@@ -116,7 +115,7 @@ fn generate_sub_tree(level: i32) -> ProjectTreeNode {
             image,
             text,
             nodes: vec![],
-        }
+        };
     }
 
     // sample sub tree
@@ -136,26 +135,32 @@ pub fn generate_editor_tabs() -> EditorTabItems {
     let item1 = EditorTabItem {
         name: "Test".to_string(),
         icon_path: "src/assets/icons-16/grey_background/class_obj.png".to_string(),
+        selected: false,
     };
     let item2 = EditorTabItem {
         name: "Test2".to_string(),
         icon_path: "src/assets/icons-16/grey_background/class_obj.png".to_string(),
+        selected: false,
     };
     let item3 = EditorTabItem {
         name: "Test3".to_string(),
-        icon_path: "src/assets/icons-16/grey_background/class_obj.png".to_string(),
+        icon_path: "src/assets/icons-16/class_obj.png".to_string(),
+        selected: true,
     };
     let item4 = EditorTabItem {
         name: "Test4".to_string(),
         icon_path: "src/assets/icons-16/grey_background/class_obj.png".to_string(),
+        selected: false,
     };
     let item5 = EditorTabItem {
         name: "Test5".to_string(),
         icon_path: "src/assets/icons-16/grey_background/class_obj.png".to_string(),
+        selected: false,
     };
     let item6 = EditorTabItem {
         name: "Test6".to_string(),
         icon_path: "src/assets/icons-16/grey_background/class_obj.png".to_string(),
+        selected: false,
     };
     EditorTabItems {
         items: vec![item1, item2, item3, item4, item5, item6],

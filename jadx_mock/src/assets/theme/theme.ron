@@ -276,6 +276,15 @@ Theme (
                 "height": 18,
             }
         ),
+        "tab_navi_container": (
+            base: "rule",
+        ),
+        "tab_navi_container_selected": (
+            base: "rule",
+            properties: {
+                "background": "$WHITE",
+            }
+        ),
         "custom_combo_box_item": (
             properties: {
                 "font_size": "$FONT_SIZE_12",

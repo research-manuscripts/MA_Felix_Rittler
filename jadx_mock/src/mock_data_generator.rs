@@ -1,4 +1,20 @@
+use rand::{distributions::Alphanumeric, Rng};
+
 use crate::components::{EditorTabItem, EditorTabItems, ProjectTreeNode, SearchResult, SearchResults};
+
+const NAME_LENGTH: f64 = 30.0;
+const CHILD_COUNT: f64 = 10.0;
+
+const PROJECT_TREE_ICONS: [&str; 7] = [
+    "src/assets/icons-16/int_obj.png",
+    "src/assets/icons-16/class_obj.png",
+    "src/assets/icons-16/package_obj.png",
+    "src/assets/icons-16/packagefolder_obj.png",
+    "src/assets/icons-16/folder.png",
+    "src/assets/icons-16/template_obj.png",
+    "src/assets/icons-16/java_model_obj.png",
+];
+
 
 pub fn generate_project_tree() -> ProjectTreeNode {
     let node111 = ProjectTreeNode {
@@ -74,6 +90,46 @@ pub fn generate_project_tree() -> ProjectTreeNode {
     };
 
     root
+}
+
+pub fn generate_random_project_tree() -> ProjectTreeNode {
+    generate_sub_tree(0)
+}
+
+fn generate_sub_tree(level: i32) -> ProjectTreeNode {
+    let mut rng = rand::thread_rng();
+
+    let tree_size: i32 = (rng.gen::<f64>() * CHILD_COUNT) as i32;
+
+    // sample random values for node
+    let icon_index = (rng.gen::<f64>() * PROJECT_TREE_ICONS.len() as f64) as usize;
+    let image: String = PROJECT_TREE_ICONS[icon_index].to_string();
+    let text: String = rand::thread_rng()
+        .sample_iter(&Alphanumeric)
+        .take((rng.gen::<f64>() * NAME_LENGTH) as usize)
+        .map(char::from)
+        .collect();
+
+    // only 5 levels
+    if level >= 5 {
+        return ProjectTreeNode {
+            image,
+            text,
+            nodes: vec![],
+        }
+    }
+
+    // sample sub tree
+    let mut children: Vec<ProjectTreeNode> = vec![];
+    for _i in 1..tree_size {
+        children.push(generate_sub_tree(level + 1));
+    }
+
+    ProjectTreeNode {
+        image,
+        text,
+        nodes: children,
+    }
 }
 
 pub fn generate_editor_tabs() -> EditorTabItems {

@@ -1,6 +1,5 @@
 use crate::components::SearchResultTable;
 use crate::elements::ProjectNodeDescription;
-use crate::generator_constants::ENTITY_ICONS;
 use crate::mock_data_generator::{IconSet, generate_package_path, generate_search_results, select_icon};
 use orbtk::prelude::*;
 

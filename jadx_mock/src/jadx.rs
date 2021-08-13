@@ -1,5 +1,3 @@
-use std::cmp::min;
-
 use crate::components::EditorTabNavigationMock;
 use crate::components::ProjectTreeWidget;
 use crate::components::Toolbar;
@@ -49,7 +47,6 @@ impl Template for Jadx {
                                 .attach(Grid::column(1))
                                 .v_align("top")
                                 .h_align("start")
-                                // .margin((20, 0, 0, 0))
                                 .child(
                                     Container::new()
                                         .style("rule")

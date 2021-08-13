@@ -1,6 +1,7 @@
 use crate::components::SearchResultTable;
 use crate::elements::ProjectNodeDescription;
-use crate::mock_data_generator::generate_search_results;
+use crate::generator_constants::ENTITY_ICONS;
+use crate::mock_data_generator::{IconSet, generate_package_path, generate_search_results, select_icon};
 use orbtk::prelude::*;
 
 widget!(UsageSearch);
@@ -38,8 +39,8 @@ impl Template for UsageSearch {
                                 )
                                 .child(
                                     ProjectNodeDescription::new()
-                                        .text("p008io.noties.markwon.AbstractMarkwonPlugin")
-                                        .image("src/assets/icons-16/grey_background/class_obj.png")
+                                        .text(generate_package_path())
+                                        .image(select_icon(IconSet::EntityIcons))
                                         .build(ctx),
                                 )
                                 .build(ctx),

@@ -8,7 +8,7 @@ widget!(RenameDialogue {
 
 impl Template for RenameDialogue {
     fn template(self, id: Entity, ctx: &mut BuildContext) -> Self {
-        self.name("Preferences").child(
+        self.name("RenameDialogue").child(
             Container::new()
                 .margin((10, 10, 20, 10))
                 .child(

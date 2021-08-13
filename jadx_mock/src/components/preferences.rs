@@ -1,7 +1,10 @@
 use crate::elements::structured_item_box;
 use crate::elements::CustomCheckBox;
-use crate::elements::SmallNumericBox;
 use crate::elements::CustomComboBox;
+use crate::elements::SmallNumericBox;
+use crate::mock_data_generator::fill_checkbox;
+use crate::mock_data_generator::select_font;
+use crate::mock_data_generator::select_item;
 use orbtk::prelude::*;
 
 widget!(Preferences);
@@ -111,7 +114,7 @@ impl Template for Preferences {
                 .child(
                     NumericBox::new()
                         .style("preference_numeric_box")
-                        .val(1)
+                        .val(select_item(1..20))
                         .min(1)
                         .attach(Grid::column(1))
                         .attach(Grid::row(0))
@@ -122,11 +125,13 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(1))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
-                    CustomCheckBox::new()
-                        .style("windows_checkbox")
+                    Button::new()
+                        .style("windows_button")
+                        .text("Edit")
                         .attach(Grid::column(1))
                         .attach(Grid::row(2))
                         .build(ctx),
@@ -136,6 +141,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(3))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
@@ -143,6 +149,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(4))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
@@ -150,6 +157,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(5))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
@@ -157,6 +165,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(6))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
@@ -164,6 +173,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(7))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
@@ -171,6 +181,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(8))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
@@ -178,6 +189,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(9))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
@@ -185,6 +197,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(10))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
@@ -192,6 +205,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(11))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .build(ctx),
@@ -253,6 +267,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(0))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
@@ -260,12 +275,13 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(1))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
                     SmallNumericBox::new()
                         .style("preference_numeric_box")
-                        .val(1)
+                        .val(select_item(1..100))
                         .min(1)
                         .attach(Grid::column(1))
                         .attach(Grid::row(2))
@@ -274,7 +290,7 @@ impl Template for Preferences {
                 .child(
                     NumericBox::new()
                         .style("preference_numeric_box")
-                        .val(1)
+                        .val(select_item(5..200))
                         .min(1)
                         .attach(Grid::column(1))
                         .attach(Grid::row(3))
@@ -285,6 +301,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(4))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
@@ -292,6 +309,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(5))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .build(ctx),
@@ -329,6 +347,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(0))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
@@ -336,6 +355,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(1))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
@@ -343,6 +363,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(2))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .build(ctx),
@@ -364,6 +385,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(0))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .build(ctx),
@@ -377,8 +399,7 @@ impl Template for Preferences {
                 .child(
                     TextBlock::new()
                         .style("text")
-                        // TODO Make font changeable
-                        .text("Editor font: Consolas plain 13")
+                        .text(format!("Editor font: {}", select_font()))
                         .attach(Grid::column(0))
                         .attach(Grid::row(0))
                         .build(ctx),
@@ -406,12 +427,9 @@ impl Template for Preferences {
                         .attach(Grid::column(1))
                         .attach(Grid::row(1))
                         .items_builder(move |bc, index| {
-                            TextBlock::new()
-                                .v_align("center")
-                                .text(themes[index])
-                                .build(bc)
+                            TextBlock::new().v_align("center").text(themes[index]).build(bc)
                         })
-                        .selected_index(0)
+                        .selected_index(select_item(0..6))
                         .build(ctx),
                 )
                 .build(ctx),
@@ -466,7 +484,7 @@ impl Template for Preferences {
                                 .text(languages[index])
                                 .build(bc)
                         })
-                        .selected_index(0)
+                        .selected_index(select_item(0..3))
                         .build(ctx),
                 )
                 .child(
@@ -474,6 +492,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(1))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
@@ -481,6 +500,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(2))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .child(
@@ -488,6 +508,7 @@ impl Template for Preferences {
                         .style("windows_checkbox")
                         .attach(Grid::column(1))
                         .attach(Grid::row(3))
+                        .selected(fill_checkbox())
                         .build(ctx),
                 )
                 .build(ctx),
@@ -518,13 +539,7 @@ impl Template for Preferences {
                                 .child(
                                     Container::new()
                                         .margin((10, 20, 0, 0))
-                                        .child(structured_item_box(
-                                            ctx,
-                                            rename_container,
-                                            "Rename",
-                                            110,
-                                            400,
-                                        ))
+                                        .child(structured_item_box(ctx, rename_container, "Rename", 110, 400))
                                         .build(ctx),
                                 )
                                 .child(
@@ -542,25 +557,13 @@ impl Template for Preferences {
                                 .child(
                                     Container::new()
                                         .margin((10, 20, 0, 0))
-                                        .child(structured_item_box(
-                                            ctx,
-                                            editor_container,
-                                            "Editor",
-                                            80,
-                                            400,
-                                        ))
+                                        .child(structured_item_box(ctx, editor_container, "Editor", 80, 400))
                                         .build(ctx),
                                 )
                                 .child(
                                     Container::new()
                                         .margin((10, 20, 0, 0))
-                                        .child(structured_item_box(
-                                            ctx,
-                                            other_container,
-                                            "Other",
-                                            140,
-                                            400,
-                                        ))
+                                        .child(structured_item_box(ctx, other_container, "Other", 140, 400))
                                         .build(ctx),
                                 )
                                 .build(ctx),

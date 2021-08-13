@@ -1,6 +1,7 @@
 use crate::components::SearchResultTable;
 use crate::elements::structured_item_box;
 use crate::elements::CustomCheckBox;
+use crate::mock_data_generator::fill_checkbox;
 use crate::mock_data_generator::generate_search_results;
 use orbtk::prelude::*;
 
@@ -65,7 +66,12 @@ impl Template for TextSearch {
             Stack::new()
                 .orientation("horizontal")
                 .spacing(7)
-                .child(CustomCheckBox::new().style("windows_checkbox").build(ctx))
+                .child(
+                    CustomCheckBox::new()
+                        .style("windows_checkbox")
+                        .selected(fill_checkbox())
+                        .build(ctx),
+                )
                 .child(TextBlock::new().style("text").text("Case insensitive").build(ctx))
                 .build(ctx),
         );

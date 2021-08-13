@@ -3,6 +3,9 @@ use crate::components::RenameDialogue;
 use crate::components::TextSearch;
 use crate::components::UsageSearch;
 use crate::elements::ImageButton;
+use crate::mock_data_generator::IconSet;
+use crate::mock_data_generator::generate_name;
+use crate::mock_data_generator::select_icon;
 use orbtk::prelude::*;
 
 #[derive(AsAny, Default)]
@@ -103,8 +106,8 @@ impl State for ToolbarState {
                     .resizeable(true)
                     .child(
                         RenameDialogue::new()
-                            .entity_icon("src/assets/icons-16/grey_background/package_obj.png")
-                            .entity_name("androidx")
+                            .entity_icon(select_icon(IconSet::AllIcons))
+                            .entity_name(generate_name())
                             .build(ctx),
                     )
                     .build(ctx)

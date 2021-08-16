@@ -3,8 +3,15 @@ pub const MAX_PATH_LENGTH: i32 = 100;
 pub const MAX_CHILD_COUNT: i32 = 10;
 pub const MAX_TREE_ITEMS: i32 = 100;
 pub const MAX_TAB_COUNT: i32 = 10;
+pub const MAX_SEARCH_RESULT_COUNT: i32 = 21;
 
-pub const ALL_ICONS: [&str; 7] = [
+pub enum IconSet {
+    FileIcons,
+    EntityIcons,
+    AllIcons,
+}
+
+pub const ALL_ICONS: [&str; 19] = [
     "src/assets/icons-16/int_obj.png",
     "src/assets/icons-16/class_obj.png",
     "src/assets/icons-16/package_obj.png",
@@ -12,20 +19,48 @@ pub const ALL_ICONS: [&str; 7] = [
     "src/assets/icons-16/folder.png",
     "src/assets/icons-16/template_obj.png",
     "src/assets/icons-16/java_model_obj.png",
+    "src/assets/icons-16/enum_obj.png",
+    "src/assets/icons-16/file_obj.png",
+    "src/assets/icons-16/methdef_obj.png",
+    "src/assets/icons-16/jcu_obj.png",
+    "src/assets/icons-16/methpub_obj.png",
+    "src/assets/icons-16/methpro_obj.png",
+    "src/assets/icons-16/methpri_obj.png",
+    "src/assets/icons-16/template_obj.png",
+    "src/assets/icons-16/cf_obj.png",
+    "src/assets/icons-16/package_folder.png",
+    "src/assets/icons-16/annotation_obj.png",
+    "src/assets/icons-16/certificate_obj.png",
 ];
 
-pub const ENTITY_ICONS: [&str; 4] = [
+pub const ENTITY_ICONS: [&str; 10] = [
     "src/assets/icons-16/int_obj.png",
     "src/assets/icons-16/class_obj.png",
     "src/assets/icons-16/template_obj.png",
     "src/assets/icons-16/java_model_obj.png",
+    "src/assets/icons-16/enum_obj.png",
+    "src/assets/icons-16/methdef_obj.png",
+    "src/assets/icons-16/methpub_obj.png",
+    "src/assets/icons-16/methpro_obj.png",
+    "src/assets/icons-16/methpri_obj.png",
+    "src/assets/icons-16/annotation_obj.png",
+
+
 ];
 
-pub const FILE_ICONS: [&str; 4] = [
+pub const FILE_ICONS: [&str; 12] = [
     "src/assets/icons-16/int_obj.png",
     "src/assets/icons-16/class_obj.png",
     "src/assets/icons-16/template_obj.png",
     "src/assets/icons-16/java_model_obj.png",
+    "src/assets/icons-16/enum_obj.png",
+    "src/assets/icons-16/file_obj.png",
+    "src/assets/icons-16/template_obj.png",
+    "src/assets/icons-16/cf_obj.png",
+    "src/assets/icons-16/package_folder.png",
+    "src/assets/icons-16/annotation_obj.png",
+    "src/assets/icons-16/jcu_obj.png",
+    "src/assets/icons-16/certificate_obj.png",
 ];
 
 pub const DEMO_TEXT: &str =

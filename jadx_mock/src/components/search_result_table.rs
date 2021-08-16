@@ -46,7 +46,7 @@ impl Template for SearchResultTable {
             // put every item into a container
             .map(|item: &SearchResult| {
                 Container::new()
-                    .height(30.0)
+                    .height(20.0)
                     .child(
                         SearchResultTableEntry::new()
                             .entry_name(item.name.clone())

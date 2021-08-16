@@ -3,7 +3,7 @@ use crate::components::RenameDialogue;
 use crate::components::TextSearch;
 use crate::components::UsageSearch;
 use crate::elements::ImageButton;
-use crate::mock_data_generator::IconSet;
+use crate::generator_constants::IconSet;
 use crate::mock_data_generator::generate_name;
 use crate::mock_data_generator::select_icon;
 use orbtk::prelude::*;

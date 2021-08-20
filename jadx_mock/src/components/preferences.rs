@@ -1,10 +1,5 @@
-use crate::elements::structured_item_box;
-use crate::elements::CustomCheckBox;
-use crate::elements::CustomComboBox;
-use crate::elements::SmallNumericBox;
-use crate::mock_data_generator::fill_checkbox;
-use crate::mock_data_generator::select_font;
-use crate::mock_data_generator::select_item;
+use crate::elements::{CustomCheckBox, CustomComboBox, SmallNumericBox, structured_item_box};
+use crate::generator::{fill_checkbox, select_font, select_item};
 use orbtk::prelude::*;
 
 widget!(Preferences);

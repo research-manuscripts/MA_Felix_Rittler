@@ -11,4 +11,4 @@ orbtk = { git = "https://github.com/redox-os/orbtk.git", branch= "develop" }
 rust_decimal = "1.7"
 rand = "0.8.4"
 scrap = "0.5"
-image = "*"
+image = "0.23.14"

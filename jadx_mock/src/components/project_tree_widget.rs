@@ -1,4 +1,4 @@
-use crate::{elements::ProjectTreeElement, mock_data_generator::generate_project_tree};
+use crate::{elements::ProjectTreeElement, generator::generate_project_tree};
 use orbtk::prelude::*;
 
 widget!(ProjectTreeWidget {});

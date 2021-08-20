@@ -1,11 +1,6 @@
-use crate::components::Preferences;
-use crate::components::RenameDialogue;
-use crate::components::TextSearch;
-use crate::components::UsageSearch;
+use crate::components::{Preferences, RenameDialogue, TextSearch, UsageSearch};
 use crate::elements::ImageButton;
-use crate::generator_constants::IconSet;
-use crate::mock_data_generator::generate_name;
-use crate::mock_data_generator::select_icon;
+use crate::generator::{constants::IconSet, generate_name, select_icon};
 use orbtk::prelude::*;
 
 #[derive(AsAny, Default)]

@@ -1,5 +1,3 @@
-// https://github.com/quadrupleslap/scrap/blob/master/examples/screenshot.rs
-
 use image::ColorType;
 use scrap::{Capturer, Display};
 use std::io::ErrorKind::WouldBlock;

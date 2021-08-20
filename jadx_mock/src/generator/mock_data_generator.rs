@@ -10,7 +10,7 @@ use rand::{
 
 use crate::{
     components::{EditorTabItem, EditorTabItems, ProjectTreeNode, SearchResult, SearchResults},
-    generator_constants::{
+    generator::constants::{
         IconSet, ALL_ICONS, EDITOR_SCREENSHOTS, ENTITY_ICONS, FILE_ICONS, FONTS, MAX_CHILD_COUNT,
         MAX_NAME_LENGTH, MAX_PATH_LENGTH, MAX_SEARCH_RESULT_COUNT, MAX_TAB_COUNT, MAX_TREE_ITEMS,
     },

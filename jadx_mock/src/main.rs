@@ -1,8 +1,7 @@
 mod components;
 mod elements;
-mod generator_constants;
+mod generator;
 mod jadx;
-mod mock_data_generator;
 mod screen_capture;
 mod randomized_jadx_starter;
 
@@ -14,6 +13,7 @@ use orbtk::{
     widgets::themes::theme_orbtk::{THEME_DEFAULT, THEME_DEFAULT_COLORS_LIGHT, THEME_DEFAULT_FONTS},
 };
 use screen_capture::capture_screen;
+
 static CUSTOM_THEME: &str = include_str!("assets/theme/theme.ron");
 static CUSTOM_COLORS: &str = include_str!("assets/theme/colors.ron");
 

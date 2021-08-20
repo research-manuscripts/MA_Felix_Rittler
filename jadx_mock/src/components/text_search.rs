@@ -1,9 +1,6 @@
 use crate::components::SearchResultTable;
-use crate::elements::structured_item_box;
-use crate::elements::CustomCheckBox;
-use crate::mock_data_generator::fill_checkbox;
-use crate::mock_data_generator::generate_name;
-use crate::mock_data_generator::generate_search_results;
+use crate::elements::{CustomCheckBox, structured_item_box};
+use crate::generator::{fill_checkbox, generate_name, generate_search_results};
 use orbtk::prelude::*;
 
 widget!(TextSearch {

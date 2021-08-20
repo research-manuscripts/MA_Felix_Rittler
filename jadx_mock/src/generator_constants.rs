@@ -11,7 +11,18 @@ pub enum IconSet {
     AllIcons,
 }
 
-pub const ALL_ICONS: [&str; 19] = [
+pub const EDITOR_SCREENSHOTS: [&str; 8] = [
+    "src/assets/editor_screenshots/arsc.png",
+    "src/assets/editor_screenshots/class_end.png",
+    "src/assets/editor_screenshots/class_middle.png",
+    "src/assets/editor_screenshots/class_start.png",
+    "src/assets/editor_screenshots/enum.png",
+    "src/assets/editor_screenshots/interface.png",
+    "src/assets/editor_screenshots/small_file.png",
+    "src/assets/editor_screenshots/xml_file.png",
+];
+
+pub const ALL_ICONS: [&str; 18] = [
     "src/assets/icons-16/int_obj.png",
     "src/assets/icons-16/class_obj.png",
     "src/assets/icons-16/package_obj.png",
@@ -28,7 +39,6 @@ pub const ALL_ICONS: [&str; 19] = [
     "src/assets/icons-16/methpri_obj.png",
     "src/assets/icons-16/template_obj.png",
     "src/assets/icons-16/cf_obj.png",
-    "src/assets/icons-16/package_folder.png",
     "src/assets/icons-16/annotation_obj.png",
     "src/assets/icons-16/certificate_obj.png",
 ];
@@ -44,8 +54,6 @@ pub const ENTITY_ICONS: [&str; 10] = [
     "src/assets/icons-16/methpro_obj.png",
     "src/assets/icons-16/methpri_obj.png",
     "src/assets/icons-16/annotation_obj.png",
-
-
 ];
 
 pub const FILE_ICONS: [&str; 12] = [
@@ -57,7 +65,7 @@ pub const FILE_ICONS: [&str; 12] = [
     "src/assets/icons-16/file_obj.png",
     "src/assets/icons-16/template_obj.png",
     "src/assets/icons-16/cf_obj.png",
-    "src/assets/icons-16/package_folder.png",
+    "src/assets/icons-16/packagefolder_obj.png",
     "src/assets/icons-16/annotation_obj.png",
     "src/assets/icons-16/jcu_obj.png",
     "src/assets/icons-16/certificate_obj.png",

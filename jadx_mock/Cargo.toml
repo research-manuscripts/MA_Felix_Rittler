@@ -7,10 +7,8 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
- orbtk = { git = "https://github.com/redox-os/orbtk.git", branch= "develop" }
-# orbtk = "0.3.1-alpha3"
-# image = "0.23.14"
-serde = "1.0.106"
-serde_derive = "1.0.106"
+orbtk = { git = "https://github.com/redox-os/orbtk.git", branch= "develop" }
 rust_decimal = "1.7"
 rand = "0.8.4"
+scrap = "0.5"
+image = "*"

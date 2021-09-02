@@ -1,76 +1,69 @@
-use crate::components::EditorTabNavigationMock;
-use crate::components::Preferences;
-use crate::components::ProjectTreeWidget;
-use crate::components::RenameDialogue;
-use crate::components::TextSearch;
-use crate::components::Toolbar;
-use crate::components::TopMenu;
-use crate::components::UsageSearch;
+use crate::components::{
+    About, EditorTabNavigationMock, Preferences, ProjectTreeWidget, RenameDialogue, TextSearch, Toolbar,
+    TopMenu, UsageSearch, PREFERENCES_WINDOW_HEIGHT, PREFERENCES_WINDOW_WIDTH, RENAME_DIALOGUE_HEIGHT,
+    RENAME_DIALOGUE_WIDTH,
+};
 use crate::generator::constants::IconSet;
 use crate::generator::*;
 use orbtk::prelude::*;
-use rand::distributions::Standard;
-use rand::prelude::Distribution;
-use rand::random;
-use rand::Rng;
 
-#[derive(Debug, Clone, Copy)]
-enum WindowType {
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum WindowType {
     Preferences,
-    TextSearch,
-    ClassSearch,
-    UsageSearch,
+    TextSearch(Size),
+    ClassSearch(Size),
+    UsageSearch(Size),
     RenameDialogue,
-    None
-}
-
-impl Distribution<WindowType> for Standard {
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> WindowType {
-        match rng.gen_range(0..=5) {
-            0 => WindowType::Preferences,
-            1 => WindowType::TextSearch,
-            2 => WindowType::ClassSearch,
-            3 => WindowType::UsageSearch,
-            4 => WindowType::RenameDialogue,
-            _ => WindowType::None,
-        }
-    }
+    About(Size),
+    None,
 }
 
 impl Default for WindowType {
     fn default() -> Self {
-        return random();
+        return WindowType::None;
     }
 }
+
+into_property_source!(WindowType);
 
 #[derive(AsAny, Default)]
 struct JadxState {
     additional_window: WindowType,
+    size: Size,
 }
 
 impl State for JadxState {
     fn init(&mut self, _: &mut Registry, ctx: &mut Context) {
+        // read window to render from state and open it
         match self.additional_window {
             WindowType::Preferences => {
-                ctx.show_window(|ctx| {
+                let window_position = generate_window_position(
+                    Size::new(PREFERENCES_WINDOW_WIDTH, PREFERENCES_WINDOW_HEIGHT),
+                    self.size,
+                );
+
+                ctx.show_window(move |ctx| {
                     Window::new()
                         .title("Preferences")
                         .style("popup_window")
-                        .position((120.0, 120.0))
-                        .size(860.0, 740.0)
+                        .position(window_position)
+                        .size(PREFERENCES_WINDOW_WIDTH, PREFERENCES_WINDOW_HEIGHT)
                         .resizeable(true)
                         .child(Preferences::new().build(ctx))
                         .build(ctx)
                 });
             }
-            WindowType::TextSearch => {
-                ctx.show_window(|ctx| {
-                    let height = 740.0;
-                    let width = 860.0;
+            WindowType::TextSearch(size) => {
+                let width = size.width();
+                let height = size.height();
+
+                let window_position = generate_window_position(size, self.size);
+
+                ctx.show_window(move |ctx| {
                     Window::new()
                         .title("Text Search")
                         .style("popup_window")
-                        .position((120.0, 120.0))
+                        .position(window_position)
                         .size(width, height)
                         .resizeable(true)
                         .child(
@@ -83,14 +76,17 @@ impl State for JadxState {
                         .build(ctx)
                 });
             }
-            WindowType::ClassSearch => {
-                ctx.show_window(|ctx| {
-                    let height = 740.0;
-                    let width = 860.0;
+            WindowType::ClassSearch(size) => {
+                let width = size.width();
+                let height = size.height();
+
+                let window_position = generate_window_position(size, self.size);
+
+                ctx.show_window(move |ctx| {
                     Window::new()
                         .title("Text Search")
                         .style("popup_window")
-                        .position((120.0, 120.0))
+                        .position(window_position)
                         .size(width, height)
                         .resizeable(true)
                         .child(
@@ -103,14 +99,17 @@ impl State for JadxState {
                         .build(ctx)
                 });
             }
-            WindowType::UsageSearch => {
-                ctx.show_window(|ctx| {
-                    let height = 450.0;
-                    let width = 860.0;
+            WindowType::UsageSearch(size) => {
+                let width = size.width();
+                let height = size.height();
+
+                let window_position = generate_window_position(size, self.size);
+
+                ctx.show_window(move |ctx| {
                     Window::new()
                         .title("Usage Search")
                         .style("popup_window")
-                        .position((120.0, 120.0))
+                        .position(window_position)
                         .size(width, height)
                         .resizeable(true)
                         .child(UsageSearch::new().width(width).height(height).build(ctx))
@@ -118,12 +117,17 @@ impl State for JadxState {
                 });
             }
             WindowType::RenameDialogue => {
-                ctx.show_window(|ctx| {
+                let window_position = generate_window_position(
+                    Size::new(RENAME_DIALOGUE_WIDTH, RENAME_DIALOGUE_HEIGHT),
+                    self.size,
+                );
+
+                ctx.show_window(move |ctx| {
                     Window::new()
                         .title("Rename")
                         .style("popup_window")
-                        .position((120.0, 120.0))
-                        .size(250, 150)
+                        .position(window_position)
+                        .size(RENAME_DIALOGUE_WIDTH, RENAME_DIALOGUE_HEIGHT)
                         .resizeable(true)
                         .child(
                             RenameDialogue::new()
@@ -134,18 +138,87 @@ impl State for JadxState {
                         .build(ctx)
                 });
             }
-            WindowType::None => {},
+            WindowType::About(size) => {
+                let width = size.width();
+                let height = size.height();
+
+                let window_position = generate_window_position(size, self.size);
+
+                ctx.show_window(move |ctx| {
+                    Window::new()
+                        .title("About")
+                        .style("popup_window")
+                        .position(window_position)
+                        .size(width, height)
+                        .resizeable(true)
+                        .child(About::new().height(height).build(ctx))
+                        .build(ctx)
+                });
+            }
+            WindowType::None => {}
         }
     }
 }
 
-widget!(Jadx<JadxState>);
+widget!(Jadx<JadxState> {
+    additional_window: WindowType,
+    /// Width of the window. has to differ from "width" attribute because of the buggy layouting.
+    /// "width" < 1500 might not work.
+    /// This attribute can be smaller
+    window_width: f64,
+    /// Height of the window. has to differ from "height" attribute because of the buggy layouting.
+    /// "height" < 1500 might not work.
+    /// This attribute can be smaller
+    window_height: f64
+});
 
 impl Template for Jadx {
-    fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {
+    fn template(mut self, _id: Entity, ctx: &mut BuildContext) -> Self {
+
+        // init additional_window attribute of state
+        match self
+            .additional_window
+            .as_ref()
+            .unwrap_or(&PropertySource::Value(WindowType::None))
+        {
+            PropertySource::Source(_) => self.state.additional_window = WindowType::None,
+            PropertySource::KeySource(_, _) => self.state.additional_window = WindowType::None,
+            PropertySource::Value(t) => {
+                self.state.additional_window = t.clone();
+            }
+        }
+
         let width = self.width.expect("Width has to be set");
         let height = self.height.expect("Height has to be set");
 
+        // init window_size attribute of state
+        let mut window_size = Size::new(width, height);
+        match self
+            .window_width
+            .as_ref()
+            .unwrap_or(&PropertySource::Value(width))
+        {
+            PropertySource::Source(_) => {}
+            PropertySource::KeySource(_, _) => {}
+            PropertySource::Value(t) => {
+                window_size.set_width(*t);
+            }
+        }
+        match self
+            .window_height
+            .as_ref()
+            .unwrap_or(&PropertySource::Value(height))
+        {
+            PropertySource::Source(_) => {}
+            PropertySource::KeySource(_, _) => {}
+            PropertySource::Value(t) => {
+                window_size.set_height(*t);
+            }
+        }
+
+        self.state.size = window_size;
+
+        // template
         let tree_width = (0.4 * width).min(250.0);
         let editor_width = width - tree_width;
         let grid_layout = format!("{}, {}", tree_width, editor_width);

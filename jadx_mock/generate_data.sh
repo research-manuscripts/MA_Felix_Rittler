@@ -1,5 +1,5 @@
 cargo build --release
-for i in {1..10}
+for i in $(seq $1)
 do
    ./target/release/rust-orb-test.exe $i
 done

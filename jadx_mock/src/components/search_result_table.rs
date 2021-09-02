@@ -31,6 +31,8 @@ impl Template for SearchResultTable {
         let table_column_width = 0.5 * width;
         let table_grid_columns = format!("{}, {}", table_column_width, table_column_width);
 
+        let entry_height = 20.0;
+
         // create table entries
         let items_prop = self.items.as_ref().expect("Items have to be set.");
         let items: Vec<SearchResult>;
@@ -43,10 +45,12 @@ impl Template for SearchResultTable {
         let items = items
             // iterate over all items
             .iter()
+            // limit elements to table height
+            .take(((table_height - 35.0) / entry_height ) as usize)
             // put every item into a container
             .map(|item: &SearchResult| {
                 Container::new()
-                    .height(20.0)
+                    .height(entry_height)
                     .child(
                         SearchResultTableEntry::new()
                             .entry_name(item.name.clone())

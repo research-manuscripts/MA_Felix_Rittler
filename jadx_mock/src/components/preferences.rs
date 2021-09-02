@@ -1,8 +1,11 @@
-use crate::elements::{CustomCheckBox, CustomComboBox, SmallNumericBox, structured_item_box};
+use crate::elements::{structured_item_box, CustomCheckBox, CustomComboBox, SmallNumericBox};
 use crate::generator::{fill_checkbox, select_font, select_item};
 use orbtk::prelude::*;
 
 widget!(Preferences);
+
+pub const PREFERENCES_WINDOW_WIDTH: f64 = 860.0;
+pub const PREFERENCES_WINDOW_HEIGHT: f64 = 740.0;
 
 impl Template for Preferences {
     fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {

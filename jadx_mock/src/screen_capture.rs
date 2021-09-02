@@ -29,7 +29,7 @@ pub fn capture_screen(name: String, width: i32, height: i32) {
             }
         };
 
-        println!("Captured! Saving...");
+        log::debug!("Captured! Saving...");
 
         // Flip the ARGB image into a RGBA image.
         let mut bitflipped = Vec::with_capacity(w * h * 4);
@@ -54,7 +54,7 @@ pub fn capture_screen(name: String, width: i32, height: i32) {
         let cropped= image::imageops::crop(&mut image, 0,0, width as u32, height as u32);
         cropped.to_image().save(name.clone()).unwrap();
         let message = format!("Image saved to {}.", name);
-        println!("{}", message);
+        log::debug!("{}", message);
         break;
     }
 }

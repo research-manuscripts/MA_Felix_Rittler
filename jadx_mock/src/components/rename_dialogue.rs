@@ -6,6 +6,9 @@ widget!(RenameDialogue {
     entity_name: String
 });
 
+pub const RENAME_DIALOGUE_WIDTH: f64 = 250.0;
+pub const RENAME_DIALOGUE_HEIGHT: f64 = 150.0;
+
 impl Template for RenameDialogue {
     fn template(self, id: Entity, ctx: &mut BuildContext) -> Self {
         self.name("RenameDialogue").child(

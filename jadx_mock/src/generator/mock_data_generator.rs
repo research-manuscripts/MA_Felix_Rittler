@@ -1,10 +1,15 @@
-use std::sync::Mutex;
+use std::{
+    ops::{RangeInclusive},
+    sync::Mutex,
+};
 
+use orbtk::prelude::Size;
 use rand::{
     distributions::{
         uniform::{SampleRange, SampleUniform},
-        Alphanumeric,
+        Alphanumeric, Standard,
     },
+    prelude::Distribution,
     thread_rng, Rng,
 };
 
@@ -14,7 +19,54 @@ use crate::{
         IconSet, ALL_ICONS, EDITOR_SCREENSHOTS, ENTITY_ICONS, FILE_ICONS, FONTS, MAX_CHILD_COUNT,
         MAX_NAME_LENGTH, MAX_PATH_LENGTH, MAX_SEARCH_RESULT_COUNT, MAX_TAB_COUNT, MAX_TREE_ITEMS,
     },
+    jadx::WindowType,
 };
+
+impl Distribution<WindowType> for Standard {
+    // samples an additional window or none (50% chance)
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> WindowType {
+        match rng.gen_range(0..=11) {
+            0 => WindowType::Preferences,
+            1 => WindowType::TextSearch(sample_size(400..=800, 200..=800)),
+            2 => WindowType::ClassSearch(sample_size(300..=800, 200..=800)),
+            3 => WindowType::UsageSearch(sample_size(300..=800, 200..=800)),
+            4 => WindowType::RenameDialogue,
+            5 => WindowType::About(sample_size(100..=800, 100..=800)),
+            _ => WindowType::None,
+        }
+    }
+}
+
+pub fn sample_window() -> WindowType {
+    thread_rng().gen::<WindowType>()
+}
+
+pub fn generate_window_position(window_size: Size, parent_window_size: Size) -> (f64, f64) {
+    log::debug!("Size: {}, {}", window_size.width(), window_size.height());
+    log::debug!("Parent size: {}, {}", parent_window_size.width(), parent_window_size.height());
+    if window_size.height() > parent_window_size.height() || window_size.width() > parent_window_size.width()
+    {
+        panic!("Size of child window must not be bigger than size of parent");
+    }
+
+    let max_x_position = (parent_window_size.width() - window_size.width()) as i32;
+    let max_y_position = (parent_window_size.height() - window_size.height()) as i32 + 35;
+
+
+    log::debug!("Pos: {}, {}", max_x_position, max_y_position);
+    let x_position = if max_x_position <= 0 {
+        0.0
+    } else {
+        thread_rng().gen_range(0..=max_x_position) as f64
+    };
+    let y_position = if max_y_position <= 0 {
+        0.0
+    } else {
+        thread_rng().gen_range(35..=max_y_position) as f64
+    };
+
+    (x_position, y_position)
+}
 
 pub fn fill_checkbox() -> bool {
     thread_rng().gen::<bool>()
@@ -44,6 +96,13 @@ pub fn generate_project_tree() -> ProjectTreeNode {
     let project_tree_size: Mutex<i32> = Mutex::new(0);
 
     generate_sub_tree(0, &project_tree_size)
+}
+
+pub fn sample_size(width_range: RangeInclusive<i32>, height_range: RangeInclusive<i32>) -> Size {
+    return Size::new(
+        thread_rng().gen_range(width_range) as f64,
+        thread_rng().gen_range(height_range) as f64,
+    );
 }
 
 pub fn select_icon(icon_set: IconSet) -> String {
@@ -126,11 +185,6 @@ fn generate_sub_tree(level: i32, project_tree_size: &Mutex<i32>) -> ProjectTreeN
     let mut children: Vec<ProjectTreeNode> = vec![];
     for _i in 0..tree_size {
         children.push(generate_sub_tree(level + 1, project_tree_size));
-    }
-
-    let size = *project_tree_size.lock().unwrap();
-    if size > MAX_TREE_ITEMS {
-        println!("Tree size: {}", size);
     }
 
     ProjectTreeNode {

@@ -13,14 +13,10 @@ use rand::{
     thread_rng, Rng,
 };
 
-use crate::{
-    components::{EditorTabItem, EditorTabItems, ProjectTreeNode, SearchResult, SearchResults},
-    generator::constants::{
+use crate::{components::{EditorTabItem, EditorTabItems, ProjectTreeNode, SearchResult, SearchResults, TopMenuType}, generator::constants::{
         IconSet, ALL_ICONS, EDITOR_SCREENSHOTS, ENTITY_ICONS, FILE_ICONS, FONTS, MAX_CHILD_COUNT,
         MAX_NAME_LENGTH, MAX_PATH_LENGTH, MAX_SEARCH_RESULT_COUNT, MAX_TAB_COUNT, MAX_TREE_ITEMS,
-    },
-    jadx::WindowType,
-};
+    }, jadx::WindowType};
 
 impl Distribution<WindowType> for Standard {
     // samples an additional window or none (50% chance)
@@ -39,6 +35,24 @@ impl Distribution<WindowType> for Standard {
 
 pub fn sample_window() -> WindowType {
     thread_rng().gen::<WindowType>()
+}
+
+impl Distribution<TopMenuType> for Standard {
+    // samples a top menu or none (50% chance)
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> TopMenuType {
+        match rng.gen_range(0..=9) {
+            0 => TopMenuType::File,
+            1 => TopMenuType::Help,
+            2 => TopMenuType::Navigation,
+            3 => TopMenuType::Tools,
+            4 => TopMenuType::View,
+            _ => TopMenuType::None,
+        }
+    }
+}
+
+pub fn sample_top_menu() -> TopMenuType {
+    thread_rng().gen::<TopMenuType>()
 }
 
 pub fn generate_window_position(window_size: Size, parent_window_size: Size) -> (f64, f64) {

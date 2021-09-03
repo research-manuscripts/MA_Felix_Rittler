@@ -1,6 +1,7 @@
 use crate::{
-    generator::{sample_size, sample_window},
-    jadx::{Jadx},
+    components::TopMenuType,
+    generator::{sample_size, sample_top_menu, sample_window},
+    jadx::{Jadx, WindowType},
 };
 use orbtk::{
     prelude::{Widget, Window},
@@ -17,6 +18,13 @@ pub fn run_jadx() -> (f64, f64) {
         let app = Application::new().theme(theme()).window(move |ctx| {
             let additional_window = sample_window();
 
+            // when there is no additional window opened, sample a top menu
+            let top_menu = if additional_window == WindowType::None {
+                sample_top_menu()
+            } else {
+                TopMenuType::None
+            };
+
             Window::new()
                 .style("windows_window")
                 .title("New Project - jadx-gui")
@@ -26,6 +34,7 @@ pub fn run_jadx() -> (f64, f64) {
                 .child(
                     Jadx::new()
                         .additional_window(additional_window)
+                        .opened_menu(top_menu)
                         .height(1500)
                         .width(1500)
                         .window_height(size.height())

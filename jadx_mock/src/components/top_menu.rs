@@ -1,7 +1,7 @@
 use orbtk::prelude::*;
 
-use crate::elements::TopMenuEntryButton;
 use crate::components::About;
+use crate::elements::TopMenuEntryButton;
 
 #[derive(PartialEq, Copy, Clone)]
 enum TopMenuAction {
@@ -9,19 +9,28 @@ enum TopMenuAction {
     OpenMenu(TopMenuType),
 }
 
-#[derive(PartialEq, Copy, Clone)]
-enum TopMenuType {
+#[derive(PartialEq, Copy, Clone, Debug)]
+pub enum TopMenuType {
     File,
     View,
     Navigation,
     Tools,
     Help,
+    None,
 }
+
+impl Default for TopMenuType {
+    fn default() -> Self {
+        return TopMenuType::None;
+    }
+}
+
+into_property_source!(TopMenuType);
 
 #[derive(Default, AsAny, Copy, Clone)]
 struct TopMenuState {
     action: Option<TopMenuAction>,
-    opened_menu: Option<TopMenuType>,
+    opened_menu: TopMenuType,
     popup: Option<Entity>,
     show_about: bool,
 }
@@ -43,15 +52,19 @@ impl TopMenuState {
 
     fn is_menu_opened(self, menu: TopMenuType) -> bool {
         match self.opened_menu {
-            Some(y) => y == menu,
-            None => false,
+            TopMenuType::File => true,
+            TopMenuType::View => true,
+            TopMenuType::Navigation => true,
+            TopMenuType::Tools => true,
+            TopMenuType::Help => true,
+            TopMenuType::None => false,
         }
     }
 
     fn open_menu(&mut self, ctx: &mut Context, menu: TopMenuType) {
         // close menu thats been opened before
         if let Some(popup) = self.popup {
-            self.opened_menu = Option::None;
+            self.opened_menu = TopMenuType::None;
 
             // TODO: Different position for overlay?
             ctx.remove_child_from_overlay(popup);
@@ -61,35 +74,39 @@ impl TopMenuState {
         let current_entity = ctx.entity();
         let build_context = &mut ctx.build_context();
 
-        let popup;
+        let popup: Option<Entity>;
         match menu {
             // creates a popup then attach it to the overlay
             TopMenuType::File => {
-                popup = create_file_menu(current_entity, build_context);
+                popup = Some(create_file_menu(current_entity, build_context));
             }
             TopMenuType::View => {
-                popup = create_view_menu(current_entity, build_context);
+                popup = Some(create_view_menu(current_entity, build_context));
             }
             TopMenuType::Navigation => {
-                popup = create_navigation_menu(current_entity, build_context);
+                popup = Some(create_navigation_menu(current_entity, build_context));
             }
             TopMenuType::Tools => {
-                popup = create_tools_menu(current_entity, build_context);
+                popup = Some(create_tools_menu(current_entity, build_context));
             }
             TopMenuType::Help => {
-                popup = create_help_menu(current_entity, build_context);
+                popup = Some(create_help_menu(current_entity, build_context));
+            }
+            TopMenuType::None => {
+                popup = Option::None;
             }
         }
-        build_context.append_child_to_overlay(popup);
-        self.opened_menu = Option::Some(menu);
-        self.popup = Some(popup);
+        if let Some(value) = popup {
+            build_context.append_child_to_overlay(value);
+            self.opened_menu = menu;
+            self.popup = Some(value);
+        }
     }
 }
 
 impl State for TopMenuState {
-    fn init(&mut self, _: &mut Registry, _ctx: &mut Context) {
-        self.opened_menu = Option::None;
-        self.popup = None;
+    fn init(&mut self, _: &mut Registry, ctx: &mut Context) {
+        self.open_menu(ctx, self.opened_menu)
     }
 
     fn update(&mut self, _reg: &mut Registry, ctx: &mut Context) {
@@ -100,7 +117,7 @@ impl State for TopMenuState {
                 // delete popup from widget tree.
                 TopMenuAction::CloseMenu => {
                     if let Some(popup) = self.popup {
-                        self.opened_menu = Option::None;
+                        self.opened_menu = TopMenuType::None;
                         ctx.remove_child_from_overlay(popup);
                     }
                 }
@@ -126,10 +143,25 @@ impl State for TopMenuState {
     }
 }
 
-widget!(TopMenu<TopMenuState>);
+widget!(TopMenu<TopMenuState> {
+    opened_menu: TopMenuType
+});
 
 impl Template for TopMenu {
-    fn template(self, id: Entity, ctx: &mut BuildContext) -> Self {
+    fn template(mut self, id: Entity, ctx: &mut BuildContext) -> Self {
+        // init opened menu
+        match self
+            .opened_menu
+            .as_ref()
+            .unwrap_or(&PropertySource::Value(TopMenuType::None))
+        {
+            PropertySource::Source(_) => self.state.opened_menu = TopMenuType::None,
+            PropertySource::KeySource(_, _) => self.state.opened_menu = TopMenuType::None,
+            PropertySource::Value(t) => {
+                self.state.opened_menu = t.clone();
+            }
+        }
+
         self.name("TopMenu").h_align("start").child(
             Stack::new()
                 .orientation("horizontal")
@@ -288,7 +320,8 @@ fn create_file_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
 fn create_view_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
     let column_layout = "30, 200, 120";
     Popup::new()
-        .style("top_menu").margin((39,23,0,0))
+        .style("top_menu")
+        .margin((30, 23, 0, 0))
         .target(target)
         .open(true)
         .width(350.0)
@@ -300,20 +333,23 @@ fn create_view_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
                     Stack::new()
                         .orientation("vertical")
                         .child(
-                            TopMenuEntryButton::new().column_layout(column_layout)
+                            TopMenuEntryButton::new()
+                                .column_layout(column_layout)
                                 .text("Show flatten packages")
                                 .image("src/assets/icons-16/grey_background/empty_logical_package_obj.png")
                                 .build(ctx),
                         )
                         .child(
-                            TopMenuEntryButton::new().column_layout(column_layout)
+                            TopMenuEntryButton::new()
+                                .column_layout(column_layout)
                                 .text("Sync with editor")
                                 .image("src/assets/icons-16/grey_background/sync.png")
                                 .shortcut_text("Strg+T")
                                 .build(ctx),
                         )
                         .child(
-                            TopMenuEntryButton::new().column_layout(column_layout)
+                            TopMenuEntryButton::new()
+                                .column_layout(column_layout)
                                 .text("Show memory usage bar")
                                 .build(ctx),
                         )
@@ -327,7 +363,8 @@ fn create_view_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
 fn create_navigation_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
     let column_layout = "30, 85, 110";
     Popup::new()
-        .style("top_menu").margin((100,23,0,0))
+        .style("top_menu")
+        .margin((67, 23, 0, 0))
         .target(target)
         .open(true)
         .width(250.0)
@@ -339,28 +376,32 @@ fn create_navigation_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
                     Stack::new()
                         .orientation("vertical")
                         .child(
-                            TopMenuEntryButton::new().column_layout(column_layout)
+                            TopMenuEntryButton::new()
+                                .column_layout(column_layout)
                                 .text("Text search")
                                 .image("src/assets/icons-16/grey_background/wand.png")
                                 .shortcut_text("Strg+Umschalt+F")
                                 .build(ctx),
                         )
                         .child(
-                            TopMenuEntryButton::new().column_layout(column_layout)
+                            TopMenuEntryButton::new()
+                                .column_layout(column_layout)
                                 .text("Class search")
                                 .image("src/assets/icons-16/grey_background/magnifier.png")
                                 .shortcut_text("Strg+N")
                                 .build(ctx),
                         )
                         .child(
-                            TopMenuEntryButton::new().column_layout(column_layout)
+                            TopMenuEntryButton::new()
+                                .column_layout(column_layout)
                                 .text("Back")
                                 .image("src/assets/icons-16/grey_background/icon_back.png")
                                 .shortcut_text("Strg+Alt+Links")
                                 .build(ctx),
                         )
                         .child(
-                            TopMenuEntryButton::new().column_layout(column_layout)
+                            TopMenuEntryButton::new()
+                                .column_layout(column_layout)
                                 .text("Forward")
                                 .image("src/assets/icons-16/grey_background/icon_forward.png")
                                 .shortcut_text("Strg+Alt+Rechts")
@@ -376,7 +417,8 @@ fn create_navigation_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
 fn create_tools_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
     let column_layout = "30, 90, 120";
     Popup::new()
-        .style("top_menu").margin((170,23,0,0))
+        .style("top_menu")
+        .margin((137, 23, 0, 0))
         .target(target)
         .open(true)
         .width(240.0)
@@ -388,14 +430,16 @@ fn create_tools_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
                     Stack::new()
                         .orientation("vertical")
                         .child(
-                            TopMenuEntryButton::new().column_layout(column_layout)
+                            TopMenuEntryButton::new()
+                                .column_layout(column_layout)
                                 .text("Deobfuscation")
                                 .image("src/assets/icons-16/grey_background/lock_edit.png")
                                 .shortcut_text("Strg+Alt+D")
                                 .build(ctx),
                         )
                         .child(
-                            TopMenuEntryButton::new().column_layout(column_layout)
+                            TopMenuEntryButton::new()
+                                .column_layout(column_layout)
                                 .text("Log Viewer")
                                 .image("src/assets/icons-16/grey_background/report.png")
                                 .shortcut_text("Strg+Umschalt+L")
@@ -411,7 +455,8 @@ fn create_tools_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
 fn create_help_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
     let column_layout = "30, 200, 120";
     Popup::new()
-        .style("top_menu").margin((211,23,0,0))
+        .style("top_menu")
+        .margin((178, 23, 0, 0))
         .target(target)
         .open(true)
         .width(80.0)
@@ -423,7 +468,8 @@ fn create_help_menu(target: Entity, ctx: &mut BuildContext) -> Entity {
                     Stack::new()
                         .orientation("vertical")
                         .child(
-                            TopMenuEntryButton::new().column_layout(column_layout)
+                            TopMenuEntryButton::new()
+                                .column_layout(column_layout)
                                 .text("About")
                                 .on_click(move |states, _| -> bool {
                                     let state = states.get_mut::<TopMenuState>(target);

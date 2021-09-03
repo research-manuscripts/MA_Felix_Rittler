@@ -1,7 +1,7 @@
 use crate::components::{
     About, EditorTabNavigationMock, Preferences, ProjectTreeWidget, RenameDialogue, TextSearch, Toolbar,
-    TopMenu, UsageSearch, PREFERENCES_WINDOW_HEIGHT, PREFERENCES_WINDOW_WIDTH, RENAME_DIALOGUE_HEIGHT,
-    RENAME_DIALOGUE_WIDTH,
+    TopMenu, TopMenuType, UsageSearch, PREFERENCES_WINDOW_HEIGHT, PREFERENCES_WINDOW_WIDTH,
+    RENAME_DIALOGUE_HEIGHT, RENAME_DIALOGUE_WIDTH,
 };
 use crate::generator::constants::IconSet;
 use crate::generator::*;
@@ -162,6 +162,7 @@ impl State for JadxState {
 
 widget!(Jadx<JadxState> {
     additional_window: WindowType,
+    opened_menu: TopMenuType,
     /// Width of the window. has to differ from "width" attribute because of the buggy layouting.
     /// "width" < 1500 might not work.
     /// This attribute can be smaller
@@ -174,7 +175,6 @@ widget!(Jadx<JadxState> {
 
 impl Template for Jadx {
     fn template(mut self, _id: Entity, ctx: &mut BuildContext) -> Self {
-
         // init additional_window attribute of state
         match self
             .additional_window
@@ -185,6 +185,20 @@ impl Template for Jadx {
             PropertySource::KeySource(_, _) => self.state.additional_window = WindowType::None,
             PropertySource::Value(t) => {
                 self.state.additional_window = t.clone();
+            }
+        }
+
+        // retrieve opened top menu
+        let opened_menu;
+        match self
+            .opened_menu
+            .as_ref()
+            .unwrap_or(&PropertySource::Value(TopMenuType::None))
+        {
+            PropertySource::Source(_) => opened_menu = TopMenuType::None,
+            PropertySource::KeySource(_, _) => opened_menu = TopMenuType::None,
+            PropertySource::Value(t) => {
+                opened_menu = t.clone();
             }
         }
 
@@ -228,7 +242,7 @@ impl Template for Jadx {
         self.name("Jadx").child(
             Stack::new()
                 .orientation("vertical")
-                .child(TopMenu::new().build(ctx))
+                .child(TopMenu::new().opened_menu(opened_menu).build(ctx))
                 .child(Container::new().style("rule").build(ctx))
                 .child(Toolbar::new().build(ctx))
                 .child(Container::new().style("rule").build(ctx))

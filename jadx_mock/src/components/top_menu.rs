@@ -51,7 +51,7 @@ impl TopMenuState {
     }
 
     fn is_menu_opened(self, menu: TopMenuType) -> bool {
-        match self.opened_menu {
+        match menu {
             TopMenuType::File => true,
             TopMenuType::View => true,
             TopMenuType::Navigation => true,

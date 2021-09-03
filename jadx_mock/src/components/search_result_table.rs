@@ -1,4 +1,12 @@
-use crate::elements::SearchResultTableEntry;
+use std::cmp::min;
+
+use crate::{
+    elements::SearchResultTableEntry,
+    generator::{
+        constants::{SEARCH_RESULTS_MAX_ITEM_COUNT, SEARCH_RESULTS_MAX_PAGE_SIZE},
+        select_item,
+    },
+};
 use orbtk::prelude::*;
 
 widget!(SearchResultTable {
@@ -8,9 +16,12 @@ widget!(SearchResultTable {
 
 impl Template for SearchResultTable {
     fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {
-        let item_count = 370;
-        let lower_border = 1;
-        let higher_border = 100;
+        let item_count = select_item(1..=SEARCH_RESULTS_MAX_ITEM_COUNT);
+        let lower_border = select_item(1..item_count);
+        // calc page size (lower or equals the number of remaining items)
+        let page_size = min(SEARCH_RESULTS_MAX_PAGE_SIZE, item_count - lower_border);
+        let higher_border = select_item(lower_border..(lower_border + page_size));
+
         let pagination_text = format!(
             "Showing results {} to {} of {}",
             lower_border, higher_border, item_count
@@ -46,7 +57,7 @@ impl Template for SearchResultTable {
             // iterate over all items
             .iter()
             // limit elements to table height
-            .take(((table_height - 35.0) / entry_height ) as usize)
+            .take(((table_height - 35.0) / entry_height) as usize)
             // put every item into a container
             .map(|item: &SearchResult| {
                 Container::new()

@@ -51,14 +51,7 @@ impl TopMenuState {
     }
 
     fn is_menu_opened(self, menu: TopMenuType) -> bool {
-        match menu {
-            TopMenuType::File => true,
-            TopMenuType::View => true,
-            TopMenuType::Navigation => true,
-            TopMenuType::Tools => true,
-            TopMenuType::Help => true,
-            TopMenuType::None => false,
-        }
+        return self.opened_menu == menu;
     }
 
     fn open_menu(&mut self, ctx: &mut Context, menu: TopMenuType) {

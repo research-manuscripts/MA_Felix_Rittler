@@ -4,6 +4,8 @@ pub const MAX_CHILD_COUNT: i32 = 10;
 pub const MAX_TREE_ITEMS: i32 = 100;
 pub const MAX_TAB_COUNT: i32 = 10;
 pub const MAX_SEARCH_RESULT_COUNT: i32 = 21;
+pub const SEARCH_RESULTS_MAX_ITEM_COUNT: i32 = 2000;
+pub const SEARCH_RESULTS_MAX_PAGE_SIZE: i32 = 200;
 
 pub enum IconSet {
     FileIcons,

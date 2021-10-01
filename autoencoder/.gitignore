@@ -1,3 +1,7 @@
 *.png
 *.npy
 env/*
+_archive
+.vscode
+__pycache__
+trained_autoencoders/*

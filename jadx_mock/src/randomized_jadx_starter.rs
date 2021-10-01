@@ -3,16 +3,13 @@ use crate::{
     generator::{sample_size, sample_top_menu, sample_window},
     jadx::{Jadx, WindowType},
 };
-use orbtk::{
-    prelude::{Widget, Window},
-    Application,
-};
+use orbtk::{Application, prelude::{Size, Widget, Window}};
 use std::thread;
 
 use crate::theme;
 
 pub fn run_jadx() -> (f64, f64) {
-    let size = sample_size(860..=1500, 740..=1080);
+    let size = Size::new(900.0, 900.0);
 
     thread::spawn(move || {
         let app = Application::new().theme(theme()).window(move |ctx| {

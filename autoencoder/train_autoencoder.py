@@ -19,7 +19,7 @@ from torch import nn
 import matplotlib.pyplot as plt
 import GuiImageDataset
 from torch.utils.tensorboard import SummaryWriter
-import AutoencoderSmallImages
+import AutoencoderSmallerImages3Channels
 from torch_service import plot_classes_preds
 
 # %%
@@ -56,14 +56,14 @@ def normalize(v):
 
 
 # %%
-paths = load_paths_from_folder("datasets/images_small_size_big")
+paths = load_paths_from_folder("datasets/images_very_big")
 
 
 # %%
 # trn_dataloader = torch.utils.data.DataLoader(trn, batch_size=1, shuffle=False, num_workers=0)
 
-transformed_dataset = GuiImageDataset.LazyLoadedSmallGuiImageDataset(paths)
-dataset_loader =  torch.utils.data.DataLoader(transformed_dataset, batch_size=16, num_workers=0)
+transformed_dataset = GuiImageDataset.LazyLoadedGuiImageDataset(paths)
+dataset_loader =  torch.utils.data.DataLoader(transformed_dataset, batch_size=32, num_workers=0)
 
 print("Training Datensatz:")
 print(len(paths))
@@ -92,10 +92,10 @@ for idx in np.arange(1):
 
 
 # %%
-model = AutoencoderSmallImages.Autoencoder2VAEMediumConvBigConv2()
-model.load_state_dict(torch.load("autoencoder_test.pt"))
+model = AutoencoderSmallerImages3Channels.Autoencoder2VAEMediumConv()
+# model.load_state_dict(torch.load("autoencoder_test.pt"))
 
-learning_rate = 4e-5
+learning_rate = 2e-3
 
 criterion = nn.BCELoss()
 optimizer = torch.optim.Adamax(
@@ -118,7 +118,7 @@ model.to(device)
 
 # %%
 #Epochs
-n_epochs = 3
+n_epochs = 5
 log_rhythm = 25
 
 for epoch in range(1, n_epochs+1):

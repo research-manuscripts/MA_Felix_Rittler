@@ -35,7 +35,7 @@ class LazyLoadedGuiImageDataset(Dataset):
     def __getitem__(self, index):
         'Generates one sample of data'
         # Select sample
-        x = Image.open(self.paths[index])  # load lazily
+        x = Image.open(self.paths[index]).convert('RGB')  # load lazily
         x = self.transform(x)
         return x
 

@@ -118,7 +118,7 @@ model.to(device)
 
 # %%
 #Epochs
-n_epochs = 5
+n_epochs = 3
 log_rhythm = 25
 
 for epoch in range(1, n_epochs+1):

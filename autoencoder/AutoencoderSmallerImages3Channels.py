@@ -406,7 +406,7 @@ class Autoencoder2VAEMediumConv(nn.Module):
         self.unpool3 = nn.MaxUnpool2d(4, stride=2)
 
         self.decoder1 = nn.Sequential(
-            nn.ConvTranspose2d(40, 3, 32, stride=1, padding=1, output_padding=0),
+            nn.ConvTranspose2d(40, 3, 16, stride=1, padding=16, output_padding=0),
             nn.Sigmoid()
         )
 

@@ -38,5 +38,3 @@ if __name__ == '__main__':
     print(test_data[0].shape)
 
     save_dataset('images_small_size_big.npy', test_data)
-
-

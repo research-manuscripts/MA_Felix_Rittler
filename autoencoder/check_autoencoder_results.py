@@ -4,6 +4,7 @@
 # Tests an autoencoder by calculating loss and printing both original and generated image.
 
 # %%
+import os
 import torch
 from matplotlib import pyplot as plt
 from AutoencoderSmallerImages import Autoencoder2VAEMediumConv
@@ -22,8 +23,14 @@ model = Autoencoder2VAEMediumConv()
 
 
 # %%
-dataset = load("datasets/images_smaller_size.npy")
-transformed_dataset = GuiImageDataset.GuiImageDataset(dataset)
+def load_paths_from_folder(folder_name):
+    paths = []
+    for path in os.listdir(folder_name):
+        paths.append(folder_name + "/" + path)
+    return paths
+
+dataset = load_paths_from_folder("datasets/real_jadx_image")
+transformed_dataset = GuiImageDataset.LazyLoadedGuiImageDataset(dataset)
 dataset_loader =  torch.utils.data.DataLoader(transformed_dataset, batch_size=1, num_workers=0)
 
 
@@ -62,15 +69,3 @@ for data in itertools.islice(dataset_loader, 2):
     print("Loss: ", loss.item())
     show_torch_image(frame)
     show_torch_image(pred[0].detach())
-
-
-
-pred = pred.permute(0, 2, 3, 1)
-
-print(pred.shape)
-frame = images[0].detach().permute(1,2,0)
-print("Loss: ", loss.item())
-show_torch_image(frame)
-show_torch_image(pred[0].detach())
-
-

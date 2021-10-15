@@ -9,6 +9,7 @@
 
 
 # %%
+import itertools
 import os
 
 import torch
@@ -17,10 +18,13 @@ import numpy as np
 from torch import nn
 import matplotlib.pyplot as plt
 import GuiImageDataset
+from torch.utils.tensorboard import SummaryWriter
+import AutoencoderSmallImages
+from torch_service import plot_classes_preds
 
-import AutoencoderSmallerImages
-# get_ipython().run_line_magic('matplotlib', 'inline')
-
+# %%
+# Tensorboard setup
+writer = SummaryWriter()
 
 # %%
 def to_img(x):
@@ -58,8 +62,8 @@ paths = load_paths_from_folder("datasets/images_small_size_big")
 # %%
 # trn_dataloader = torch.utils.data.DataLoader(trn, batch_size=1, shuffle=False, num_workers=0)
 
-transformed_dataset = GuiImageDataset.LazyLoadedGuiImageDataset(paths)
-dataset_loader =  torch.utils.data.DataLoader(transformed_dataset, batch_size=2, num_workers=0)
+transformed_dataset = GuiImageDataset.LazyLoadedSmallGuiImageDataset(paths)
+dataset_loader =  torch.utils.data.DataLoader(transformed_dataset, batch_size=16, num_workers=0)
 
 print("Training Datensatz:")
 print(len(paths))
@@ -88,8 +92,8 @@ for idx in np.arange(1):
 
 
 # %%
-model = AutoencoderSmallerImages.Autoencoder2VAEMediumConv()
-# model.load_state_dict(torch.load("trained_autoencoders/VAEMediumConv.pt"))
+model = AutoencoderSmallImages.Autoencoder2VAEMediumConvBigConv2()
+model.load_state_dict(torch.load("autoencoder_test.pt"))
 
 learning_rate = 4e-5
 
@@ -114,16 +118,18 @@ model.to(device)
 
 # %%
 #Epochs
-n_epochs = 1
+n_epochs = 3
+log_rhythm = 25
 
 for epoch in range(1, n_epochs+1):
     # monitor training loss
     train_loss = 0.0
+    running_loss = 0.0
     i=0
+    print(len(dataset_loader))
     #Training
+    # for data in itertools.islice(dataset_loader, 2000):
     for data in dataset_loader:
-        if (i>8000):
-            break
         print('Batch Index: {}'.format(i))
         i+=1
         images = data
@@ -134,8 +140,25 @@ for epoch in range(1, n_epochs+1):
         loss = criterion(outputs, images)
         loss.backward()
         optimizer.step()
-        train_loss += loss.item()*images.size(0)
-        print(loss.item())
+        train_loss += loss.item()
+
+        running_loss += loss.item()
+        if i % log_rhythm == log_rhythm - 1:    # every n batches...
+            # ...log the running loss
+            writer.add_scalar('training loss',
+                            running_loss / log_rhythm,
+                            i)
+
+            print("Current Loss: {}".format(train_loss/i))
+
+            # ...log a Matplotlib Figure showing the model's predictions on a
+            # random mini-batch
+            writer.add_figure('predictions vs. actuals',
+                            plot_classes_preds(model, images, outputs),
+                            i)
+            model.to(device)
+            running_loss = 0.0
+
 
     train_loss = train_loss/len(dataset_loader)
     print('Epoch: {} \tTraining Loss: {:.6f}'.format(epoch, train_loss))

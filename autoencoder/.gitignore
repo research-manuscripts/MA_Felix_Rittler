@@ -7,3 +7,4 @@ __pycache__
 trained_autoencoders/*
 datasets/*
 runs_archive/*
+runs/*

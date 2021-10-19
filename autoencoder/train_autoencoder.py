@@ -92,8 +92,8 @@ for idx in np.arange(1):
 
 
 # %%
-model = AutoencoderSmallerImages3Channels.Autoencoder2VAEMediumConv()
-#model.load_state_dict(torch.load("run_156cfdf1c3f95af1b0631200ac2e4f83187842e8.pt"))
+model = AutoencoderSmallerImages3Channels.Autoencoder2VAEMediumConvBigKernel()
+# model.load_state_dict(torch.load("run_156cfdf1c3f95af1b0631200ac2e4f83187842e8.pt"))
 
 learning_rate = 2e-3
 

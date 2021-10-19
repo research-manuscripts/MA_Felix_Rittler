@@ -486,7 +486,7 @@ Hinweis: Padding und Abschneiden der Dimensionen wurde verwendet, um die Dimensi
 class Autoencoder2VAEMediumConvBigKernel(nn.Module):
 
     def __init__(self):
-        super(Autoencoder2VAEMediumConv, self).__init__()
+        super(Autoencoder2VAEMediumConvBigKernel, self).__init__()
 
         self.size1 = 0
         self.size2 = 0

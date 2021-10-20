@@ -670,7 +670,7 @@ class Autoencoder2VAEMediumConvSmallKernel(nn.Module):
         out = out.view(out.size(0), -1)
 
         # latent part 2
-        out = F.leaky_relu(self.bottleneck1(out))
+        out = F.tanh(self.bottleneck1(out))
 
         # Variational part
         mu = self.fc_mu(out)
@@ -680,7 +680,7 @@ class Autoencoder2VAEMediumConvSmallKernel(nn.Module):
         out = eps.mul(sigma).add_(mu)
 
         # latent part 2
-        out = F.leaky_relu(self.bottleneck2(out))
+        out = F.tanh(self.bottleneck2(out))
 
 
         # out = torch.reshape(out, (40,64,93))
@@ -706,5 +706,5 @@ class Autoencoder2VAEMediumConvSmallKernel(nn.Module):
         # print("Size after 1st decoder:", out.size())
 
         out = self.decoder1(out)
-
+        out.clamp(0,255)
         return out

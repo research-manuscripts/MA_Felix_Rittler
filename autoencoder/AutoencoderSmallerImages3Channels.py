@@ -715,7 +715,7 @@ Hinweis: Padding und Abschneiden der Dimensionen wurde verwendet, um die Dimensi
 class Autoencoder2VAEMediumConvVerySmallKernelBigBottleneck(nn.Module):
 
     def __init__(self):
-        super(Autoencoder2VAEMediumConvSmallKernel, self).__init__()
+        super(Autoencoder2VAEMediumConvVerySmallKernelBigBottleneck, self).__init__()
 
         self.size1 = 0
         self.size2 = 0

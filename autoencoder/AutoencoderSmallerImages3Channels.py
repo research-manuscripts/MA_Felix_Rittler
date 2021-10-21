@@ -750,18 +750,15 @@ class Autoencoder2VAEMediumConvVerySmallKernelBigBottleneck(nn.Module):
         self.unpool3 = nn.MaxUnpool2d(4, stride=2)
 
         self.decoder1 = nn.Sequential(
-            nn.ConvTranspose2d(40, 3, 12, stride=1, padding=6, output_padding=0),
-            nn.Sigmoid()
+            nn.ConvTranspose2d(40, 3, 12, stride=1, padding=6, output_padding=0)
         )
 
         self.decoder2 = nn.Sequential(
-            nn.ConvTranspose2d(200, 40, 8, stride=1, padding=1, output_padding=0),
-            nn.Sigmoid()
+            nn.ConvTranspose2d(200, 40, 8, stride=1, padding=1, output_padding=0)
         )
 
         self.decoder3 = nn.Sequential(
-            nn.ConvTranspose2d(400, 200, 4, stride=1, padding=1, output_padding=0),
-            nn.Sigmoid()
+            nn.ConvTranspose2d(400, 200, 4, stride=1, padding=1, output_padding=0)
         )
 
     def forward(self, x):
@@ -803,7 +800,7 @@ class Autoencoder2VAEMediumConvVerySmallKernelBigBottleneck(nn.Module):
         out = self.unpool3(out, indices3, output_size=size3)
         # print("Size after unpool: ", out.size())
 
-        out = self.decoder3(out)
+        out = F.leaky_relu(self.decoder3(out))
 
         # decoder
         # print("Indices size: ", indices1.size())
@@ -812,12 +809,12 @@ class Autoencoder2VAEMediumConvVerySmallKernelBigBottleneck(nn.Module):
         out = self.unpool2(out, indices2, output_size=size2)
         # print("Size after unpool: ", out.size())
 
-        out = self.decoder2(out)
+        out = F.leaky_relu(self.decoder2(out))
         # print("Size after 2nd decoder:", out.size())
         # print("Size after decode2: ", out.size())
 
         out = self.unpool1(out, indices1, output_size=size1)
         # print("Size after 1st decoder:", out.size())
 
-        out = self.decoder1(out)
+        out = F.leaky_relu(self.decoder1(out))
         return out

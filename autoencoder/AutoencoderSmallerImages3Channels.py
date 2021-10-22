@@ -718,26 +718,26 @@ class Autoencoder2VAEBigConvNoFully(nn.Module):
 
         # input: batch x 3 x 32 x 32 -> output: batch x 16 x 16 x 16
         self.conv1 = nn.Sequential(
-            nn.Conv2d(3, 40, 12, stride=1, padding=6),
-            nn.BatchNorm2d(40),
+            nn.Conv2d(3, 20, 12, stride=1, padding=6),
+            nn.BatchNorm2d(20),
         )
         self.maxpool1 = nn.MaxPool2d(6, stride=6, return_indices=True)
 
         self.conv2 =  nn.Sequential(
-            nn.Conv2d(40, 200, 8, stride=1, padding=4),
-            nn.BatchNorm2d(200),
+            nn.Conv2d(20, 40, 8, stride=1, padding=4),
+            nn.BatchNorm2d(40),
         )
         self.maxpool2 = nn.MaxPool2d(4, stride=4, return_indices=True)
 
         self.conv3 =  nn.Sequential(
-            nn.Conv2d(200, 500, 7, stride=1, padding=3),
-            nn.BatchNorm2d(500),
+            nn.Conv2d(40, 60, 7, stride=1, padding=3),
+            nn.BatchNorm2d(60),
         )
         self.maxpool3 = nn.MaxPool2d(4, stride=4, return_indices=True)
 
         self.conv4 =  nn.Sequential(
-            nn.Conv2d(500, 1500, 7, stride=1, padding=3),
-            nn.BatchNorm2d(1500),
+            nn.Conv2d(60, 80, 7, stride=1, padding=3),
+            nn.BatchNorm2d(80),
         )
         self.maxpool4 = nn.MaxPool2d(4, stride=4, return_indices=True)
 
@@ -747,8 +747,8 @@ class Autoencoder2VAEBigConvNoFully(nn.Module):
         )
         self.maxpool5 = nn.MaxPool2d(4, stride=4, return_indices=True)
 
-        self.fc_mu = nn.Linear(360, 360)
-        self.fc_logsigma = nn.Linear(360, 360)
+        self.fc_mu = nn.Linear(320, 320)
+        self.fc_logsigma = nn.Linear(320, 320)
 
         self.unpool1 = nn.MaxUnpool2d(6, stride=6)
         self.unpool2 = nn.MaxUnpool2d(4, stride=4)
@@ -757,26 +757,26 @@ class Autoencoder2VAEBigConvNoFully(nn.Module):
         self.unpool5 = nn.MaxUnpool2d(4, stride=4)
 
         self.decoder1 = nn.Sequential(
-            nn.ConvTranspose2d(40, 3, 12, stride=1, padding=6, output_padding=0),
+            nn.ConvTranspose2d(20, 3, 12, stride=1, padding=6, output_padding=0),
             nn.BatchNorm2d(3),
             nn.LeakyReLU()
         )
 
         self.decoder2 = nn.Sequential(
-            nn.ConvTranspose2d(200, 40, 8, stride=1, padding=4, output_padding=0),
-            nn.BatchNorm2d(40),
+            nn.ConvTranspose2d(40, 20, 8, stride=1, padding=4, output_padding=0),
+            nn.BatchNorm2d(20),
             nn.LeakyReLU()
         )
 
         self.decoder3 = nn.Sequential(
-            nn.ConvTranspose2d(500, 200, 7, stride=1, padding=3, output_padding=0),
-            nn.BatchNorm2d(200),
+            nn.ConvTranspose2d(60, 40, 7, stride=1, padding=3, output_padding=0),
+            nn.BatchNorm2d(40),
             nn.LeakyReLU()
         )
 
         self.decoder4 = nn.Sequential(
-            nn.ConvTranspose2d(1500, 500, 7, stride=1, padding=3, output_padding=0),
-            nn.BatchNorm2d(500),
+            nn.ConvTranspose2d(80, 60, 7, stride=1, padding=3, output_padding=0),
+            nn.BatchNorm2d(60),
             nn.LeakyReLU()
         )
 
@@ -801,9 +801,9 @@ class Autoencoder2VAEBigConvNoFully(nn.Module):
         x = F.leaky_relu(self.conv4(x))
         size4 = x.size()
         x, indices4 = self.maxpool4(x)
-        x = F.leaky_relu(self.conv5(x))
-        size5 = x.size()
-        x, indices5 = self.maxpool5(x)
+        #x = F.leaky_relu(self.conv5(x))
+        #size5 = x.size()
+        #x, indices5 = self.maxpool5(x)
 
         originalC = x.size(1)
         originalH = x.size(2)
@@ -818,10 +818,10 @@ class Autoencoder2VAEBigConvNoFully(nn.Module):
         x = eps.mul(sigma).add_(mu)
         x = x.view(x.size(0), originalC, originalH, originalW)
 
-        x = self.unpool5(x, indices5, output_size=size5)
-        x = self.decoder5(x)
+        #x = self.unpool5(x, indices5, output_size=size5)
+        #x = self.decoder5(x)
 
-        x = self.unpool4(x, indices5, output_size=size4)
+        x = self.unpool4(x, indices4, output_size=size4)
         x = self.decoder4(x)
         x = self.unpool3(x, indices3, output_size=size3)
         x = self.decoder3(x)

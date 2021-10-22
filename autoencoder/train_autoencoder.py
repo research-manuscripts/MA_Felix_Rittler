@@ -92,10 +92,10 @@ for idx in np.arange(1):
 
 
 # %%
-model = AutoencoderSmallerImages3Channels.Autoencoder2VAEMediumConvVerySmallKernelBigBottleneck()
+model = AutoencoderSmallerImages3Channels.Autoencoder2VAEBigConvNoFully()
 # model.load_state_dict(torch.load("run_156cfdf1c3f95af1b0631200ac2e4f83187842e8.pt"))
 
-learning_rate = 2e-6
+learning_rate = 2e-3
 
 criterion = nn.BCEWithLogitsLoss()
 optimizer = torch.optim.Adamax(
@@ -141,7 +141,7 @@ for epoch in range(1, n_epochs+1):
         loss.backward()
 
         clipping_value = 1 # arbitrary value of your choosing
-        torch.nn.utils.clip_grad_norm(model.parameters(), clipping_value)
+        torch.nn.utils.clip_grad_norm_(model.parameters(), clipping_value)
 
         optimizer.step()
         train_loss += loss.item()

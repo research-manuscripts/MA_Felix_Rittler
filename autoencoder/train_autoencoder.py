@@ -92,12 +92,12 @@ for idx in np.arange(1):
 
 
 # %%
-model = AutoencoderSmallerImages3Channels.Autoencoder2VAEMediumConvSmallKernel()
+model = AutoencoderSmallerImages3Channels.Autoencoder2VAEMediumConvVerySmallKernelBigBottleneck()
 # model.load_state_dict(torch.load("run_156cfdf1c3f95af1b0631200ac2e4f83187842e8.pt"))
 
-learning_rate = 2e-3
+learning_rate = 2e-5
 
-criterion = nn.BCELoss()
+criterion = nn.BCEWithLogitsLoss()
 optimizer = torch.optim.Adamax(
     model.parameters(), lr=learning_rate
 )
@@ -115,11 +115,11 @@ device = get_device()
 print(device)
 model.to(device)
 
-
 # %%
 #Epochs
 n_epochs = 3
 log_rhythm = 25
+torch.autograd.set_detect_anomaly(True)
 
 for epoch in range(1, n_epochs+1):
     # monitor training loss
@@ -139,6 +139,10 @@ for epoch in range(1, n_epochs+1):
         outputs = model(images)
         loss = criterion(outputs, images)
         loss.backward()
+
+        clipping_value = 1 # arbitrary value of your choosing
+        torch.nn.utils.clip_grad_norm(model.parameters(), clipping_value)
+
         optimizer.step()
         train_loss += loss.item()
 

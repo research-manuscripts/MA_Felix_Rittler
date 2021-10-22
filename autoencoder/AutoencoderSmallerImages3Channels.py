@@ -778,58 +778,58 @@ class Autoencoder2VAEMediumConvVerySmallKernelBigBottleneck(nn.Module):
 
     def forward(self, x):
         # encoder
-        out = F.leaky_relu(self.conv1(x))
-        size1 = out.size()
-        out, indices1 = self.maxpool1(out)
-        # print("Size before 2nd encoder: ", out.size())
-        out = F.leaky_relu(self.conv2(out))
-        size2 = out.size()
-        out, indices2 = self.maxpool2(out)
-        out = F.leaky_relu(self.conv3(out))
-        size3 = out.size()
-        out, indices3 = self.maxpool3(out)
-        # print("Size after 2nd encoder and before flatten: ", out.size())
+        x = F.leaky_relu(self.conv1(x))
+        size1 = x.size()
+        x, indices1 = self.maxpool1(x)
+        # print("Size before 2nd encoder: ", x.size())
+        x = F.leaky_relu(self.conv2(x))
+        size2 = x.size()
+        x, indices2 = self.maxpool2(x)
+        x = F.leaky_relu(self.conv3(x))
+        size3 = x.size()
+        x, indices3 = self.maxpool3(x)
+        # print("Size after 2nd encoder and before flatten: ", x.size())
 
-        originalC = out.size(1)
-        originalH = out.size(2)
-        originalW = out.size(3)
-        out = out.view(out.size(0), -1)
+        originalC = x.size(1)
+        originalH = x.size(2)
+        originalW = x.size(3)
+        x = x.view(x.size(0), -1)
 
         # latent part 2
-        out = F.leaky_relu(self.bottleneck1(out))
+        x = F.leaky_relu(self.bottleneck1(x))
 
         # Variational part
-        mu = self.fc_mu(out)
-        logsigma = self.fc_logsigma(out)
+        mu = self.fc_mu(x)
+        logsigma = self.fc_logsigma(x)
         sigma = logsigma.exp()
         eps = torch.randn_like(sigma)
-        out = eps.mul(sigma).add_(mu)
+        x = eps.mul(sigma).add_(mu)
 
         # latent part 2
-        out = F.leaky_relu(self.bottleneck2(out))
+        x = F.leaky_relu(self.bottleneck2(x))
 
 
-        # out = torch.reshape(out, (40,64,93))
-        out = out.view(out.size(0), originalC, originalH, originalW)
+        # x = torch.reshape(x, (40,64,93))
+        x = x.view(x.size(0), originalC, originalH, originalW)
 
-        out = self.unpool3(out, indices3, output_size=size3)
-        # print("Size after unpool: ", out.size())
+        x = self.unpool3(x, indices3, output_size=size3)
+        # print("Size after unpool: ", x.size())
 
-        out = self.decoder3(out)
+        x = self.decoder3(x)
 
         # decoder
         # print("Indices size: ", indices1.size())
-        # print("Size after reshape: ", out.size())
-        # print("Size after reshape: ", out.size())
-        out = self.unpool2(out, indices2, output_size=size2)
-        # print("Size after unpool: ", out.size())
+        # print("Size after reshape: ", x.size())
+        # print("Size after reshape: ", x.size())
+        x = self.unpool2(x, indices2, output_size=size2)
+        # print("Size after unpool: ", x.size())
 
-        out = self.decoder2(out)
-        # print("Size after 2nd decoder:", out.size())
-        # print("Size after decode2: ", out.size())
+        x = self.decoder2(x)
+        # print("Size after 2nd decoder:", x.size())
+        # print("Size after decode2: ", x.size())
 
-        out = self.unpool1(out, indices1, output_size=size1)
-        # print("Size after 1st decoder:", out.size())
+        x = self.unpool1(x, indices1, output_size=size1)
+        # print("Size after 1st decoder:", x.size())
 
-        out = self.decoder1(out)
-        return out
+        x = self.decoder1(x)
+        return x

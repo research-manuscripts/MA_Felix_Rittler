@@ -95,7 +95,7 @@ for idx in np.arange(1):
 model = AutoencoderSmallerImages3Channels.Autoencoder2VAEMediumConvVerySmallKernelBigBottleneck()
 # model.load_state_dict(torch.load("run_156cfdf1c3f95af1b0631200ac2e4f83187842e8.pt"))
 
-learning_rate = 2e-5
+learning_rate = 2e-6
 
 criterion = nn.BCEWithLogitsLoss()
 optimizer = torch.optim.Adamax(
@@ -117,7 +117,7 @@ model.to(device)
 
 # %%
 #Epochs
-n_epochs = 3
+n_epochs = 1
 log_rhythm = 25
 torch.autograd.set_detect_anomaly(True)
 

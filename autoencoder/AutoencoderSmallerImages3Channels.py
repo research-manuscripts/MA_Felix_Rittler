@@ -739,6 +739,7 @@ class Autoencoder2VAEBigConvNoFully(nn.Module):
             nn.Conv2d(60, 80, 7, stride=1, padding=3),
             nn.BatchNorm2d(80),
         )
+        self.maxpool4 = nn.MaxPool2d(4, stride=4, return_indices=True)
 
 
         self.fc_mu = nn.Linear(320, 320)
@@ -752,7 +753,7 @@ class Autoencoder2VAEBigConvNoFully(nn.Module):
         self.decoder1 = nn.Sequential(
             nn.ConvTranspose2d(20, 3, 12, stride=1, padding=6, output_padding=0),
             nn.BatchNorm2d(3),
-            nn.LeakyReLU()
+            nn.Sigmoid()
         )
 
         self.decoder2 = nn.Sequential(

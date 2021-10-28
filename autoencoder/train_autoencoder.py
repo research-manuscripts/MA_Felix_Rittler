@@ -63,7 +63,7 @@ paths = load_paths_from_folder("datasets/images_very_big")
 # trn_dataloader = torch.utils.data.DataLoader(trn, batch_size=1, shuffle=False, num_workers=0)
 
 transformed_dataset = GuiImageDataset.LazyLoadedGuiImageDataset(paths)
-dataset_loader =  torch.utils.data.DataLoader(transformed_dataset, batch_size=16, num_workers=0)
+dataset_loader =  torch.utils.data.DataLoader(transformed_dataset, batch_size=12, num_workers=0)
 
 print("Training Datensatz:")
 print(len(paths))
@@ -92,7 +92,7 @@ for idx in np.arange(1):
 
 
 # %%
-model = AutoencoderSmallerImages3Channels.Autoencoder2VAEBigConvNoFully()
+model = AutoencoderSmallerImages3Channels.Autoencoder2VAEMediumConvSmallKernelBigBottleneck()
 # model.load_state_dict(torch.load("run_156cfdf1c3f95af1b0631200ac2e4f83187842e8.pt"))
 
 learning_rate = 2e-3

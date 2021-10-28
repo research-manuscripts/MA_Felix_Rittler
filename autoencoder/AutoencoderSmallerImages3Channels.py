@@ -819,7 +819,7 @@ Hinweis: Padding und Abschneiden der Dimensionen wurde verwendet, um die Dimensi
 class Autoencoder2VAEMediumConvSmallKernelBigBottleneck(nn.Module):
 
     def __init__(self):
-        super(Autoencoder2VAEMediumConvSmallKernel, self).__init__()
+        super(Autoencoder2VAEMediumConvSmallKernelBigBottleneck, self).__init__()
 
         self.size1 = 0
         self.size2 = 0
@@ -860,12 +860,12 @@ class Autoencoder2VAEMediumConvSmallKernelBigBottleneck(nn.Module):
 
         self.decoder2 = nn.Sequential(
             nn.ConvTranspose2d(200, 40, 10, stride=1, padding=1, output_padding=0),
-            nn.Sigmoid()
+            nn.LeakyReLU()
         )
 
         self.decoder3 = nn.Sequential(
             nn.ConvTranspose2d(400, 200, 4, stride=1, padding=1, output_padding=0),
-            nn.Sigmoid()
+            nn.LeakyReLU()
         )
 
     def forward(self, x):
@@ -888,7 +888,7 @@ class Autoencoder2VAEMediumConvSmallKernelBigBottleneck(nn.Module):
         out = out.view(out.size(0), -1)
 
         # latent part 2
-        out = F.tanh(self.bottleneck1(out))
+        out = torch.tanh(self.bottleneck1(out))
 
         # Variational part
         mu = self.fc_mu(out)
@@ -898,7 +898,7 @@ class Autoencoder2VAEMediumConvSmallKernelBigBottleneck(nn.Module):
         out = eps.mul(sigma).add_(mu)
 
         # latent part 2
-        out = F.tanh(self.bottleneck2(out))
+        out = torch.tanh(self.bottleneck2(out))
 
 
         # out = torch.reshape(out, (40,64,93))

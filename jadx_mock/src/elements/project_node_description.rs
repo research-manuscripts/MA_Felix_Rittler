@@ -1,18 +1,14 @@
 use orbtk::prelude::*;
 
 widget!(
-    /// The `ProjectNodeDescription` widget can be clicked by user. It's used to perform an action.
-    ///
-    /// **style:** `button`
+    /// Description of a project node containing just icon and text
     ProjectNodeDescription {
-        /// Sets or shares the text property
         text: String,
-
-        /// Sets or shares the image property
         image: Image
     }
 );
 
+/// Templating the ProjectNodeDescription containing an icon and text
 impl Template for ProjectNodeDescription {
     fn template(self, id: Entity, ctx: &mut BuildContext) -> Self {
         self.name("ProjectNodeDescription").child(

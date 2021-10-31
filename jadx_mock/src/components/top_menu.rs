@@ -3,12 +3,17 @@ use orbtk::prelude::*;
 use crate::components::About;
 use crate::elements::TopMenuEntryButton;
 
+///
+/// Defining the actions to close any menu and open a specific menu
+/// CloseMenu doesn't have a parameter since there can only be one opened menu
 #[derive(PartialEq, Copy, Clone)]
 enum TopMenuAction {
     CloseMenu,
     OpenMenu(TopMenuType),
 }
 
+///
+/// Types of the top menus or none
 #[derive(PartialEq, Copy, Clone, Debug)]
 pub enum TopMenuType {
     File,
@@ -27,15 +32,25 @@ impl Default for TopMenuType {
 
 into_property_source!(TopMenuType);
 
+///
+/// The state of the top menu
 #[derive(Default, AsAny, Copy, Clone)]
 struct TopMenuState {
+    /// Executed action
     action: Option<TopMenuAction>,
+    /// Type of currently opened menu
     opened_menu: TopMenuType,
+    /// Currently opened popup (containing the opened menu)
     popup: Option<Entity>,
+    /// State if the window is currently active
     show_about: bool,
 }
 
+/// Implementation of the actions of the top menu state
 impl TopMenuState {
+    /// Toggle a specific menu
+    /// # Arguments
+    /// * `menu` - menu to toggle
     fn toggle_menu(&mut self, menu: TopMenuType) -> bool {
         if self.is_menu_opened(menu) {
             self.action = Some(TopMenuAction::CloseMenu);
@@ -46,20 +61,27 @@ impl TopMenuState {
         false
     }
 
+    /// Display the about window
     fn show_about(&mut self) {
         self.show_about = true;
     }
 
+    /// Check if a specific menu is currently opened
+    /// # Arguments
+    /// * `menu` - menu to check for
     fn is_menu_opened(self, menu: TopMenuType) -> bool {
         return self.opened_menu == menu;
     }
 
+    /// Open a specific menu
+    /// # Arguments
+    /// * `ctx` - the OrbTK application context
+    /// * `menu` - menu to open
     fn open_menu(&mut self, ctx: &mut Context, menu: TopMenuType) {
         // close menu thats been opened before
         if let Some(popup) = self.popup {
             self.opened_menu = TopMenuType::None;
 
-            // TODO: Different position for overlay?
             ctx.remove_child_from_overlay(popup);
         }
 
@@ -69,7 +91,7 @@ impl TopMenuState {
 
         let popup: Option<Entity>;
         match menu {
-            // creates a popup then attach it to the overlay
+            // creates a popup
             TopMenuType::File => {
                 popup = Some(create_file_menu(current_entity, build_context));
             }
@@ -89,6 +111,7 @@ impl TopMenuState {
                 popup = Option::None;
             }
         }
+        // attach created popup to the overlay
         if let Some(value) = popup {
             build_context.append_child_to_overlay(value);
             self.opened_menu = menu;
@@ -97,6 +120,10 @@ impl TopMenuState {
     }
 }
 
+///
+/// Implementation of the trait State for TopMenuState.
+/// Opens or closes menus upon the specific actions.
+/// Opens the about window on specific action.
 impl State for TopMenuState {
     fn init(&mut self, _: &mut Registry, ctx: &mut Context) {
         self.open_menu(ctx, self.opened_menu)
@@ -140,6 +167,8 @@ widget!(TopMenu<TopMenuState> {
     opened_menu: TopMenuType
 });
 
+///
+/// Templating the TopMenu consisting of horizontally aligned buttons
 impl Template for TopMenu {
     fn template(mut self, id: Entity, ctx: &mut BuildContext) -> Self {
         // init opened menu

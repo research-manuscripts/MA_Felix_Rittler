@@ -1,5 +1,8 @@
 use orbtk::prelude::*;
 
+///
+/// This function creates a structured item box.
+/// This is a container for arbitrary elements surrounded by a border with a heading.
 pub fn structured_item_box(
     ctx: &mut BuildContext,
     child: Container,

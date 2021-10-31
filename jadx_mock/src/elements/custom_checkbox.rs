@@ -3,6 +3,10 @@ use orbtk::prelude::behaviors::*;
 use orbtk::prelude::themes::*;
 
 widget!(
+    ///
+    /// Custom implementation of the OrbTK Checkbox to adjust parameters originally not adjustable in OrbTK, e.g. height.
+    /// Template: https://github.com/redox-os/orbtk/blob/c7a44eedb7785fae0cfa3e7de5a4eb231ddb6a77/orbtk_widgets/src/check_box.rs
+    ///
     /// The `CheckBox` widget can be switch its selected state. It contains a selection box and a text.
     ///
     /// **style:** `check-box`
@@ -57,6 +61,8 @@ widget!(
     }
 );
 
+///
+/// Templating custom checkbox
 impl Template for CustomCheckBox {
     fn template(self, id: Entity, ctx: &mut BuildContext) -> Self {
         self.name("CheckBox")

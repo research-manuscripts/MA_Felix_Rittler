@@ -1,18 +1,32 @@
+/// Constants for the mock data generator
+
+/// Maximum name length of names for classes, etc.
 pub const MAX_NAME_LENGTH: i32 = 25;
+/// Maximum name length of paths for packages, etc.
 pub const MAX_PATH_LENGTH: i32 = 100;
+/// Maximum number of childs of a node in the project tree
 pub const MAX_CHILD_COUNT: i32 = 10;
+/// Total maximum of elements of the project tree
 pub const MAX_TREE_ITEMS: i32 = 100;
+/// Maximum depth of project tree
+pub const MAX_TREE_DEPTH: i32 = 5;
+/// Maximum number of items in the editor tab bar
 pub const MAX_TAB_COUNT: i32 = 10;
+/// Maximum number of search results (class search, usage search etc.)
 pub const MAX_SEARCH_RESULT_COUNT: i32 = 21;
+/// Maximum number that is show for pagination text of search result table (does not affect results in search result table)
 pub const SEARCH_RESULTS_MAX_ITEM_COUNT: i32 = 2000;
+/// Maximum number of items on a page for the pagination text (does not affect results in search result table)
 pub const SEARCH_RESULTS_MAX_PAGE_SIZE: i32 = 200;
 
+/// Different types of icons within JADX
 pub enum IconSet {
     FileIcons,
     EntityIcons,
     AllIcons,
 }
 
+/// Paths of the screenshots for the file editor content
 pub const EDITOR_SCREENSHOTS: [&str; 8] = [
     "src/assets/editor_screenshots/arsc.png",
     "src/assets/editor_screenshots/class_end.png",
@@ -24,6 +38,7 @@ pub const EDITOR_SCREENSHOTS: [&str; 8] = [
     "src/assets/editor_screenshots/xml_file.png",
 ];
 
+/// List of all used icons of JADX
 pub const ALL_ICONS: [&str; 18] = [
     "src/assets/icons-16/int_obj.png",
     "src/assets/icons-16/class_obj.png",
@@ -45,6 +60,7 @@ pub const ALL_ICONS: [&str; 18] = [
     "src/assets/icons-16/certificate_obj.png",
 ];
 
+/// Icons of java entites
 pub const ENTITY_ICONS: [&str; 10] = [
     "src/assets/icons-16/int_obj.png",
     "src/assets/icons-16/class_obj.png",
@@ -58,6 +74,7 @@ pub const ENTITY_ICONS: [&str; 10] = [
     "src/assets/icons-16/annotation_obj.png",
 ];
 
+/// Icons of java or other files within APK or DEX files
 pub const FILE_ICONS: [&str; 12] = [
     "src/assets/icons-16/int_obj.png",
     "src/assets/icons-16/class_obj.png",
@@ -73,6 +90,7 @@ pub const FILE_ICONS: [&str; 12] = [
     "src/assets/icons-16/certificate_obj.png",
 ];
 
+/// List of fonts names for the font chooser
 pub const FONTS: [&str; 152] = [
     "Abadi MT Condensed Light",
     "Albertus Extra Bold",

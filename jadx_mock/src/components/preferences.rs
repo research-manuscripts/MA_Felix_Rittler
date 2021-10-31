@@ -4,9 +4,14 @@ use orbtk::prelude::*;
 
 widget!(Preferences);
 
+/// Fixed width of preferences window
 pub const PREFERENCES_WINDOW_WIDTH: f64 = 860.0;
+/// Fixed height of preferences window
 pub const PREFERENCES_WINDOW_HEIGHT: f64 = 740.0;
 
+///
+/// Templating preference window lining up items grouped by 6 containers.
+/// Items can be checkboxes, Comboboxes, Numericboxes etc
 impl Template for Preferences {
     fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {
         let decompile_container = Container::new().child(

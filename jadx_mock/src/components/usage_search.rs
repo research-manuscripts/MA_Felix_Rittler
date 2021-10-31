@@ -6,6 +6,7 @@ use orbtk::prelude::*;
 
 widget!(UsageSearch);
 
+/// Templating the usage search, consisting of the search subject, the results table and a few buttons
 impl Template for UsageSearch {
     fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {
         let height = self.height.expect("Height of usage search has to be set.");
@@ -26,6 +27,8 @@ impl Template for UsageSearch {
                     Stack::new()
                         .orientation("vertical")
                         .spacing(20)
+
+                        // search subject
                         .child(
                             Stack::new()
                                 .spacing(5)
@@ -45,6 +48,8 @@ impl Template for UsageSearch {
                                 )
                                 .build(ctx),
                         )
+
+                        // results table
                         .child(
                             SearchResultTable::new()
                                 .table_height(table_height)
@@ -52,6 +57,8 @@ impl Template for UsageSearch {
                                 .width(table_width)
                                 .build(ctx),
                         )
+
+                        // buttons to save and cancel
                         .child(
                             Stack::new()
                                 .orientation("horizontal")

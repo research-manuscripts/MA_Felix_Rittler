@@ -4,12 +4,19 @@ use crate::generator::{fill_checkbox, generate_name, generate_search_results};
 use orbtk::prelude::*;
 
 widget!(TextSearch {
+    /// Sets the class checkbox
     class_checkbox_selected: bool,
+    /// Sets the method checkbox
     method_checkbox_selected: bool,
+    /// Sets the field checkbox
     field_checkbox_selected: bool,
+    /// Sets the code checkbox
     code_checkbox_selected: bool
 });
 
+///
+/// Templating the text search containing a SearchResultTable as well as some checkboxes to
+/// configure the search and the search entity and some buttons to confirm and close the window.
 impl Template for TextSearch {
     fn template(self, id: Entity, ctx: &mut BuildContext) -> Self {
         let height = self.height.expect("Height of text search has to be set.");
@@ -25,6 +32,7 @@ impl Template for TextSearch {
         let definitions_container_width = (0.65 * width - 30.0) as i32;
         let options_container_width = (0.35 * width - 30.0) as i32;
 
+        // templating the container for defintions and options
         let definitions_container = Container::new().child(
             Stack::new()
                 .orientation("horizontal")
@@ -74,6 +82,7 @@ impl Template for TextSearch {
                 .build(ctx),
         );
 
+        // templating text search including the container, the table and a few buttons
         self.name("TextSearch").child(
             Container::new()
                 .margin((margin_left, margin_top, margin_right, margin_bottom))

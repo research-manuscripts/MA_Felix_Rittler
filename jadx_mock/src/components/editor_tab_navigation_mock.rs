@@ -2,9 +2,14 @@ use crate::elements::ProjectNodeDescription;
 use orbtk::prelude::*;
 
 widget!(EditorTabNavigationMock {
+    /// Items of the tab navigation bar
     items: EditorTabItems
 });
 
+///
+/// Templating the tab navigation bar.
+/// Items are lined up horizontally consisting of ProjectNodeDescription + 'Close Tab' icon
+/// Slightly different coloring for selected tab
 impl Template for EditorTabNavigationMock {
     fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {
         let items_prop = self.items.as_ref().expect("Items have to be set.");

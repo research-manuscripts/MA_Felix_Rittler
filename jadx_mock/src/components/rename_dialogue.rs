@@ -2,13 +2,19 @@ use crate::elements::ProjectNodeDescription;
 use orbtk::prelude::*;
 
 widget!(RenameDialogue {
+    /// Icon of entity to rename
     entity_icon: Image,
+    /// Name of entity to rename
     entity_name: String
 });
 
+/// Width of rename dialogue
 pub const RENAME_DIALOGUE_WIDTH: f64 = 250.0;
+/// Height of rename dialogue
 pub const RENAME_DIALOGUE_HEIGHT: f64 = 150.0;
 
+/// Templating rename dialogue consisting of entity to rename, a textbox
+/// to enter a new name and buttons to confirm and cancel
 impl Template for RenameDialogue {
     fn template(self, id: Entity, ctx: &mut BuildContext) -> Self {
         self.name("RenameDialogue").child(

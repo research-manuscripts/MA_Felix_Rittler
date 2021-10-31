@@ -8,7 +8,10 @@ use std::thread;
 
 use crate::theme;
 
-pub fn run_jadx() -> (f64, f64) {
+///
+/// Starts a JADX instance with random content in a new thread.
+/// Returns the window size.
+pub fn start_jadx() -> Size{
     let size = Size::new(900.0, 900.0);
 
     thread::spawn(move || {
@@ -43,5 +46,34 @@ pub fn run_jadx() -> (f64, f64) {
         app.run();
     });
 
-    (size.width(), size.height())
+    size
+}
+
+
+///
+/// Runs a JADX instance with random content. Only for debug purposes.
+pub fn run_randomized_jadx() {
+    let app = Application::new().theme(theme()).window(move |ctx| {
+        let additional_window = sample_window();
+
+        // let size = sample_size(860..=1500, 740..=1080);
+        let size = Size::new(900.0, 900.0);
+        Window::new()
+            .style("windows_window")
+            .title("New Project - jadx-gui")
+            .position((0.0, 35.0))
+            .size(size.width(), size.height())
+            .resizeable(true)
+            .child(
+                Jadx::new()
+                    .additional_window(additional_window)
+                    .window_height(size.height())
+                    .window_width(size.width())
+                    .height(1500)
+                    .width(1500)
+                    .build(ctx),
+            )
+            .build(ctx)
+    });
+    app.run();
 }

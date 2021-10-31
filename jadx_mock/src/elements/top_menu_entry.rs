@@ -3,9 +3,8 @@ use orbtk::prelude::themes::{colors, orbtk_fonts};
 use orbtk::prelude::*;
 
 widget!(
-    /// The `TopMenuButton` widget can be clicked by user. It's used to perform an action.
     ///
-    /// **style:** `button`
+    /// Custom implementation of the Button from OrbTK to support buttons with icon + text.
     TopMenuEntryButton: MouseHandler {
         /// Sets or shares the background property.
         background: Brush,

@@ -8,11 +8,13 @@ use orbtk::{
     shell::{Key, KeyEvent},
 };
 use rust_decimal::prelude::*;
-// --- KEYS --
+
+///
+/// This implementation is a custom implementation of the NumericBox from OrbTK.
+/// This has been created to customize styles which are normally not customizable
+/// (such as height).
 
 pub static ID_INPUT: &str = "numeric_box_input";
-
-// --- KEYS --
 
 pub enum InputAction {
     Inc,
@@ -105,7 +107,6 @@ impl State for SmallNumericBoxState {
         ctx.get_widget(self.input).set::<String>("text", init_value);
     }
 
-    // TODO: let the user type the value, or select it for cut, copy, paste operations
     fn update(&mut self, _: &mut Registry, ctx: &mut Context) {
         if let Some(action) = &self.action {
             match action {
@@ -124,10 +125,8 @@ impl State for SmallNumericBoxState {
                     }
                     Key::Enter => {
                         if *ctx.widget().get::<bool>("lose_focus_on_activation") {
-                            self.event_adapter.push_event_direct(
-                                self.window,
-                                FocusEvent::RequestFocus(ctx.entity()),
-                            );
+                            self.event_adapter
+                                .push_event_direct(self.window, FocusEvent::RequestFocus(ctx.entity()));
                         }
 
                         self.event_adapter

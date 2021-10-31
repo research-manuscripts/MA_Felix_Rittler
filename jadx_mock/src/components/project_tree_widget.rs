@@ -3,6 +3,8 @@ use orbtk::prelude::*;
 
 widget!(ProjectTreeWidget {});
 
+///
+/// Templating the project tree widget, which contains a ProjectTreeElement
 impl Template for ProjectTreeWidget {
     fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {
         let tree = generate_project_tree();
@@ -21,10 +23,14 @@ impl Template for ProjectTreeWidget {
     }
 }
 
+/// Domain object of a node within the project tree
 #[derive(AsAny, Debug, Clone, PartialEq)]
 pub struct ProjectTreeNode {
+    /// Icon of the node
     pub image: String,
+    /// Name of the node
     pub text: String,
+    /// Subnodes of the node
     pub nodes: Vec<ProjectTreeNode>,
 }
 

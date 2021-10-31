@@ -10,10 +10,15 @@ use crate::{
 use orbtk::prelude::*;
 
 widget!(SearchResultTable {
+    /// Height of the table in pixel
     table_height: f64,
+    /// Number of table elements
     items: SearchResults
 });
 
+///
+/// Templating the search result table consisting of the table with dynamic column sizes,
+/// table elements lined up vertically and the pagination buttons and text
 impl Template for SearchResultTable {
     fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {
         let item_count = select_item(1..=SEARCH_RESULTS_MAX_ITEM_COUNT);
@@ -139,6 +144,8 @@ impl Template for SearchResultTable {
     }
 }
 
+///
+/// Domain object to describe a single search result
 #[derive(Debug, Clone, PartialEq)]
 pub struct SearchResult {
     pub name: String,
@@ -146,6 +153,9 @@ pub struct SearchResult {
     pub code_snippet: String,
 }
 
+/// 
+/// Wrapper for Search Result
+/// Needed because Vec<SearchResult> is not supported by OrbTK as property for SearchResultTable
 #[derive(Debug, Clone, PartialEq)]
 pub struct SearchResults {
     pub items: Vec<SearchResult>,

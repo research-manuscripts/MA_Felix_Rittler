@@ -299,9 +299,10 @@ impl State for CustomComboBoxState {
     }
 }
 
-// todo use code of list view item, by create combobox item insert entity of popup container
-
 widget!(
+    ///
+    /// Custom implementation of the OrbTK Combobox to adjust parameters originally not adjustable in OrbTK, e.g. height.
+    /// Template: https://github.com/redox-os/orbtk/blob/4b298ee3aa4cebf9bd3bc7ffc2a487da9b03eb59/orbtk_widgets/src/combo_box.rs
     /// The `ComboBox` represents an selection widget with a drop-down list.
     ///
     /// **style:** `combo_box`

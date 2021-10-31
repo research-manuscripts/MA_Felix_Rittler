@@ -3,12 +3,19 @@ use crate::elements::ImageButton;
 use crate::generator::{constants::IconSet, generate_name, select_icon};
 use orbtk::prelude::*;
 
+///
+/// State of the toolbar of JADX. Holds state to open additional windows
 #[derive(AsAny, Default)]
 struct ToolbarState {
+    /// Defines whether preference window is opened
     show_preferences: bool,
+    /// Defines whether text search window is opened
     show_text_search: bool,
+    /// Defines whether class search window is opened
     show_class_search: bool,
+    /// Defines whether usage search window is opened
     show_usage_search: bool,
+    /// Defines whether rename dialogue window is opened
     show_rename_dialogue: bool,
 }
 
@@ -34,6 +41,9 @@ impl ToolbarState {
     }
 }
 
+///
+/// Implements the state for the toolbar.
+/// Opens the additional windows dependent on the state.
 impl State for ToolbarState {
     fn update(&mut self, _: &mut Registry, ctx: &mut Context) {
         if self.show_preferences {
@@ -129,6 +139,8 @@ impl State for ToolbarState {
 
 widget!(Toolbar<ToolbarState>);
 
+///
+/// Templating the toolbar consisting of ImageButtons, aligned horizontally
 impl Template for Toolbar {
     fn template(self, id: Entity, ctx: &mut BuildContext) -> Self {
         self.name("Toolbar").child(

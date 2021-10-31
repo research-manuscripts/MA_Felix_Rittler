@@ -7,6 +7,9 @@ use crate::generator::constants::IconSet;
 use crate::generator::*;
 use orbtk::prelude::*;
 
+///
+/// Describes the different types of additional windows to display. Has a 'size' attribute if the size is configurable.
+/// WindowType is None if there is no additional window.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum WindowType {
     Preferences,
@@ -26,15 +29,21 @@ impl Default for WindowType {
 
 into_property_source!(WindowType);
 
+///
+/// State of the JADX application.
 #[derive(AsAny, Default)]
 struct JadxState {
+    /// Type of the currently displayed additional window
     additional_window: WindowType,
+    /// Window size of the JADX application
     size: Size,
 }
 
+///
+/// Initializes the state of the JADX application, e.g. the additional windows
 impl State for JadxState {
     fn init(&mut self, _: &mut Registry, ctx: &mut Context) {
-        // read window to render from state and open it
+        // render additional window and open it
         match self.additional_window {
             WindowType::Preferences => {
                 let window_position = generate_window_position(
@@ -161,15 +170,14 @@ impl State for JadxState {
 }
 
 widget!(Jadx<JadxState> {
+    /// The additional Window to open
     additional_window: WindowType,
     opened_menu: TopMenuType,
-    /// Width of the window. has to differ from "width" attribute because of the buggy layouting.
-    /// "width" < 1500 might not work.
-    /// This attribute can be smaller
+    /// Width of the window. DO NOT USE THE "width" ATTRIBUTE
+    /// (Reason: "width" is reserved by JADX and does not work because of the buggy layouting.)
     window_width: f64,
-    /// Height of the window. has to differ from "height" attribute because of the buggy layouting.
-    /// "height" < 1500 might not work.
-    /// This attribute can be smaller
+    /// Height of the window. DO NOT USE THE "height" ATTRIBUTE
+    /// (Reason: "height" is reserved by JADX and does not work because of the buggy layouting.)
     window_height: f64
 });
 
@@ -188,7 +196,7 @@ impl Template for Jadx {
             }
         }
 
-        // retrieve opened top menu
+        // get opened top menu
         let opened_menu;
         match self
             .opened_menu
@@ -237,6 +245,7 @@ impl Template for Jadx {
         let editor_width = width - tree_width;
         let grid_layout = format!("{}, {}", tree_width, editor_width);
 
+        // Tabs of file editor of JADX
         let tabs = generate_editor_tabs();
 
         self.name("Jadx").child(

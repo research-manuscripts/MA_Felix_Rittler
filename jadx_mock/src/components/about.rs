@@ -2,6 +2,8 @@ use orbtk::prelude::*;
 
 widget!(About);
 
+///
+/// Templating the 'About' window containing the JADX logo, some static text and a 'close' button
 impl Template for About {
     fn template(self, _id: Entity, ctx: &mut BuildContext) -> Self {
         let height = self.height.expect("Height of About has to be set.");

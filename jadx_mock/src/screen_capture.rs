@@ -5,6 +5,14 @@ use std::thread;
 use std::time::Duration;
 use image::io::Reader as ImageReader;
 
+///
+/// Captures the screen and saves it as a png file with a specific size. Always captures from the top left corner.
+///
+/// # Arguments
+///
+/// * `name` - name of the file
+/// * `width` - width of the image to create
+/// * `height` - height of the image to create
 pub fn capture_screen(name: String, width: i32, height: i32) {
     let one_second = Duration::new(1, 0);
     let one_frame = one_second / 60;

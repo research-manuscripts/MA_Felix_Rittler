@@ -17,7 +17,7 @@ To execute the generator, you just have to execute
 
 ## For Developers
 The code is structured into different modules. All OrbTK Widgets are separated into the `components` and the `elements` module. `components` contains all more 
-complex Widgets, that contain other Widgets or have multiple by the application user identifiable parts (such as a complext table). The `elements` module contains the simpler Widgets, 
+complex Widgets, that contain other Widgets or have multiple by the application user identifiable parts (such as a complex table). The `elements` module contains the simpler Widgets, 
 such as buttons or simple descriptions.
 
 The module `generator` contains all logic for the random generator such as the propability distributions, the content for the randomly filled fields of JADX, and utility functions

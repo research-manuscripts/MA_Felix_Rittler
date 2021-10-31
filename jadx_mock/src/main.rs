@@ -5,7 +5,7 @@ mod jadx;
 mod randomized_jadx_starter;
 mod screen_capture;
 
-use std::{env, thread, time::{Duration, SystemTime}};
+use std::{env, fs, thread, time::{Duration, SystemTime}};
 use crate::{randomized_jadx_starter::start_jadx, screen_capture::capture_screen};
 use orbtk::{
     prelude::*,
@@ -33,6 +33,12 @@ fn theme() -> Theme {
 /// First command line argument has to be the number of generated images.
 fn main() {
     let time = SystemTime::now();
+
+    // create target folder
+    match fs::create_dir_all("target/images") {
+        Ok(_) => {}
+        Err(_) => print!("Error: Cannot create target directory!"),
+    }
 
     let args: Vec<String> = env::args().collect();
 

@@ -16,7 +16,9 @@ To execute the generator, you just have to execute
 3. Inspect the generated images in the directory `target/images`
 
 ### Run the mock application
-To run the Mock application (without taking a screenshot) run `cargo run --release`. Please note the `--release` flag. Otherwise the generator will be very slow as OrbTK is a pure software renderer which is very slow in debug mode. Please note that this is only for debug purposes. Some parts of the application might not be clickable, especially some entries of the top menu and buttons in additional windows. Also sometimes GUI Widgets might just disappear. The last two problems are there due to layouting bugs of OrbTK.
+To run the Mock application (without taking a screenshot) run `cargo run --release`. Please note the `--release` flag. Otherwise the application will be very slow as OrbTK is a pure software renderer which is very slow in debug mode. 
+
+Please note that this is ***only for debug purposes***. Some parts of the application might not be clickable, especially some entries of the top menu and buttons in additional windows. Also sometimes GUI Widgets might just disappear. The last two problems are there due to layouting bugs of OrbTK.
 
 ### Build the project
 To just build the project and create an executable file within the target folder just execute `cargo build --release`.

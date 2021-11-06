@@ -10,18 +10,18 @@ import time
 autoencoder_path = "trained_autoencoders/autoencoder_3547a5236c708c442558e4691d60e000893a122f.pt"
 model = AutoencoderVAEBigConvNoFully()
 
+# load device and push to device
+device = 'cpu'
+print(device)
+model.to(device)
+
 # Load dataset
 dataset = load_paths_from_folder("datasets/validation_test")
 transformed_dataset = GuiImageDataset.LazyLoadedGuiImageDataset(dataset)
 dataset_loader =  torch.utils.data.DataLoader(transformed_dataset, batch_size=1, num_workers=0)
 
 # Load trained autoencoder
-model.load_state_dict(torch.load(autoencoder_path))
-
-# load device and push to device
-device = 'cpu'
-print(device)
-model.to(device)
+model.load_state_dict(torch.load(autoencoder_path, device))
 
 for data in itertools.islice(dataset_loader, 2):
     images = data
@@ -36,10 +36,9 @@ for data in itertools.islice(dataset_loader, 2):
     loss = nn.MSELoss()(pred, images)
     print("Loss: ", loss.item())
 
-    pred = pred.permute(0, 2, 3, 1)
     print(pred.shape)
 
     # print original and prediction
-    frame = images[0].detach().permute(1,2,0)
+    frame = images[0].detach()
     show_torch_image(frame)
     show_torch_image(pred[0].detach())

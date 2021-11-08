@@ -9,8 +9,8 @@ from torch_service import get_device, load_paths_from_folder, plot_classes_preds
 DATASET_PATH = "datasets/validation_set"
 
 # Autoencoder and training data
-autoencoder_path = "run_3547a5236c708c442558e4691d60e000893a122f.pt"
-model = Autoencoder.AutoencoderVAEBigConvNoFully()
+autoencoder_path = "run_3b7d5453ce41baeba6fcab6937df2c16a4fc9523.pt"
+model = Autoencoder.AutoencoderVAEMediumConvBigKernel()
 BATCH_SIZE = 1
 
 # Tensorboard setup

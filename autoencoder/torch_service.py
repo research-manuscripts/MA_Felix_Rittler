@@ -38,5 +38,5 @@ def plot_classes_preds(net, images, outputs):
     # plot the images in the batch, along with predicted and true labels
     fig = plt.figure(figsize=(12, 48))
     for idx in np.arange(images.size(0)):
-        plt.imshow(outputs[idx].cpu().detach().numpy())
+        plt.imshow(np.transpose(outputs[idx].cpu().detach().numpy(), (1,2,0)))
     return fig

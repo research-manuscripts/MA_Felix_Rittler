@@ -6,9 +6,9 @@ from torch.utils.tensorboard import SummaryWriter
 import Autoencoder
 from torch_service import get_device, load_paths_from_folder, plot_classes_preds, show_torch_image
 
-DATASET_PATH = "datasets/images_small_size_big"
-model = Autoencoder.AutoencoderVAEMediumConvSmallKernelBigBottleneck()
-BATCH_SIZE = 12
+DATASET_PATH = "datasets/images_very_big"
+model = Autoencoder.AutoencoderVAEBigConvNoFully()
+BATCH_SIZE = 16
 LEARNING_RATE = 2e-3
 NUMBER_OF_EPOCHS = 3
 
@@ -37,7 +37,7 @@ for idx in np.arange(2):
     show_torch_image(images[idx])
 
 # init criterion and optimizer
-criterion = nn.BCEWithLogitsLoss()
+criterion = nn.BCELoss()
 optimizer = torch.optim.Adamax(
     model.parameters(), lr=LEARNING_RATE
 )

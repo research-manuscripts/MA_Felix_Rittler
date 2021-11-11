@@ -303,26 +303,22 @@ class AutoencoderVAEBigConvNoFully(nn.Module):
         self.size2 = 0
 
         self.conv1 = nn.Sequential(
-            nn.Conv2d(3, 20, 12, stride=1, padding=6),
-            nn.BatchNorm2d(20),
+            nn.Conv2d(3, 20, 12, stride=1, padding=6)
         )
         self.maxpool1 = nn.MaxPool2d(6, stride=6, return_indices=True)
 
         self.conv2 =  nn.Sequential(
-            nn.Conv2d(20, 40, 8, stride=1, padding=4),
-            nn.BatchNorm2d(40),
+            nn.Conv2d(20, 40, 8, stride=1, padding=4)
         )
         self.maxpool2 = nn.MaxPool2d(4, stride=4, return_indices=True)
 
         self.conv3 =  nn.Sequential(
-            nn.Conv2d(40, 60, 7, stride=1, padding=3),
-            nn.BatchNorm2d(60),
+            nn.Conv2d(40, 60, 7, stride=1, padding=3)
         )
         self.maxpool3 = nn.MaxPool2d(4, stride=4, return_indices=True)
 
         self.conv4 =  nn.Sequential(
-            nn.Conv2d(60, 80, 7, stride=1, padding=3),
-            nn.BatchNorm2d(80),
+            nn.Conv2d(60, 80, 7, stride=1, padding=3)
         )
         self.maxpool4 = nn.MaxPool2d(4, stride=4, return_indices=True)
 
@@ -337,26 +333,22 @@ class AutoencoderVAEBigConvNoFully(nn.Module):
 
         self.decoder1 = nn.Sequential(
             nn.ConvTranspose2d(20, 3, 12, stride=1, padding=6, output_padding=0),
-            nn.BatchNorm2d(3),
             nn.Sigmoid()
         )
 
         self.decoder2 = nn.Sequential(
             nn.ConvTranspose2d(40, 20, 8, stride=1, padding=4, output_padding=0),
-            nn.BatchNorm2d(20),
-            nn.LeakyReLU()
+            nn.Sigmoid()
         )
 
         self.decoder3 = nn.Sequential(
             nn.ConvTranspose2d(60, 40, 7, stride=1, padding=3, output_padding=0),
-            nn.BatchNorm2d(40),
-            nn.LeakyReLU()
+            nn.Sigmoid()
         )
 
         self.decoder4 = nn.Sequential(
             nn.ConvTranspose2d(80, 60, 7, stride=1, padding=3, output_padding=0),
-            nn.BatchNorm2d(60),
-            nn.LeakyReLU()
+            nn.Sigmoid()
         )
 
     def forward(self, x):

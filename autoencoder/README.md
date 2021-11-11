@@ -16,4 +16,4 @@ Feel free to replace it with the version that [fits for you](https://pytorch.org
 two images from the dataset and the reconstructions by the selected autoencoder.
 - The implemented autoencoder architectures can be found in `Autoencoder.py`. Please note that the architectures require a image size of 935x900 Pixel.
 - The trained autoencoders can be found in the directory `trained_autoencoders`. (TODO)
-- The file `test_autoencoders.py` contains a script that tests a (trained) autoencoder architecture. It prints several measurable metrics for evaluation. (TODO)
+- The file `test_autoencoder.py` contains a script that tests a (trained) autoencoder architecture. It prints several measurable metrics for evaluation.

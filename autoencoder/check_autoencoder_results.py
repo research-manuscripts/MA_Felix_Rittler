@@ -1,7 +1,7 @@
 import torch
 from Autoencoder import AutoencoderVAEBigConvNoFully
 import GuiImageDataset
-from torch_service import load_paths_from_folder, show_torch_image
+from torch_service import load_paths_from_folder, save_torch_image
 from torch import nn
 import itertools
 import time
@@ -16,14 +16,14 @@ print(device)
 model.to(device)
 
 # Load dataset
-dataset = load_paths_from_folder("datasets/validation_test")
+dataset = load_paths_from_folder("datasets/exp2")
 transformed_dataset = GuiImageDataset.LazyLoadedGuiImageDataset(dataset)
 dataset_loader =  torch.utils.data.DataLoader(transformed_dataset, batch_size=1, num_workers=0)
 
 # Load trained autoencoder
 model.load_state_dict(torch.load(autoencoder_path, device))
-
-for data in itertools.islice(dataset_loader, 2):
+i=0
+for data in dataset_loader:
     images = data
     images = images.to(device)
 
@@ -40,5 +40,6 @@ for data in itertools.islice(dataset_loader, 2):
 
     # print original and prediction
     frame = images[0].detach()
-    show_torch_image(frame)
-    show_torch_image(pred[0].detach())
+    save_torch_image(frame, "{}.png".format(i))
+    save_torch_image(pred[0].detach(), "{}_pred.png".format(i))
+    i+=1

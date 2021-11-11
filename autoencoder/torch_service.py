@@ -31,6 +31,14 @@ def show_torch_image(torch_tensor):
     plt.show()
 
 """
+Save an image with matplotlib
+"""
+def save_torch_image(torch_tensor, name):
+    plt.figure(figsize=(100,100))
+    plt.imshow(np.transpose(torch_tensor, (1, 2, 0)))
+    plt.savefig(name)
+
+"""
 Plots a prediction
 """
 def plot_classes_preds(net, images, outputs):

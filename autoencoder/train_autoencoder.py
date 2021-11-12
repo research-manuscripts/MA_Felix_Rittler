@@ -7,8 +7,8 @@ import Autoencoder
 from torch_service import get_device, load_paths_from_folder, plot_classes_preds, show_torch_image
 
 DATASET_PATH = "datasets/images_very_big"
-model = Autoencoder.AutoencoderVAEBigConvNoFully()
-BATCH_SIZE = 16
+model = Autoencoder.AutoencoderVAEMediumConvSmallKernelBigBottleneck()
+BATCH_SIZE = 12
 LEARNING_RATE = 2e-3
 NUMBER_OF_EPOCHS = 3
 

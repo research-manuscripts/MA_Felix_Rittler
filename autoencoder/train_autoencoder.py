@@ -97,4 +97,4 @@ for epoch in range(1, NUMBER_OF_EPOCHS+1):
     print('Epoch: {} \tTraining Loss: {:.6f}'.format(epoch, train_loss))
 
 # save trained autoencoder
-torch.save(model.state_dict(), "trained_autoencoder.pt")
+torch.save(model.state_dict(), "trained_autoencoders/trained_autoencoder.pt")

@@ -1,5 +1,7 @@
 *.png
 *.npy
+*.pt
+*.txt
 env/*
 _archive
 .vscode
@@ -9,3 +11,5 @@ datasets/*
 runs_archive/*
 runs/*
 tests/*
+tests_archive/*
+results/*

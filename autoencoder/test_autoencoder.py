@@ -1,11 +1,11 @@
 import torch
 from torch import nn
-import GuiImageDataset
+from autoencoder import GuiImageDataset
 from torch.utils.tensorboard import SummaryWriter
-import Autoencoder
-from torch_service import get_device, load_paths_from_folder, show_torch_image
+from autoencoder import Autoencoder
+from autoencoder import torch_service
 
-# PLEASE CONFIGURE THESE PARAMETERS BEFORE RUNNING
+# Begin of variables that can be edited by the user
 DATASET_PATH = "datasets/test_dataset"
 # Autoencoder and training data
 autoencoder_path = "trained_autoencoders/a2.pt"
@@ -13,7 +13,7 @@ model = Autoencoder.Autoencoder2()
 # log every n batches to Tensorboard
 log_rhythm = 250
 tensorboard_destination = "tests"
-# END OF PARAMETERS
+# End of variables that can be edited by the user
 
 # Tensorboard setup
 writer = SummaryWriter(tensorboard_destination)
@@ -21,7 +21,7 @@ writer = SummaryWriter(tensorboard_destination)
 BATCH_SIZE = 1
 
 # load dataset from path
-paths = load_paths_from_folder(DATASET_PATH)
+paths = torch_service.load_paths_from_folder(DATASET_PATH)
 transformed_dataset = GuiImageDataset.LazyLoadedGuiImageDataset(paths)
 dataset_loader =  torch.utils.data.DataLoader(transformed_dataset, batch_size=BATCH_SIZE, num_workers=0)
 
@@ -36,13 +36,13 @@ images = dataiter.next()
 images = images.numpy()
 
 # display an image
-show_torch_image(images[0])
+torch_service.show_torch_image(images[0])
 
 # init loss function
 criterion = nn.MSELoss()
 
 # push to available device
-device = get_device()
+device = torch_service.get_device()
 print(device)
 model.to(device)
 

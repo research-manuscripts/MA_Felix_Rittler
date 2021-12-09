@@ -1,20 +1,17 @@
 import torch
-import Autoencoder
-from torch_service import load_paths_from_folder
+from autoencoder import Autoencoder
 import time
 import numpy as np
 
-# Autoencoder and training data
-autoencoder_paths = [
-    "trained_autoencoders/a1.pt", "trained_autoencoders/a2.pt",
-    "trained_autoencoders/a3.pt", "trained_autoencoders/a4.pt"
-]
+# Begin of variables that can be edited by the user
 trained_models = [
     (Autoencoder.AutoencoderVAEMediumConvBigKernel(), "run_3b7d5453ce41baeba6fcab6937df2c16a4fc9523.pt"),
     (Autoencoder.AutoencoderVAEBigConvNoFully(), "run_8082f9d131644f4a2d6ea92f3a0858599d766f1a.pt"),
     (Autoencoder.AutoencoderVAEMediumConvSmallKernelBigBottleneck(), "run_c06146c6b89dddb2781126fa3e8ba7d36693f78b.pt"),
     (Autoencoder.AutoencoderVAEMediumConvSmallKernel(), "run_012f2d5ce7ab9b1e437ffe10fc120ec1107fb3a6.pt")
 ]
+# End of variables that can be edited by the user
+
 dummy_input = torch.randn(1, 3, 935, 900, dtype=torch.float)
 torch.save(dummy_input, 'performance_test_tensor.pt')
 

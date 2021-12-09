@@ -1,18 +1,18 @@
 import torch
 import numpy as np
 from torch import nn
-import GuiImageDataset
+from autoencoder import GuiImageDataset
 from torch.utils.tensorboard import SummaryWriter
-import Autoencoder
-from torch_service import get_device, load_paths_from_folder, plot_classes_preds, show_torch_image
+from autoencoder import Autoencoder
+from autoencoder import torch_service
 
-# PLEASE CONFIGURE THESE PARAMETERS BEFORE RUNNING
+# Begin of variables that can be edited by the user
 DATASET_PATH = "datasets/train_dataset"
 model = Autoencoder.Autoencoder4()
 BATCH_SIZE = 16
 LEARNING_RATE = 2e-3
 NUMBER_OF_EPOCHS = 3
-# END OF PARAMETERS TO CONFIGURE
+# End of variables that can be edited by the user
 
 # Tensorboard setup
 writer = SummaryWriter()
@@ -20,7 +20,7 @@ writer = SummaryWriter()
 log_rhythm = 25
 
 # load dataset from path
-paths = load_paths_from_folder(DATASET_PATH)
+paths = torch_service.load_paths_from_folder(DATASET_PATH)
 transformed_dataset = GuiImageDataset.LazyLoadedGuiImageDataset(paths)
 dataset_loader =  torch.utils.data.DataLoader(transformed_dataset, batch_size=BATCH_SIZE, num_workers=0)
 
@@ -36,7 +36,7 @@ images = images.numpy()
 
 # display some images
 for idx in np.arange(2):
-    show_torch_image(images[idx])
+    torch_service.show_torch_image(images[idx])
 
 # init criterion and optimizer
 criterion = nn.BCELoss()
@@ -45,7 +45,7 @@ optimizer = torch.optim.Adamax(
 )
 
 # push to available device
-device = get_device()
+device = torch_service.get_device()
 print(device)
 model.to(device)
 
@@ -90,7 +90,7 @@ for epoch in range(1, NUMBER_OF_EPOCHS+1):
 
             # ...log a figure showing the model's predictions
             writer.add_figure('predictions',
-                            plot_classes_preds(model, images, outputs),
+                            torch_service.plot_classes_preds(model, images, outputs),
                             i)
             model.to(device)
             running_loss = 0.0

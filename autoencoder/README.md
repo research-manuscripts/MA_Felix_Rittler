@@ -10,9 +10,11 @@ Feel free to replace it with the version that [fits for you](https://pytorch.org
 3. Generate your own dataset [here](https://github.com/research-manuscripts/MA_Felix_Rittler/tree/main/jadx_mock)
 
 # Usage
+Note: the script to train an autoencoder uses Autoencoder4 as default autoencoder, since this one produces the highest quality outputs. The other scripts use Autoencoder2 as default autoencoder, since a trained Autoencoder2 is committed to this repository. So, all scripts are directly runnable after adding a dataset.
+
 - To train you own autoencoder edit `train_autoencoder.py` by replacing the used dataset, autoencoder architecture or hyperparameters and run it by executing
 `python train_autoencoder.py`. The trained autoencoder will be saved into the file `trained_autoencoder.pt`
-- If you want to inspect a autoencoder architecture edit `check_autoencoder_results.py` by replacing the used dataset, autoencoder architecture or trained autoencoder. The selected autoencoder will predict some images based on images, that are given as a dataset. The predictions are saved along with the images from the dataset.
+- If you want to inspect a autoencoder architecture edit `check_autoencoder_results.py` by replacing the used dataset, autoencoder architecture or trained autoencoder. The selected autoencoder will predict some images based on images, that are given as a dataset. The predictions are saved along with the images from the dataset. Additionally, it will print the losses to a text file.
 - The implemented autoencoder architectures can be found in `Autoencoder.py`. Please note that the architectures require a image size of 935x900 Pixel.
 - The trained autoencoders can be found in the directory `trained_autoencoders`.
 - The file `test_autoencoder.py` contains a script that tests a (trained) autoencoder architecture with a given dataset. It prints several measurable metrics for evaluation. Please keep in mind to use two different datasets for training and testing the autoencoder.

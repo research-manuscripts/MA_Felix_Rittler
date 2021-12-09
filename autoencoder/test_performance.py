@@ -5,10 +5,10 @@ import numpy as np
 
 # Begin of variables that can be edited by the user
 trained_models = [
-    (Autoencoder.AutoencoderVAEMediumConvBigKernel(), "run_3b7d5453ce41baeba6fcab6937df2c16a4fc9523.pt"),
-    (Autoencoder.AutoencoderVAEBigConvNoFully(), "run_8082f9d131644f4a2d6ea92f3a0858599d766f1a.pt"),
-    (Autoencoder.AutoencoderVAEMediumConvSmallKernelBigBottleneck(), "run_c06146c6b89dddb2781126fa3e8ba7d36693f78b.pt"),
-    (Autoencoder.AutoencoderVAEMediumConvSmallKernel(), "run_012f2d5ce7ab9b1e437ffe10fc120ec1107fb3a6.pt")
+    (Autoencoder.Autoencoder1(), "trained_autoencoders/a1.pt"),
+    (Autoencoder.Autoencoder2(), "trained_autoencoders/a2.pt"),
+    (Autoencoder.Autoencoder3(), "trained_autoencoders/a3.pt"),
+    (Autoencoder.Autoencoder4(), "trained_autoencoders/a4.pt")
 ]
 # End of variables that can be edited by the user
 

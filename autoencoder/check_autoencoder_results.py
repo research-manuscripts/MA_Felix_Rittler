@@ -8,10 +8,10 @@ import torchvision.utils
 
 # Begin of variables that can be edited by the user
 # Autoencoder and training data
-autoencoder_path = "trained_autoencoders/a4.pt"
-model = Autoencoder.Autoencoder4()
-dataset_path = "datasets/exp2"
-loss_values_output_file = "losses_real_jadx_a4.txt"
+autoencoder_path = "trained_autoencoders/a2.pt"
+model = Autoencoder.Autoencoder2()
+dataset_path = "datasets/check_dataset"
+loss_values_output_file = "losses.txt"
 # End of variables that can be edited by the user
 
 # load device and push to device

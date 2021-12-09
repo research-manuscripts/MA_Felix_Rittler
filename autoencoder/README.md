@@ -12,7 +12,7 @@ Feel free to replace it with the version that [fits for you](https://pytorch.org
 # Usage
 - To train you own autoencoder edit `train_autoencoder.py` by replacing the used dataset, autoencoder architecture or hyperparameters and run it by executing
 `python train_autoencoder.py`. The trained autoencoder will be saved into the file `trained_autoencoder.pt`
-- If you want to inspect a autoencoder architecture edit `check_autoencoder_results.py` by replacing the used dataset, autoencoder architecture or trained autoencoder. It will print the first two images from the dataset and the reconstructions by the selected autoencoder.
+- If you want to inspect a autoencoder architecture edit `check_autoencoder_results.py` by replacing the used dataset, autoencoder architecture or trained autoencoder. The selected autoencoder will predict some images based on images, that are given as a dataset. The predictions are saved along with the images from the dataset.
 - The implemented autoencoder architectures can be found in `Autoencoder.py`. Please note that the architectures require a image size of 935x900 Pixel.
 - The trained autoencoders can be found in the directory `trained_autoencoders`.
 - The file `test_autoencoder.py` contains a script that tests a (trained) autoencoder architecture with a given dataset. It prints several measurable metrics for evaluation. Please keep in mind to use two different datasets for training and testing the autoencoder.

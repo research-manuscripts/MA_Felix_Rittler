@@ -14,5 +14,8 @@ Feel free to replace it with the version that [fits for you](https://pytorch.org
 `python train_autoencoder.py`. The trained autoencoder will be saved into the file `trained_autoencoder.pt`
 - If you want to inspect a autoencoder architecture edit `check_autoencoder_results.py` by replacing the used dataset, autoencoder architecture or trained autoencoder. It will print the first two images from the dataset and the reconstructions by the selected autoencoder.
 - The implemented autoencoder architectures can be found in `Autoencoder.py`. Please note that the architectures require a image size of 935x900 Pixel.
-- The trained autoencoders can be found in the directory `trained_autoencoders`. (TODO)
+- The trained autoencoders can be found in the directory `trained_autoencoders`. 
 - The file `test_autoencoder.py` contains a script that tests a (trained) autoencoder architecture. It prints several measurable metrics for evaluation.
+
+# Tensorboard
+The test script and the train script use Tensorboard to log some metrics (error and some predictions). You can find the Tensorboard files from training in the `runs` directory and those from testing within the `tests` directory. To find more about Tensorboard, please have a look [here](https://pytorch.org/tutorials/recipes/recipes/tensorboard_with_pytorch.html).

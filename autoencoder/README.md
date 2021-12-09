@@ -16,6 +16,7 @@ Feel free to replace it with the version that [fits for you](https://pytorch.org
 - The implemented autoencoder architectures can be found in `Autoencoder.py`. Please note that the architectures require a image size of 935x900 Pixel.
 - The trained autoencoders can be found in the directory `trained_autoencoders`.
 - The file `test_autoencoder.py` contains a script that tests a (trained) autoencoder architecture with a given dataset. It prints several measurable metrics for evaluation. Please keep in mind to use two different datasets for training and testing the autoencoder.
+- The file `test_performance.py` contains a script, that executes some performance tests on a list of autoencoders. It prints the results (mean and standard deviation of the inference time) to a text file.
 # Tensorboard
 The test script and the train script use Tensorboard to log some metrics (error and some predictions). You can find the Tensorboard files from training in the `runs` directory and those from testing within the `tests` directory. To find more about Tensorboard, please have a look [here](https://pytorch.org/tutorials/recipes/recipes/tensorboard_with_pytorch.html).
 

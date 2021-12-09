@@ -1,11 +1,7 @@
 import torch
 import Autoencoder
-import GuiImageDataset
 from torch_service import load_paths_from_folder
-from torch import nn
-import itertools
 import time
-import torchvision.utils
 import numpy as np
 
 # Autoencoder and training data
@@ -36,10 +32,10 @@ for (model, autoencoder_path) in trained_models:
 
     f = open("performance_test_results.txt", "a")
     starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
-    repetitions = 10
+    repetitions = 300
     timings_gpu = np.zeros((repetitions,1))
 
-    #GPU-WARM-UP
+    # GPU-WARM-UP
     for _ in range(10):
         _ = model(dummy_input)
 

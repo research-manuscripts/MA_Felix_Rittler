@@ -6,11 +6,13 @@ from torch.utils.tensorboard import SummaryWriter
 import Autoencoder
 from torch_service import get_device, load_paths_from_folder, plot_classes_preds, show_torch_image
 
-DATASET_PATH = "datasets/images_very_big"
-model = Autoencoder.AutoencoderVAEMediumConvSmallKernelBigBottleneck()
-BATCH_SIZE = 12
+# PLEASE CONFIGURE THESE PARAMETERS BEFORE RUNNING
+DATASET_PATH = "datasets/train_dataset"
+model = Autoencoder.Autoencoder4()
+BATCH_SIZE = 16
 LEARNING_RATE = 2e-3
 NUMBER_OF_EPOCHS = 3
+# END OF PARAMETERS TO CONFIGURE
 
 # Tensorboard setup
 writer = SummaryWriter()

@@ -99,7 +99,8 @@ class Autoencoder1(nn.Module):
         return out
 
 """
-Variational Autoencoder with working with 4 Convolutional and no (!) Fully-connected layer
+Variational Autoencoder with working with 4 Convolutional and no (!) Fully-connected layer except
+the layers containing the means and standard deviation
 """
 class Autoencoder2(nn.Module):
 

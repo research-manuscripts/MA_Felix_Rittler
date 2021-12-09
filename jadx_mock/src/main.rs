@@ -29,6 +29,13 @@ fn theme() -> Theme {
 }
 
 ///
+/// Amount of time in milliseconds between running the JADX mock and taking the screenshot.
+/// Depends on the power of your local machine and the window opening animations
+/// of you host OS. If the screenshots are taken before JADX mock is loaded,
+/// increase this time span.
+const TIME_BEFORE_SCREENSHOT: u64 = 200;
+
+///
 /// Starts the generator to generate a number of images into 'target/images'
 /// First command line argument has to be the number of generated images.
 fn main() {
@@ -44,7 +51,7 @@ fn main() {
 
     if args.len() > 1 {
         let size = start_jadx();
-        thread::sleep(Duration::from_millis(200));
+        thread::sleep(Duration::from_millis(TIME_BEFORE_SCREENSHOT));
         capture_screen(format!("target/images/{}.png", args[1]), size.width() as i32, size.height() as i32 + 35);
 
         let new_sys_time = SystemTime::now();

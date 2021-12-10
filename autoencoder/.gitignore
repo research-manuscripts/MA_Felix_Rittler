@@ -7,6 +7,10 @@ _archive
 .vscode
 __pycache__
 trained_autoencoders/*
+!trained_autoencoders/a1.pt
+!trained_autoencoders/a2.pt
+!trained_autoencoders/*.zip
+!trained_autoencoders/a4.pt
 datasets/*
 runs_archive/*
 runs/*

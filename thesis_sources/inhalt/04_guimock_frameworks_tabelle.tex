@@ -1,0 +1,40 @@
+\renewcommand{\tabularxcolumn}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{s}{>{\hsize=.84\hsize}X}
+% \newcolumntype{l}{>{\hsize=.8\hsize}X}
+
+% \begin{table}[htbp!]
+%     \begin{center}
+%         \caption{Klassifikationsergebnisse Kategorie \glqq Eingabedaten\grqq}
+%         \bigskip
+
+        \pgfplotstabletypeset[
+            reset styles,
+            debug=true,
+            string type,
+            header=false,
+            col sep=semicolon,
+            row sep=newline,
+            column type=,
+            skip first n=1,
+            begin table={
+              \begingroup\renewcommand{\arraystretch}{1.5}
+              \begin{xltabular}{\textwidth}{XXXXXX}
+                \caption{Untersuchte GUI-Bibliotheken und -Frameworks (Stand: 30.06.2021)} \label{tab:frameworks} \\
+              \toprule
+              \textbf{Name} & \textbf{Stand} & \textbf{Renderer / basiert auf / Schnittstelle} & \textbf{Anmerkung} & \textbf{Plattform} \\
+              \midrule
+              \endhead
+            },
+            end table={\bottomrule \end{xltabular}\endgroup},
+            every head row/.style={ output empty row },  % suppress printing head row (numbers)
+            % every head row/.style={after row=\midrule},
+            % display columns/0/.style={string type,column name={\textbf{Name}}
+            % },
+            % display columns/1/.style={string type,column name={\textbf{Stand}}},
+            % display columns/2/.style={string type,column name={\textbf{Renderer / basiert auf / Schnittstelle}}},
+            % display columns/3/.style={string type,column name={\textbf{Anmerkung}}},
+            % display columns/4/.style={string type,column name={\textbf{Plattform}}},
+          ]{tabellen/FrameworksTabelle.csv}
+%         \label{table1}
+%     \end{center}
+% \end{table}

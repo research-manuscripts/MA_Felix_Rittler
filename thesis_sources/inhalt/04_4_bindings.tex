@@ -1,0 +1,26 @@
+\section{Implementierung von Python-Bindings}
+Im Proposal zu dieser Masterarbeit wurde vorgeschlagen Bindings zu schreiben, um eine Verwendung des Generators in Python zu ermöglichen.
+Python-Bindings definieren die Schnittstelle, um Bibliotheken anderer Programmiersprachen in Python aufzurufen. Diese Technik wird häufig genutzt um die Geschwindigkeitsvorteile von in C, C++ oder Rust entwickelten Bibliotheken auch in Python zu nutzen.
+
+Ursprünglich war es vorgesehen, Python-Bindings zu entwickeln, um den Generator innerhalb des PyTorch-Quelltexts zu starten. Im Zug des Entwicklungsprozesses traten jedoch Probleme mit Speicherlecks durch OrbTK bei der wiederholten Generierung von Bildern auf. Daher traf ich die Entscheidung, auf die Entwicklung von Python-Bindings zu verzichten und den Generator so umzubauen, dass er nur ein einziges Bild generiert. Ein Bash-Skript startet den Generator dann so oft, bis der Datensatz fertiggestellt ist. Der Generator wird so jedes Mal in einem neuen Prozess gestartet, wodurch keine Speicherlecks und Probleme mit der \gls{cpu}-Auslastung auftreten können. In der Praxis führt dies nicht zu Einschränkungen, da der Datensatz in der Regel nur ein Mal erstellt wird und später nur noch verwendet wird. Es kommt somit nicht zu einem nennenswertem Mehraufwand bei der Entwicklung der Autoencoder.
+
+% Aktuell ist der Generator so aufgebaut, dass für jedes Bild eine neue Instanz von OrbTK in einem eigenen Thread gestartet wird, von welcher ein Screenshot erstellt wird. Für einen Datensatz von 1000 Bildern werden daher 1000 Instanzen geöffnet und geschlossen. Das Schließen der Instanzen scheint jedoch zum aktuellen Zeitpunkt nicht fehlerfrei zu funktionieren und resultiert in einem Speicherleck. Die \gls{cpu}-Auslastung steigt ebenso immer weiter an, bis sie 100\% erreicht und die Generierung der Bilder immer langsamer funktioniert. Die einzige Lösung für dieses Problem ist es, jeweils einen eigenen Prozess pro OrbTK-Instanz zu starten.
+
+
+% \begin{itemize}
+%     \item Warum?
+%     \item Was ist das?
+%     \begin{itemize}
+%         \item Rust Code der von Python (beispielsweise über Pip Package) aufgerufen werden kann
+%         \item Deklarierte Schnittstelle
+%     \end{itemize}
+%     \item Wie funktioniert das?
+%     \begin{itemize}
+%         \item PyO3 (\url{https://pyo3.rs})
+%         \item Siehe Beispiele
+%     \end{itemize}
+% \end{itemize}
+
+\section{Fazit}
+Das Ergebnis der Entwicklung des Mocks ist insgesamt zufriedenstellend. Die Abweichungen zwischen JADX und dem Mock sind bis auf wenige Features und den Betriebssystemfunktionalitäten gering. Inwiefern diese Abweichungen für die Ergebnisse eine Role spielen wird in Kapitel~\ref{cha:autoencoder} besprochen.
+Die Bewertung, ob solche Mocks in Zukunft eingesetzt werden sollen, fällt jedoch negativ aus. OrbTK bereitet insgesamt durch ein schlechtes Layout-System, Speicherlecks, aktuell keiner Offscreen-Rendering-Unterstützung und andere Bugs zu viele Probleme. Es ist nur mit Aufwand möglich, einen solchen Mock zu erstellen, der dann auch produktiv eingesetzt werden kann. Alle weiteren untersuchten Frameworks sind ebenfalls noch in einem frühen Stadium und benötigen oft eine \gls{gpu}. Inwiefern letztere durch einen Software-Renderer ersetzt werden kann, ist zum jetzigen Stand zwar unklar, wäre jedoch auch nicht mehr als ein Workaround und damit prinzipiell nicht optimal.

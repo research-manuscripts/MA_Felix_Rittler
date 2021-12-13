@@ -1,0 +1,108 @@
+
+\section{Evaluierung von GUI-Frameworks}
+\label{sec:gui-eval}
+Nachdem das Vorbild des Mocks und die Gedanken hinter der Untersuchung in diesem Kapitel vorgestellt wurden, werden in diesem Abschnitt Anforderungen an die einzelnen Frameworks formuliert. Anschließend werden diese vorgestellt, dann grob sowie im Detail verglichen. Zum Schluss erfolgt die Auswahl des Frameworks und ein Fazit.
+
+\subsection{Kriterien}
+\label{subsec:criteria}
+\todo{Aufteilen in Kriterien die gebraucht werden udn welche die erst später gebraucht werden --> Es soll ein Framework eingesetzt werden,
+das sich möglichst auch schon für diese Einsatzzwecke eignet}
+
+Eine Anforderung an Frameworks ist, dass diese auf möglichst jeder Desktop-Plattform laufen sollen. Insbesondere muss ein Framework unter Linux lauffähig sein, da der Server, der später den Mock ausführt, Linux verwendet. Darüber hinaus sollen möglichst alle Features in Rust implementiert sein. Einer der Hauptgründe Rust zu verwenden, sind die Vorteile bzgl. der Speichersicherheit. Viele Frameworks sind jedoch beispielsweise in C++ implementiert und werden lediglich über Bindings durch Rust-Applikationen verwendbar gemacht. Solche Frameworks können in Rust in der Regel nur unsicher aufgerufen werden, da C++ keine vergleichbaren Sicherheitsfeatures bietet.
+
+Des Weiteren existieren einige Anforderungen, die nicht für diese Arbeit erfüllt sein müssen, aber in der Zukunft wichtig werden. Dazu gehört die Unterstützung von Offscreen Rendering durch die \gls{gui}-Frameworks. Eine Möglichkeit für Offscreen Rendering soll vorhanden sein, da die einzelnen Ansichten der \gls{gui} zukünftig auf einem Server ohne Verwendung von Betriebssystemfunktionen prozedural generiert werden sollen. Neben der Möglichkeit des Verzichts auf einen Fenstermanager und Betriebssystembibliotheken soll dadurch ein höherer Grad an Parallelisierung ohne Overhead erreicht werden. Bei Offscreen Rendering wird, vereinfacht beschrieben, nicht in ein Betriebssystemfenster (\dh auf den Bildschirm) gerendert. Stattdessen wird \zb im Fall von DirectX ein sog. Render Target~\cite{stevewhimsRenderTargetsOverview} gewählt, das eine Form einer Bitmap darstellt, die sich im Speicher befindet.
+Offscreen Rendering ist für das Training der Autoencoder hilfreich. Da als Trainingsdaten lediglich Abbilder benötigt werden, ist es ausreichend, den Buffer (\dh die Bitmap) als Bilddatei abzuspeichern. So können Trainingsdaten ohne den Overhead bei der Initialisierung der Betriebssystem-Fenster generiert werden. Eine unbedingte Notwendigkeit für Offscreen Rendering besteht zum jetzigen Zeitpunkt jedoch nicht. Für die erhoffte Wiederverwendbarkeit im Zuge des Trainings der am \gls{fzi} entwickelten Netze wird Offscreen Rendering jedoch zur Voraussetzung. Hier soll ausschließlich auf der \gls{gpu} gerechnet werden, auf welcher keine Betriebssystemfunktionen zur Verfügung stehen.
+Für das reine Generieren von Trainingsdaten ist diese Anforderung nicht notwendig. Die Trainingsdaten im Rahmen dieser Masterarbeit werden vorwiegend auf einem Desktop-PC generiert, auf welchem der Trainingsdatengenerator gestartet wird. Die benötigten Betriebssystemfunktionen stehen somit zur Verfügung.
+
+Eine weitere Anforderung ist, dass das Framework möglichst ausschließlich die \gls{cpu} verwenden und nicht auf der \gls{gpu} rendern soll. Diese Anforderung ist für das reine Training der Autoencoder zunächst von untergeordneter Bedeutung, da hierfür ohne Probleme die \gls{gpu} verwendet werden kann. Da das Training der am \gls{fzi} entwickelten Netze jedoch auf der \gls{gpu} stattfinden soll, könnten Abhängigkeiten zu Grafikschnittstellen, welche zusätzliche \gls{gpu}-Zugriffe verursachen, für Komplikationen sorgen. Daneben ist es sinnvoll, dass die Generierung von Trainingsdaten auch ohne \gls{gpu} funktioniert, beispielsweise wenn diese schon durch andere Prozesse belegt ist. \gls{cpu}-Rendering ist im Vergleich zu Offscreen Rendering von geringerer Bedeutung, da das Nichtvorhandensein den zukünftigen Einsatz des Mocks nicht komplett verhindert, sondern unter Umständen nur die Nutzung der \gls{gpu} komplizierter wird. Des Weiteren könnten hier zukünftig Software-Implementierungen von Grafikschnittstellen wie lavapipe\footnote{\url{https://airlied.blogspot.com/2020/08/vallium-software-swrast-vulkan-layer-faq.html}, letzter Zugriff: 13.12.2021} Abhilfe schaffen. Mit lavapipe ist es möglich, Vulkan-Code ohne eine \gls{gpu} auszuführen. Dieser Ansatz ist jedoch vergleichsweise langsam und in einem frühen Stadium.
+
+Zuletzt sollen die Frameworks möglichst schlank sein und keine Abhängigkeiten zu großen anderen Frameworks wie Qt\footnote{\url{https://www.qt.io/}, letzter Zugriff: 13.12.2021} oder GTK\footnote{\url{https://www.gtk.org/}, letzter Zugriff: 13.12.2021} aufweisen. Zusätzliche Abhängigkeiten erhöhen die Komplexität und verringern die Wahrscheinlichkeit, dass ein Einsatz ohne \gls{gpu}-Zugriffe möglich ist.
+
+
+\subsection{GUI-Frameworks}
+
+Als Basis für die Evaluierung der Frameworks dienen die Frameworks, die auf der Seite \emph{Are we GUI yet?}~\cite{AreWeGUI} aufgelistet sind. Sogenannte \emph{Are we\dots?}-Seiten werden im Rust-Umfeld traditionell dazu verwendet, den aktuellen Stand der Entwicklung zu einem spezifischen Thema zu darzulegen. Beispiele hierfür geben die Seiten \emph{Are we web yet?}\footnote{\url{https://www.arewewebyet.org}, letzter Zugriff: 13.12.2021} und \emph{Are we game yet?}\footnote{\url{https://arewegameyet.rs/}, letzter Zugriff: 13.12.2021}. Weitere, aktiv entwickelte Frameworks wurden in einer weiterführenden Recherche nicht gefunden. Diese Frameworks der Seite Are we GUI yet? werden in der Tabelle \ref{tab:frameworks} aufgelistet. Bei einigen Einträgen handelt es sich streng genommen um Bibliotheken und damit nicht um Frameworks. Im Unterschied zu Bibliotheken, geben Frameworks anhand von Schnittstellen und abstrakten Implementierungen Richtlinien für die Realisierung einer Lösung vor, welche eine bestimmte Architektur reflektieren~\cite[S.~412]{vogelArchitekturVorgehenWIE2009}. Dahingegen kann der Entwickler bei Verwendung einer Bibliothek selbst entscheiden, wann, wo und wie er diese einsetzt. Da Frameworks jedoch die Mehrheit darstellen und es sich bei den in Frage kommenden Einträgen ausschließlich um Frameworks handelt, wird hier zur besseren Lesbarkeit ausschließlich der Begriff \emph{Framework} verwendet.
+
+In der Tabelle fehlt lediglich der Rust Qt Binding Generator, da dieser Bindings generiert um Rust-Quelltext in Qt aufrufbar zu machen. Damit ist diese Bibliothek nicht zur \gls{gui}-Entwicklung in Rust geeignet und wird daher hier nicht betrachtet. Bezüglich des Stands der Entwicklung der Bibliotheken und Frameworks werden in der Tabelle, soweit möglich, die Angaben des Entwicklers verwendet. Sofern der Entwickler selbst keine Angaben macht, wurden die Einträge als \emph{stabil} klassifiziert, falls die Versionsnummer mindestens 1.0 beträgt und in den anderen Fällen als \emph{instabil} klassifiziert. Azul wurde als \emph{sehr instabil} eingestuft, da hier nur Nightly Builds existieren und damit kein stabilisierter (Alpha- oder Beta-) Release.
+Die mittlere Spalte der Tabelle enthält die wichtigsten grundlegenden Werkzeuge, Schnittstellen etc. auf denen das entsprechende Framework basiert. Dazu gehören verwendete Renderer (Raqote, GFX etc.), Grafikschnittstellen (wie OpenGL, Vulkan, DirectX etc.) bzw. deren Wrapper (Glium, wgpu etc.) oder GUI-Frameworks (Qt, GTK etc.). In der Spalte \emph{Anmerkung} befinden sich Anmerkungen zu den GUI-Frameworks sowie besondere Einschränkungen. Die Angabe \emph{Desktop} in der rechten Spalte ist hierbei eine Verallgemeinerung der Plattformen Windows, macOS und Linux/Unix. Diese Bezeichnung wurde gewählt, sofern alle drei Plattformen durch die Entwickler adressiert wurden. Die meisten Frameworks sind nicht in einer stabilen Version vorhanden und die unterstützten Plattformen und Schnittstellen können sich schnell ändern. Als Stichtag für die grobe Evaluierung wurde deshalb der 30.06.2021 gewählt. An diesem Tag musste die Vorauswahl der Frameworks getroffen werden, um genügend Zeit für die Einzelevaluierung und die Erstellung des Trainingsdatengenerators zu haben. Daher sind alle Informationen über Frameworks in diesem Kapitel auf dem Stand dieses Stichtages, um die Entscheidungsgrundlage darzulegen.
+
+
+\subsection{Vorauswahl}
+
+Die in Tabelle~\ref{tab:frameworks} dargestellten Informationen über die Frameworks lassen eine Vorselektion zu, in der viele Frameworks schon ausgeschlossen werden konnten. Zunächst sind offensichtlicherweise alle Frameworks nicht verwendbar, die den Desktop als Plattform nicht unterstützen. macOS oder Windows reichen hier nicht aus, da der entsprechende Server unter Linux läuft. Demnach entfallen auch eingebettete Plattformen oder das Web als Plattform. Darüber hinaus können auch die beschriebenen, nur in Form von Bindings für Rust bereitstehenden Frameworks aussortiert werden. Frameworks, die Qt oder GTK einsetzen, wurden ebenso aussortiert, da diese kein Offscreen Rendering
+%\textcolor{red}{(jedenfalls ist dem Autor nichts bekannt - Quelle?)}
+unterstützen, viele Abhängigkeiten haben und sehr groß sind. Nach dieser einfachen Vorselektion bleiben folgende Frameworks übrig: Azul, Conrod, Druid, egui, Iced, KAS und OrbTK.
+
+Azul ist in einem sehr frühen Entwicklungsstadium ohne stabilisierter Release und wurde deshalb im weiteren Verlauf nicht berücksichtigt. Bei der Entwicklung von Druid ist es laut den Entwicklern kein Ziel, in eine benutzerdefinierte Render-Pipeline eingebettet zu werden~\cite{LinebenderDruid2018}. Druid unterstützt Offscreen Rendering aktuell nicht und es ist daher auch unwahrscheinlich, dass dies in Zukunft der Fall sein wird. Zukünftig wird genau dies jedoch benötigt, weshalb Druid ebenso nicht weiter berücksichtigt wurde.
+
+Von den verbleibenden Frameworks verwendet ausschließlich OrbTK \gls{cpu}-Rendering mit der Bibliothek \emph{raqote}\footnote{\url{https://github.com/jrmuizel/raqote}, letzter Zugriff: 13.12.2021}. Die Frameworks Iced und KAS verwenden wgpu\footnote{\url{https://wgpu.rs/}, letzter Zugriff: 13.12.2021}, das eine Abstraktionsschicht für native Grafikschnittstellen wie Vulkan, Metal oder DirectX darstellt. Conrod oder egui bieten mehrere Backends an. Bei diesen kann es sich um Wrapper für Grafikschnittstellen, etwa in Form von Glium\footnote{\url{https://github.com/glium/glium}, letzter Zugriff: 13.12.2021} für OpenGL oder Vulkano\footnote{\url{https://github.com/vulkano-rs/vulkano}, letzter Zugriff: 13.12.2021} für Vulkan, oder um Grafik-Engines, \gls{gpu}-Rendering-Bibliotheken etc. handeln. Wie in Abschnitt~\ref{subsec:criteria} beschrieben wurde, ist \gls{cpu}-Rendering keine Anforderung, die auf jeden Fall erfüllt sein muss, da verschiedene Maßnahmen denkbar sind um das dort beschriebene Problem zu umgehen. \gls{gpu}-Rendering-Frameworks wurden daher vorerst weiter mit einbezogen.
+
+\input{inhalt/04_guimock_frameworks_tabelle.tex}
+
+
+\subsection{Detailvergleich}
+
+Die verbleibenden Frameworks wurden detaillierter untersucht und gegebenenfalls Tests unterzogen. %Hier ist es nicht mehr möglich, eine Entscheidung ausschließlich anhand harter Kriterien zu treffen.
+Die in Abschnitt \ref{sec:gui-eval} beschriebenen Kriterien werden von allen Frameworks außer OrbTK gleichermaßen erfüllt bzw. im Fall des \gls{cpu}-Renderings nicht erfüllt.
+Weitere Entscheidungskriterien sind nun beispielsweise die Qualität der Dokumentation, die Entwicklungsaktivität, Kommunikationsmöglichkeiten mit den Entwicklern sowie die Unterstützung oder Verwendung möglichst etablierter Bibliotheken und Schnittstellen. Gute Kommunikationsmöglichkeiten mit den Entwicklern sind in diesem Fall besonders wichtig, da sich viele Frameworks noch in einem frühen Stadium befinden, in welchem die Dokumentation oft nur unvollständig vorhanden ist. Des Weiteren ist Offscreen Rendering kein zentrales Feature der meisten Frameworks und daher in der Regel nicht oder nur schlecht dokumentiert. Eine Übersicht der Entscheidungsgrundlage wird in Tabelle~\ref{table:frameworks_detail} dargestellt.
+
+
+\begin{table}[htbp]
+    \begin{center}
+
+\rotatebox{90}{%
+  \begin{minipage}{.85\textheight}
+    \captionof{table}{Bewertung von GUI-Frameworks anhand weicher Kriterien}
+    \label{table:frameworks_detail}
+        \renewcommand{\arraystretch}{1.5}
+
+        \begin{tabularx}{\textwidth}{ XXXXX }
+            \toprule
+            OrbTK & Iced  & KAS   & egui & Conrod \\
+            \hline
+            ++ \gls{cpu}-Rendering & + wgpu-Unterstützung & + wgpu-Unterstützung & + viele unterstützte Grafik-Backends, wgpu nur über 3rd-Party & + viele unterstützte Grafik-Backends \\
+            + Entwicklerchat & + größte Entwicklergemeinschaft & + starke Entwicklertätigkeit & + starke Entwicklertätigkeit und mehrere Entwickler     & + starke Entwicklertätigkeit \\
+            + Dokumentation durch Readmes, Chat, Beispiele und Rust Docs & + Entwicklerchat & - nur ein Hauptentwickler & + Diskussionsräume & o Anfänge eines Handbuchs, sonst nur Rust Docs \\
+            - Geringer Entwicklungsfortschritt & + Dokumentation durch Readmes, Chat, Beispiele und Rust Docs & - Wenig Dokumentation abseits Beispiele & + Dokumentation durch Get Started, Diskussionen und Rust Docs & - Keine Beispiele \\
+            - Nur ein Hauptentwickler & - etwas weniger Entwicklung in letzter Zeit & - leere Diskussionsräume & o Immediate Mode Toolkit & - kein Chat / Forum \\
+
+            \bottomrule
+        \end{tabularx}
+
+\end{minipage}
+}
+\end{center}
+\end{table}
+
+\subsubsection*{Frameworks mit \gls{gpu}-Rendering}
+
+Vor einer Beschreibung der einzelnen Frameworks ist es wichtig, die Bibliothek \mbox{wgpu} vorzustellen, welche in mehreren Frameworks verwendet wird. wgpu~\cite{GfxrsWgpu2018} ist eine Rust-native WebGPU\footnote{\url{https://www.w3.org/TR/webgpu/}, letzter Zugriff: 13.12.2021}-Implementierung, welche sich durch eine aktive Community auszeichnet. Die Entwicklung wird als Bestandteil von Firefox~\cite{GpuwebGpuwebImplementation2017} u.\,a. durch Mitarbeiter von Mozilla getragen~\cite{GfxrsWgpuPulse2018}, wobei WebGPU als Standard voraussichtlich durch das World Wide Web Consortium\footnote{\url{https://www.w3.org/}, letzter Zugriff: 13.12.2021} anerkannt wird~\cite{WebGPU}. Darüber hinaus unterstützt wgpu mehrere Grafikschnittstellen. Durch eine größere Anzahl an unterstützten Schnittstellen ist es wahrscheinlicher, dass für eine Schnittstelle eine reine Software-Implementierung existiert, welche eingesetzt werden kann. Ein Beispiel dafür ist lavapipe für Vulkan, wie in Abschnitt~\ref{subsec:criteria} beschrieben wurde.
+
+\textbf{Iced~\cite{ramonHecrjIced2019}} ist ein \gls{gui}-Framework, das durch die \gls{gui}-Beschreibungssprache Elm\footnote{\url{https://elm-lang.org/}, letzter Zugriff: 13.12.2021} inspiriert ist. Iced legt laut eigenen Angaben einen Fokus auf Einfachheit und Typsicherheit und basiert auf der Bibliothek wgpu. Es existiert mit 12.100 Sternen auf Github, Commits von 89 verschiedenen Autoren \cite{ramonHecrjIced2019} und einem sehr aktiven Entwicklerchat \cite{IcedZulip} eine vergleichsweise große Entwicklergemeinschaft. Über den Chat können Fragen zur Nutzung geklärt werden, Diskussionen über die Weiterentwicklung stattfinden und Bugreports eingestellt werden.
+
+\textbf{KAS~\cite{KasguiKas2019}} hat gegenüber Iced mit nur zwei Autoren eine deutlich kleinere Entwicklergemeinschaft und wesentlich weniger Dokumentation.
+Das Framework ist durch Qt\footnote{\url{https://www.qt.io/}, letzter Zugriff: 13.12.2021} inspiriert und fokussiert sich nach eigenen Angaben auf Typsicherheit und eine schnelle, effiziente und responsive Benutzerschnittstelle. KAS unterstützt ebenfalls wgpu.
+
+\textbf{egui~\cite{ernerfeldtEmilkEgui2019}} wird von den Autoren als Immediate Mode Toolkit bezeichnet, welche laut eigener Aussage die Eigenschaft haben, besonders einfach und unkompliziert zu sein, jedoch nur eingeschränkte Layout-Möglichkeiten bieten. egui zielt darauf ab, die am einfachsten zu benutzende \gls{gui}-Bibliothek zu sein und unterstützt eine große Anzahl an Integrationen (Web, Glium\footnote{\label{footn:glium}\url{https://github.com/glium/glium}, letzter Zugriff: 13.12.2021}, Bevy Game Engine\footnote{\url{https://bevyengine.org/}, letzter Zugriff: 13.12.2021}, Vulkano\footnote{\label{footn:vulkano}\url{https://github.com/vulkano-rs/vulkano}, letzter Zugriff: 13.12.2021},\dots). Vor dem Hintergrund, dass auch komplexere GUIs durch den Mock dargestellt werden sollen, könnte diese Eigenschaft in Zukunft zu Limitierungen führen.
+
+\textbf{Conrod~\cite{PistonDevelopersConrod2014}} kombiniert laut eigener Aussage die Vorteile von Immediate Mode Toolkits mit denen klassischer \gls{gui}-Frameworks. Es bietet Unterstützung für GFX\footnote{\url{https://github.com/gfx-rs/gfx}, letzter Zugriff: 13.12.2021}, Glium\footnoteref{footn:glium}, OpenGl und Vulkano\footnoteref{footn:vulkano}. Conrod ist sehr unvollständig dokumentiert, da außer einer kurzen Anleitung, bei dem die meisten Kapitel noch nicht umgesetzt wurden, und Rust Docs keine Dokumentation existiert. Darüber hinaus existiert bei Conrod keine schnelle Kommunikationsmöglichkeit mit den Entwicklern oder anderen Nutzern.
+
+\todo{Vor Abgabe: Angaben zu Frameworks checken! (insbesondere unterstützte Schnittstellen, etc.)}
+
+\subsubsection*{Framework mit CPU-Rendering}
+%\todo{Viel von dieser Info in nächstes Kapitel schieben}
+\textbf{OrbTK} ist ein Framework, das zum Ziel hat, skalierbare Benutzerschnittstellen zu ermöglichen. Es basiert auf dem Entity-Component-System-Entwurfsmuster, welches aus der Videospielentwicklung stammt~\cite{muratetAccessibilitySeriousGames2020}, und verwendet Elemente des funktionalen sowie des reaktiven Programmierens \cite{RedoxosOrbtk2015}. Das Framework bietet den Vorteil, dass nur auf der \gls{cpu} gerendert wird und daher keine Abhängigkeiten zur Hardware bestehen. Eigene Tests mit OrbTK und Rücksprachen mit dem Entwickler~\cite{blasiusMomentItIt,blasiusHiDifficultSay} brachten das Ergebnis hervor, dass es zum aktuellen Zeitpunkt jedoch nicht möglich ist in einen Framebuffer ohne die Erstellung eines Fensters durch das Betriebssystem zu rendern. Aktuell würde jedoch der Quelltext überarbeitet und einige Komponenten entkoppelt, sodass dies in Zukunft möglich sei. Der gesteckte Zeitrahmen von mehreren Wochen bis Monaten ist dabei für eine produktive Verwendung im Rahmen dieser Masterarbeit zu lang. Dieser lange Zeitraum kommt durch die im Juli/August 2021 eher langsam verlaufende Entwicklung zustande~\cite{blasiusHiDifficultSay}. Zu diesem Zeitpunkt trug nur ein Entwickler in größerem Maß zum Projekt bei. Wie in Abschnitt~\ref{sec:gui-eval} beschrieben, ist Offscreen Rendering jedoch nicht allein ausschlaggebend für oder gegen eine Verwendung eines Frameworks, da die Trainingsdaten auch ohne dieses Feature generiert werden können.
+
+Die Einarbeitungszeit bei OrbTK war kurz. Widgets, die Blöcke, aus denen eine \gls{gui} gebaut wird, können einfach komponiert und per Builder-Entwurfsmuster konfiguriert werden~\cite{RedoxosOrbtk2015}. Die Arbeit mit OrbTK war zu Beginn durch eine sehr schlechte Performance im Vergleich zu anderen Frameworks geprägt. Bereits bei einfachen Anwendungen kam es zu um mehrere Sekunden verzögerte Reaktionen auf Eingaben durch den Benutzer. Dieses Problem konnte jedoch dadurch behoben werden, dass das Release-Profil von Rust ausgewählt wurde. Bei diesem Profil verzichtet Rust auf viele Überprüfungen und führt Optimierungen durch~\cite{CustomizingBuildsRelease}. Eine Erklärungsmöglichkeit hierfür ist, dass bei OrbTK auch das Rendering durch Rust-Bibliotheken durchgeführt wird und nicht durch Grafikschnittstellen übernommen wird. Dadurch wird der Quelltext, welcher das Rendering durchführt, im Gegensatz zu anderen Frameworks erst durch das Release-Profil optimiert und ist nicht bereits voroptimiert. Overlays und zusätzliche Fenster sind mit OrbTK einfach umzusetzen.
+
+\subsubsection*{Entscheidung}
+
+Unter den Frameworks, die eine \gls{gpu} benötigen, ist Iced das vielversprechendste. Erste Tests mit Iced, in welchen das Menü und die Werkzeugleiste von JADX nachgebaut wurden, bestätigten dies. Die Einarbeitungszeit war verhältnismäßig gering und alle verbleibenden offenen Fragen konnten schnell im Entwicklerchat geklärt werden. Das Layout-System sowie die Erstellung von Komponenten funktionierte zuverlässig.
+
+Bestimmte Funktionalitäten wie Overlays oder zusätzliche Betriebssystemfenster sind zum aktuellen Zeitpunkt nur unvollständig bzw. nicht umgesetzt.
+Eine weitere Limitierung ist, dass Iced zunächst eine \gls{gpu} benötigt. Die verwendete Bibliothek wgpu setzt auf Vulkan und Metal -- eine Umsetzung für DirectX ist geplant~\cite{GfxrsWgpu2018}. Die am weitesten verbreiteten Implementierungen dieser Grafikschnittstellen benötigen zwar eine \gls{gpu}, eine rein \gls{cpu}-basierte Implementierung ist jedoch denkbar.
+
+OrbTK ist durch das \gls{cpu}-Rendering in Zukunft unkompliziert durch das FZI zu verwenden. Da außerdem Features wie zusätzliche Fenster und Overlays existieren und trotz der recht kleinen Entwicklergemeinschaft fiel die Entscheidung auf OrbTK.
+
+
+

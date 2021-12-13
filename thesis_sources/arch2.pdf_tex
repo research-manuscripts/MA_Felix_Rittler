@@ -1,0 +1,92 @@
+%% Creator: Inkscape 1.1.1 (3bf5ae0d25, 2021-09-20), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'arch2.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{255.11811024bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,2.77777778)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0.29418567,0.62894673){\color[rgb]{1,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Sigmoid(Deconv 40x7x7)\end{tabular}}}}%
+    \put(0.29418567,1.02706707){\color[rgb]{1,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Sigmoid(Deconv 60x7x7)\end{tabular}}}}%
+    \put(0.29312959,0.83053161){\color[rgb]{0,0,1}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}MaxUnpool 4x4 Schritt: 4\end{tabular}}}}%
+    \put(0.29312959,1.27324465){\color[rgb]{0,0,1}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}MaxUnpool 4x4 Schritt: 4\end{tabular}}}}%
+    \put(0.29312959,0.47080238){\color[rgb]{0,0,1}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}MaxUnpool 4x4 Schritt: 4\end{tabular}}}}%
+    \put(0.29312959,1.51191947){\color[rgb]{0,0,1}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}MaxPool 4x4 Schritt: 4\end{tabular}}}}%
+    \put(0.29312959,1.75809746){\color[rgb]{1,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}LeakyReLU(Conv 80x7x7)\end{tabular}}}}%
+    \put(0.29312959,2.70364454){\color[rgb]{1,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}LeakyReLU(Conv 20x12x12)\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{arch2.pdf}}%
+    \put(0.29418567,0.31247519){\color[rgb]{1,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Sigmoid(Deconv 20x8x8)\end{tabular}}}}%
+    \put(0.29312959,0.18830262){\color[rgb]{0,0,1}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}MaxUnpool 6x6 Schritt: 6\end{tabular}}}}%
+    \put(0.29418568,0.0642913){\color[rgb]{1,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Sigmoid(Deconv 3x12x12)\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{arch2.pdf}}%
+    \put(0.61944529,0.92713148){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}60x9x9\end{tabular}}}}%
+    \put(0.61944529,0.72814518){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}60x39x37\end{tabular}}}}%
+    \put(0.61831992,0.54819997){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}40x39x37\end{tabular}}}}%
+    \put(0.61831992,0.39004483){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}40x157x151\end{tabular}}}}%
+    \put(0.61944529,0.24871436){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}20x156x150\end{tabular}}}}%
+    \put(0.61944529,0.12470296){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}20x936x901\end{tabular}}}}%
+    \put(0.62012859,0.0162991){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Ausgabe: 3x935x900\end{tabular}}}}%
+    \put(0.61944529,1.85469733){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}60x9x9\end{tabular}}}}%
+    \put(0.61944529,1.63342124){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}80x9x9\end{tabular}}}}%
+    \put(0.61944529,1.39378586){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}80x2x2\end{tabular}}}}%
+    \put(0.61944529,1.14856856){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}80x9x9\end{tabular}}}}%
+    \put(0.61944529,2.04808833){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}60x39x37\end{tabular}}}}%
+    \put(0.61831992,2.22787259){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}40x39x37\end{tabular}}}}%
+    \put(0.61831992,2.38044586){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}40x157x151\end{tabular}}}}%
+    \put(0.61779739,2.75298247){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Eingabe: 3x935x900\end{tabular}}}}%
+    \put(0.61944529,2.64004474){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}20x936x901\end{tabular}}}}%
+    \put(0.61944529,2.52161526){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}20x156x150\end{tabular}}}}%
+    \put(0.29617789,2.46037666){\color[rgb]{1,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}LeakyReLU(Conv 40x8x8)\end{tabular}}}}%
+    \put(0.29617789,2.15023862){\color[rgb]{1,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}LeakyReLU(Conv 60x7x7)\end{tabular}}}}%
+    \put(0.29561783,2.57963293){\color[rgb]{0,0,1}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}MaxPool 6x6 Schritt: 6\end{tabular}}}}%
+    \put(0.29552182,2.30263996){\color[rgb]{0,0,1}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}MaxPool 4x4 Schritt: 4\end{tabular}}}}%
+    \put(0.29552182,1.94888978){\color[rgb]{0,0,1}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}MaxPool 4x4 Schritt: 4\end{tabular}}}}%
+  \end{picture}%
+\endgroup%

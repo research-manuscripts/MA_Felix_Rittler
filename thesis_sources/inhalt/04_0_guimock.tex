@@ -1,0 +1,26 @@
+\chapter{Trainingsdatengenerator}
+\label{cha:gui}
+Der in dieser Arbeit gewählte Forschungsansatz beinhaltet die Verbesserung des Testens von \gls{gui}-Oberflächen durch Verwendung von Autoencodern. Um diese Autoencoder zu trainieren werden Daten über \gls{gui}-Oberflächen benötigt.
+
+Der erste Schritt, der während der Bearbeitung durchgeführt wurde, ist daher die Entwicklung des Trainingsdatengenerators. Die Trainingsdaten werden hierbei prozedural generiert in Form von validen Ansichten von \glspl{gui}.
+Um diesen Generator zu entwickeln wird eine \gls{gui} mit der Programmiersprache Rust als Mock-Applikation nachgebaut. In den nächsten Abschnitten werden daher die Hintergründe der Entscheidung für Rust und die hinter diesem Kapitel stehenden grundlegenden Fragen erläutert.
+Darüber hinaus wird ein Framework zur \gls{gui}-Entwicklung benötigt. Im weiteren Verlauf dieses Kapitels werden die Anforderungen an diese Frameworks erklärt, verschiedene Frameworks evaluiert und eines davon zur Entwicklung ausgewählt. Im Anschluss folgt eine Beschreibung und Analyse der Entwicklung des Mocks und des Generators sowie ein Fazit.
+
+Wie in Abschnitt \ref{sec:rust} beschrieben, ist der Grund für den Einsatz von Rust die Ausführungsgeschwindigkeit bei gleichzeitiger Speichersicherheit. Die Ausführungsgeschwindigkeit beeinflusst später die Trainingsgeschwindigkeit. Die Untersuchung der Einsetzbarkeit und der Reife der Sprache Rust und der Frameworks für anschließende Arbeiten ist, wie in Abschnitt \ref{sec:goal} beschrieben, ein sekundäres Ziel dieser Arbeit. Insbesondere ist angedacht, Rust bzw. solche Mocks für das Training der am \gls{fzi} entwickelten Netze zu verwenden. Daher werden in diesem Kapitel nicht nur die für diese Arbeit ausschlaggebenden Anforderungen, sondern darüber hinaus noch Weitere formuliert. Diese werden entsprechend auch zur Analyse und Bewertung der untersuchten Frameworks herangezogen.
+
+Die \gls{gui}, die in dieser Masterarbeit nachgebaut werden soll, ist die des Dekompilierers JADX\footnote{\url{https://github.com/skylot/jadx}, letzter Zugriff: 13.12.2021}, der aus Android DEX\footnote{\url{https://source.android.com/devices/tech/dalvik/dex-format.html}, letzter Zugriff: 13.12.2021}- oder APK\footnote{\url{https://developer.android.com/guide/components/fundamentals}, letzter Zugriff: 13.12.2021}-Dateien Java-Quelltext generiert.
+%Ein Screenshot dieser \gls{gui} wird in Abb.~\ref{fig:jadx} dargestellt.
+Bei der Implementierung sollen möglichst alle Ansichten von JADX abgedeckt sein. JADX folgt den Betriebssystem-Designsprachen und verwendet viele native Elemente, die je nach Betriebssystem anders aussehen können. Um alle Varianten korrekt abzudecken müssten drei verschiedene Mocks bzw. ein Mock mit drei verschiedenen Designs entwickelt werden. Um diesen Aufwand zu reduzieren, erfolgt in dieser Masterarbeit die Umsetzung des Mocks auf Basis von JADX auf dem Betriebssystem Microsoft Windows 10 Version \mbox{10.0.19043}. Wie sich diese Autoencoder im Bezug auf die Designsprachen anderer Betriebssysteme verhalten, kann in weiteren Arbeiten analysiert werden.
+
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{bilder/jadx.jpg}
+%     \caption{GUI-Oberfläche von JADX unter Windows 10} % nicht ins Glossar hinzufügen!
+%     \label{fig:jadx}
+% \end{figure}
+
+\input{inhalt/04_1_evaluation}
+\input{inhalt/04_2_implementation}
+\input{inhalt/04_3_generation}
+\input{inhalt/04_4_bindings}

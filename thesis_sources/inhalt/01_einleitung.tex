@@ -1,0 +1,52 @@
+\chapter{Einleitung}
+
+% \todo{Add more general description why GUI testing is important under knowledge of specific use case (industry partner)}
+
+Das Testen von Software spielt laut Myers et al. eine wichtige Rolle in \emph{jedem} Softwareentwicklungsprojekt~\cite[S. ix]{myersArtSoftwareTesting2011}. Ein wichtiger Ansatz ist hier das Testen über die \gls{gui} einer Software. Dies ist ein Prozess, der sehr oft manuell, \dh durch Bedienung der \gls{gui} bspw. durch einen Entwickler, durch das Schreiben von Testfällen oder durch das Aufnehmen von Benutzerinteraktion erfolgt~\cite[66-67]{nguyenGUITARInnovativeTool2014}. Durch zunehmende Komplexität von Software -- und damit einhergehend größerer Variabilität bei \gls{gui}-Eingaben und -Zuständen -- wird manuelles Testen zunehmend aufwendiger oder gar unmöglich. Automatisiertes Testen von \glspl{gui} wird nötig, wobei aktuelle automatisierte Testansätze oft nicht über zufällige Eingaben auf der \gls{gui} hinausgehen. Es gibt bspw. den Ansatz des Monkey Testing, bei welchem so lange zufällige Eingaben ausgeführt werden, bis das Programm abstürzt. Aktuelle automatisierte Ansätze haben daher das Problem, dass die Testfälle nicht zwangsläufig realistische Eingaben eines Nutzers widerspiegeln und insbesondere Randfälle verhältnismäßig schwer gefunden werden können.
+
+In den letzten Jahren sind neuronale Netze verstärkt in den Fokus der Forschungsöffentlichkeit gelangt. Die dazugehörigen Durchbrüche waren beispielsweise AlexNet~\cite{krizhevskyImageNetClassificationDeep2012} auf dem Gebiet der Bilderkennung oder GPT-3~\cite{brownLanguageModelsAre2020} aus dem Jahr 2020 auf dem Gebiet der natürlichen Sprachverarbeitung. Diese und andere große Fortschritte im Kontext der neuronalen Netze ermöglichen es, Mustererkennungen deutlich zu verbessern.
+Die Idee hinter dieser Masterarbeit ist es, diese Stärke auf das Testen von \glspl{gui} anzuwenden und so realistische Nutzungsszenarien automatisiert, hochperformant und parallel zu testen. Gegenüber manuellem Testen können dadurch viel mehr mögliche Eingabe-Kombinationen getestet werden. Des Weiteren sollen Randfälle gegenüber randomisiertem, automatischen Testen effizient erkannt und abgedeckt werden.
+\todo{Hinzufügen}
+
+% \todo{Was ist genau das CTRNN-Projekt? Wer leitet es? --> hinzufügen!}
+% \todo{Was für Vorarbeiten gibt es?}
+Am \gls{fzi} werden entsprechende neuronale Netze entwickelt, welche aktuell das Testen von \gls{gui}-Oberflächen nicht unterstützen. Lediglich im Rahmen eines Projektes durch die Entwicklung einer Dummy-App\footnote{\url{https://github.com/neuroevolution-ai/MonkeyTestingDummyApp}, letzter Zugriff: 13.12.2021} war es vorgesehen, \glspl{gui} als Eingabe für diese neuronalen Netze zu verwenden. Über diese App wurden allerdings bisher keine Experimente durchgeführt. Die Bilder, die aus den \gls{gui}-Oberflächen resultieren, können prinzipiell als Eingabe für die neuronalen Netze verwendet werden, sind jedoch zu komplex und hochdimensional, als dass die Netze die Eingaben gut verarbeiten können. Daher ist ein Zwischenschritt nötig, in welchem die Komplexität der Daten reduziert wird. Für diesen Zweck sollen Encoder, die durch das Training von Autoencodern entstehen, zum Einsatz kommen.
+
+
+% Problem: GUI Testing ist aktuell sehr aufwendig oder ineffizient
+% \begin{itemize}
+%     \item Wird aktuell von Hand oder randomisiert automatisch gemacht.
+%     \item Von Hand zu testen ist langsam
+%     \item Manuelle Tester können ihre Erfahrung und Intuition nutzen um Fehler zu finden und so auch Randfälle testen
+%     \item Automatisiert zu testen ist pro Testfall nicht so effektiv aber schnell, ohne manuelle Arbeit durchführbar und parallelisierbar
+% \end{itemize}
+% Idee: GUI Testing ist aktuell sehr aufwendig oder ineffizient
+% \begin{itemize}
+%     \item Durch neuronale Netze sollen beide Vorteile (Effizienz und Schnelligkeit) kombiniert werden
+%     \item Neuronale Netze sollen sinnvolle Testszenarien und auch Randfälle erlernen
+%     \item GUI-Tests können automatisiert und parallel ausgeführt werden
+% \end{itemize}
+% Vorteil:
+% \begin{itemize}
+%     \item Schneller und viel mehr Kombinationen testbar gegenüber manuellem Testen
+%     \item Bessere Kombinationen und Randfälle testbar gegenüber automatisiert (randomisiertem) Testen
+% \end{itemize}
+
+\section{Ziel der Arbeit}
+\label{sec:goal}
+Das Ziel dieser Arbeit ist es, die Verwendung von neuronalen Netzen zum Testen von \gls{gui}-Oberflächen zu ermöglichen. Hierfür wird untersucht, ob und wie Autoencoder Informationen über eine \gls{gui} erlernen können, um so die Dimensionalität der Informationen über die \gls{gui} zu reduzieren. Hierfür wird ein Mock einer \gls{gui} entwickelt, der alle wesentlichen Elemente enthält. Ein Trainingsdatengenerator erzeugt dann Bilder valider Ansichten dieses Mocks. Im Anschluss werden verschiedene Autoencoder mit den erzeugten Bildern trainiert. Diese Bilder müssen prozedural und randomisiert generiert werden, um eine große Variabilität für das Training der Autoencoder abzubilden. Weitere Ziele dieser Arbeit sind daher zu untersuchen, wie Autoencoder Informationen über eine \gls{gui} gut kodieren können und, wie eine solche prozedurale Generierung funktionieren muss, um Autoencoder überhaupt gut trainieren zu können.
+
+Zukünftig ist es geplant auch die am \gls{fzi} entwickelten Netze durch den in dieser Arbeit entwickelten Trainingsdatengenerator zu trainieren. Für dieses Training ist eine hohe Ausführungsgeschwindigkeit nötig. Eine junge Sprache, die in diesem Bereich in den letzten Jahren stetigen Zulauf erhalten hat ist Rust. Es ist ein weiteres, sekundäres Ziel dieser Masterarbeit zu erörtern, inwiefern sich Rust und die existierenden Frameworks dazu eignen, diese Anforderungen umzusetzen. Genaueres zu den Anforderungen an diese Frameworks wird in Kapitel~\ref{cha:gui} beschrieben.
+
+% Aktionen:
+% \begin{itemize}
+%     \item Implementierung einer GUI in Rust zum Training von neuronalen Netzen sowie deren prozedurale Generierung
+%     \item Entwicklung mehrerer Autoencoders, der die Abbilder der GUI entgegennimmt und deren Dimensionen reduziert
+%     \item Durchführung von mehreren Experimenten und Vergleich mehrerer Autoencoder-Architekturen
+% \end{itemize}
+
+% \todo{Akzeptanzkriterien!}
+
+\section{Gliederung}
+Nachdem die Grundlagen eingeführt wurden, wird der aktuelle Forschungsstand analysiert. Im Anschluss wird die eigentliche Forschungsarbeit, d.\,h. die entwickelte Mock-Applikation mit Generator und die Autoencoder-Architekturen, vorgestellt, evaluiert und diskutiert. Zum Schluss erfolgt eine Bewertung der Ergebnisse der Autoencoder, des Generators und des generellen Ansatzes.
+\todo{zu späteren Kapiteln weiteres ergänzen}

@@ -1,0 +1,66 @@
+\chapter{Diskussion}
+Nachdem sowohl der \gls{gui}-Mock entwickelt wurde, die Autoencoder entworfen und untersucht und die Ergebnisse einzeln analysiert wurden, folgt in diesem Kapitel die Gegenüberstellung und ein experimentübergreifender Vergleich der einzelnen Architekturen. Anschließend werden die experimentellen Ergebnisse verwendet, um die Qualität des Datensatzes zu beurteilen sowie die Qualität des Datensatzgenerators zu diskutieren.
+
+\section{Autoencoder}
+Wenn man die Autoencoder gegenüberstellen und vergleichen will, ist zu unterscheiden in Fähigkeiten, Trainings- und Testdaten zu erlernen, sowie Fähigkeiten zur Generalisierung. Ersteres wird in Experiment~1 in Abschnitt~\ref{subsec:exp1} analysiert, in welchem Autoencoder~\ref{a3} knapp vor Autoencoder~\ref{a4} am besten abschneidet. Diese Ergebnisse werden durch Experiment~2 aus Abschnitt~\ref{subsec:exp2} bestätigt -- sowohl in der qualitativen Analyse als auch bei Betrachtung des \gls{mse} der Bilder der Untermenge des Testdatensatzes. Die Autoencoder~\ref{a1} und \ref{a2} schneiden deutlich schlechter ab -- sowohl wenn man den \gls{mse} betrachtet als auch in den qualitativen Analysen. Eine Erklärungsmöglichkeit hierfür kann darin liegen, dass die Fully-Connected-Schichten des Autoencoders~\ref{a1} mit einer Bottleneck-Größe von 60 Neuronen zu klein dimensioniert ist. Der besonders große Filter mit 32x32 bringt jedenfalls im Rahmen dieser Architektur keinen so großen Vorteil, als dass die Ergebnisse auf ähnlichem Niveau wie der anderen Autoencoder liegen würden.
+
+% Wie können Autoencoder GUI Infos lernen
+Die Frage nach den besten Fähigkeiten zu Generalisierung lässt sich nicht so einfach beantworten. Auch in den Experimenten, in denen Abbilder von JADX und des Windows Explorers als Eingabe verwendet werden, schneiden Autoencoder~\ref{a1} und \ref{a2} schlechter ab Autoencoder~\ref{a3} und \ref{a4}. Die Abstände in der Ergebnisqualität der Autoencoder sind jedoch deutlich geringer als auf dem Testdatensatz. Ist der Mittelwert des \gls{mse} bei Autoencoder~\ref{a4} auf dem Testdatensatz aus Abschnitt~\ref{subsec:exp1} noch $58\%$ geringer als bei Autoencoder~\ref{a1}, so schrumpft diese Differenz auf dem aus JADX-Bildern bestehenden Datensatz auf $20\%$. Selbst die absolute Differenz der Werte von Autoencoder~\ref{a1} und \ref{a4} sinkt von einem Wert von $0,00251$ auf $0,00187$, obwohl der \gls{mse} auf den Vorhersagen bei den Bildern der echten JADX-Applikation gegenüber dem Testdatensatz deutlich ansteigt.
+Auffällig ist jedoch die Beobachtung, dass der Autoencoder~\ref{a4} auf der realen JADX-Applikation bessere Ergebnisse erzielt. Dies liegt zu einem großen Teil an einer Störung in der oberen linken Bildecke, die bei Autoencoder~\ref{a3} auftritt. Die Fähigkeit zur Generalisierung scheint bei Autoencoder~\ref{a4} daher ausgeprägter. Wenn man die Architekturen betrachtet, scheint das deutlich größere Bottleneck von 360 Neuronen bei Autoencoder~\ref{a3} entweder keinen großen Vorteil zu bieten, oder die Vorteile werden durch die Verwendung der LeakyReLU-Aktivierungsfunktion im Decoder-Teil negativ ausgeglichen. Der Rest der Architektur ist identisch.
+
+Die Antwort auf die Frage, welcher Autoencoder am besten generalisieren kann, ist eine Frage des Blickwinkels. Wenn nur die Ergebnisse der Experimente betrachtet werden, die auf Fähigkeiten zur Generalisierung testen sollen, dann ist dies Autoencoder~\ref{a4}. Wenn man jedoch die Ergebnisse auf den Testdaten mit einbezieht, dann kommen die Qualitäten, die Autoencoder~\ref{a4} auf den Testdaten besonders auszeichnen, auf den generelleren Daten nicht so zur Geltung. Das gelernte Wissen von Autoencoder~\ref{a1} und \ref{a2} scheint daher ebenso sehr genereller Natur zu sein.
+
+Eine Gemeinsamkeit aller Autoencoder ist, dass sie nur vergleichsweise schlecht mit dunklen Flächen und komplett verschiedenen Designsprachen umgehen können. Dies wird jedenfalls durch die Ergebnisse von Experiment~4 in Abschnitt~\ref{subsec:exp4} angedeutet. Wenn man dieses Ergebnis mit den Ergebnissen der weiteren Experimente kombiniert, liegt der Schluss nahe, dass es weniger auf die Anwendung selbst ankommt, deren Ansichten komprimiert wird. Viel mehr sind die Designsprache und die verwendeten Farben wichtig.
+
+% Wie können Autoencodern GUI Info reduzieren
+Autoencoder~\ref{a2} weißt ein vergleichsweise großes Bottleneck von 320 Neuronen auf. Dennoch erzielt dieser Autoencoder sowohl bei Betrachtungen der \gls{mse} als auch in den qualitativen Analysen schlechtere Ergebnisse als Autoencoder~\ref{a3} und \ref{a4} mit ähnlich großem bzw. sogar kleinerem Bottleneck. Der mit Abstand größte Unterschied zwischen Autoencoder~\ref{a3} bzw. \ref{a4} und Autoencoder~\ref{a2} ist das Fehlen von Fully-Connected-Schichten bei Autoencoder~\ref{a2}. Diese Tatsache in Kombination mit dem experimentellen Ergebnis bestärkt die Erkenntnis, die bereits Kies~\cite{kiesEntwicklungUndAnalyse2020} in ihrer Arbeit gewann, dass ein gewisser Anteil an Fully-Connected-Schichten die Ergebnisse verbessern kann.
+Der Einsatz von Autoencoder~\ref{a2} kann dennoch sinnvoll sein, falls eine niedrige Inferenzzeit nötig ist. Wie in Abschnitt~\ref{subsec:exp5} gezeigt wurde, ist diese bei Autoencoder~\ref{a2} 3-4 mal niedriger als bei den Autoencodern~\ref{a3} und \ref{a4}. Autoencoder~\ref{a2} komprimiert zwar durch seine vergleichsweise große Bottleneck-Größe schwächer, ist dabei aber sehr effizient.   Autoencoder~\ref{a1} schneidet zwar sowohl hinsichtlich der Geschwindigkeit als auch der Qualität der Ergebnisse am schlechtesten ab, zeigt jedoch seinen Vorteil durch ein sehr kleines Bottleneck. Wenn eine sehr starke Kompression nötig ist, kann selbst dieser Autoencoder seine Stärken ausspielen. Um die vergleichsweise hohe Inferenzzeit zu verringern, könnte als Maßnahme die Verkleinerung des Filters der Größe 32x32 überlegt werden. Die Ergebnisse der anderen Autoencoder legen nahe, dass auch mit geringerer Filtergröße eine qualitativ hochwertige Kompression erreicht werden kann und auch komplexe Features, wie etwa einzelne Buchstaben und Text, gelernt werden können.
+
+Im Gegensatz zu den zuvor dargestellten Autoencodern gibt es im aktuellen Entwicklungsstand keinen ersichtlichen Grund, Autoencoder~\ref{a3} einzusetzen. Obwohl dessen Bottleneck größer ist, als das von Autoencoders~\ref{a4}, erreicht er keine wesentlich besseren Ergebnisse, sondern schneidet teilweise sogar schlechter ab. Darüber hinaus benötigt dieser vergleichsweise viel Speicher, wodurch sich die Trainingsdauer durch die notwendige Verringerung der Batchgröße verlängert. Auch ohne Beachtung des Speicherverbrauchs ist die Inferenzzeit leicht größer als die von Autoencoder~\ref{a4}. Durch den Austausch der LeakyReLU-Aktivierungsfunktionen durch Sigmoid-Funktionen könnte sich eine Verbesserung der Ergebnisse ergeben, wodurch Autoencoder~\ref{a3} wieder eine valide Option wird. Wenn sich keine Verbesserung der Ergebnisse einstellen sollte, würde dies bedeuten, dass in dieser Autoencoder-Architektur eine Vergrößerung des Bottlenecks über 180 Neuronen zu keinem signifikanten Vorteil führt. Damit wäre in jedem Szenario Autoencoder~\ref{a4} die bessere Wahl.
+
+% \begin{itemize}
+%     \item Reine Testergebnisse
+%     \item Generalisierung
+%     \item Ergebnisse auf JADX
+%     \item Geschwindigkeit vs Qualität
+%     \item
+% \end{itemize}
+% \begin{itemize}
+%     \item In experimentelle Ergebnisse Relation setzen
+%     \item Autoencoder einstufen: Stärken und Schwächen
+%     \item Erklärungsmöglichkeiten aufschreiben
+%     \item Beobachtung: A3 auf Trainingsdaten besser, A4 generalisiert aber besser. (A3 generalisiert vglw schlecht, teilweise nur auf Niveau von A2)
+%     \item A1 am schlechtesten (Nicht gut, langsam und generalisiert nicht gut)
+%     \item Stärke von A2: Performance!
+%     \item Empfehlung: Bei hoher Performance A2, sonst A4. A4 benötigt mehr Speicher.
+%     \item A3 benötigt ZU VIEL Speicher bei nicht besseren Ergebnissen (eher schlechter)
+%     \item Unterschiedliche Hyperparameter entkräften
+% \end{itemize}
+
+
+\section{Datensatzqualität}
+% Die Bewertung der Qualität des Datensatzes ist im Zusammenhang mit dem in dieser Masterarbeit untersuchten Ansatz sehr wichtig, da der Datensatz-Generator einer der wichtigsten Bausteine dieses Ansatzes ist.
+
+Insgesamt betrachtet, kann die Qualität des Datensatzes als sehr gut beurteilt werden. Bei neuronalen Netzen gilt es insbesondere komplexe Randfälle ausreichend abzudecken. Dies bedeutet im vorliegenden Fall auch \gls{gui}-Elemente und Ansichten abzudecken, die weniger häufig auftreten. Die Ergebnisse von Experiment 2 aus Abschnitt~\ref{subsec:exp2} zeigen, dass die \gls{gui}-Elemente aus den Trainingsdaten gleichmäßig gut durch die Autoencoder rekonstruiert werden. Dies lässt den Schluss einer ausreichenden Abdeckung der Randfälle zu.
+
+Einige Fenster, wie die Einstellungen, werden von Nutzern seltener aufgerufen als andere Fenster. Üblicherweise legt ein Nutzer zu Beginn der Nutzung Einstellungen fest und verändert diese danach länger nicht mehr. Der Unterschied zwischen dem hier verwendeten Datensatz und realitätsnahen Datensätzen wäre, dass tiefer versteckte Fenster wie die Einstellungen nicht so häufig in den Daten vorhanden wären. Die Qualität der Rekonstruktion wäre unter Umständen schlechter gewesen.
+
+%Einen Aspekt, den man hier noch einbeziehen kann, ist die Fähigkeit zur Generalisierung. Die Ergebnisse der Experimente~\ref{subsec:exp3} und \ref{subsec:exp4} zeigen, dass die Autoencoder gut generalisieren können, solange ähnliche Designsprachen und Farbschemata verwendet werden. Daher ist vorstellbar, dass die Autoencoder diese Fähigkeiten auch auf \gls{gui}-Elementen, die weniger häufig im Datensatz vorkommen, angewandt werden können. Gute Fähigkeiten zur Generalisierung können daher helfen, gute Ergebnisse auf \gls{gui}-Elementen zu erreichen, die weniger häufig in den Daten vorkommen. Diese Annahme geht jedoch davon aus, dass sich die Fähigkeiten zur Generalisierung nicht verändern, wenn der Datensatz weniger ausgewogen oder nach anderen Kriterien gestaltet wird. Dies ist in dieser Pauschalität nicht belegt und unwahrscheinlich.
+
+\section{Qualität des Generators}
+Ein Ziel dieser Masterarbeit war die Untersuchung, wie die Generierung von Trainingsdaten funktionieren muss, um Autoencoder und die neuronalen Netze am \gls{fzi} trainieren zu können. Neben der bereits im vorigen Abschnitt durchgeführten Bewertung der Qualität des generierten Datensatzes, gehört dazu, die Einfachheit in der Handhabung des Generators selbst zu bewerten.
+
+Auch wenn die Qualität des Datensatzes sehr gut ist, ist der Generator dennoch lediglich eingeschränkt einsetzbar. Die Generierung von Datensätzen funktioniert, sie ist jedoch nur über ein Bash-Skript ausführbar. Darüber hinaus ist ein Zugriff auf die Abbilder der \gls{gui} nicht per Offscreen Buffer möglich. Stattdessen muss die Mock-Applikation auf dem Host-PC geöffnet und ein Screenshot erstellt werden. Dies ist fehleranfällig, da nicht überprüft werden kann, ob die Mock-Applikation schon vollständig geladen ist. Der aktuelle Ansatz sieht vor, eine hartkodierte Zeitspanne abzuwarten, bevor der Screenshot erstellt wird. Darüber hinaus ist dieses Vorgehen vergleichsweise langsam, da es mehrere hundert Millisekunden dauert bis ein Betriebssystemfenster mit geladener Anwendung geöffnet ist. Eine Idee war es zudem, die Resultate des Generators \emph{live} als Eingabe für die Autoencoder oder die am \gls{fzi} entwickelten Netze zu verwenden. Die Autoencoder sind jedoch, bei Ausführung auf der \gls{gpu}, alle deutlich schneller als der Datensatzgenerator.
+
+Hinzu kommen die weiteren Limitierungen des verwendeten Frameworks aus Abschnitt~\ref{sec:mock_limitations}: Dies betrifft unter anderem Fehler des Layout-Systems und Darstellungsprobleme bei Inhalt in zusätzlichen Fenstern. Der hier verwendete Ansatz ist daher zum aktuellen Zeitpunkt nicht dauerhaft und produktiv einsetzbar.
+
+% \begin{itemize}
+%     \item Wie können Autoencoder GUI Infos lernen
+%     \item Wie können Autoencodern GUI Info reduzieren
+%     \item Wie muss die Generierung funnktonieren damit Autoencoder gut trainiert werden können?
+%     \item Hohe Ausführungsgeschwindigkeit
+%     \item Wie eignet sich Rust?
+% \end{itemize}
+
+
+

@@ -1,0 +1,15 @@
+%% LaTeX2e class for student theses
+%% sections/abstract_de.tex
+%%
+%% Karlsruhe Institute of Technology
+%% Institute for Program Structures and Data Organization
+%% Chair for Software Design and Quality (SDQ)
+%%
+%% Dr.-Ing. Erik Burger
+%% burger@kit.edu
+%%
+%% Version 1.3.5, 2020-06-26
+
+\Abstract
+Das Testen von Software über deren graphischen Benutzeroberflächen wird mit zunehmender Komplexität der Software (und damit einhergehender Variabilität in der Benutzeroberfläche) aufwendiger. Rein manuelles Testen durch den Entwickler und das Schreiben von Testfällen sind oft nicht mehr möglich. Daher sind neue Ansätze aus dem Bereich des maschinellen Lernens erforderlich, um diese Arbeiten zu erleichtern. Ein Lösungsansatz kann der Einsatz neuronaler Netze sein, die am Forschungszentrum Informatik (FZI) entwickelt werden. Als Eingabedaten sollen dabei Zustände einer graphischen Benutzeroberfläche als Bild dienen, welche jedoch zu komplex sind, um in Echtzeit von diesen Netzen verarbeitet zu werden. In dieser Masterarbeit wurde untersucht, inwiefern eine Kompression der Daten durch den Encoder-Teil von Autoencodern stattfinden kann. Hierzu wurden vier verschiedene Autoencoder-Architekturen entwickelt und analysiert, inwiefern sie sich für diesen Zweck eignen. Um die Autoencoder zu trainieren, wurde ein Trainingsdatengenerator in Rust unter Verwendung von dort vorhandenen GUI-Toolkits als Mock-Applikation einer realen GUI entwickelt. Der Trainingsdatengenerator eignet sich sehr gut zum Training der Autoencoder, da er sehr passgenau Trainingsdaten generieren kann. Aufgrund des frühen Stadiums der verwendeten Werkzeuge traten jedoch während der Entwicklung Fehler auf, die die Entwicklung hemmten. Für diese wurden Workarounds entwickelt, die teilweise die Handhabung des Generators erschweren. Darüber hinaus lässt sich feststellen, dass der Aufwand zur exakten Nachbildung einer Applikation als Mock sehr hoch ist.
+Bezüglich der Kompression von Informationen über Benutzeroberflächen durch die Autoencoder waren die Ergebnisse dagegen vielversprechend, da die Testdaten auch in hoher Auflösung von $900 \times 935$ Pixeln mit hoher Genauigkeit rekonstruiert werden konnten. Erste Experimente ergaben, dass die Autoencoder darüber hinaus Fähigkeiten entwickeln, Applikationen mit ähnlichem Farbschema oder ähnlicher Designsprache zu kodieren und wiederzugeben. Ein erstes Fazit über die Fähigkeiten zur Generalisierung fällt daher ebenso positiv aus. Die Genauigkeit der Reproduktion sinkt, wenn die Eingabe farblich oder designtechnisch stark von den Trainingsdaten abweicht.

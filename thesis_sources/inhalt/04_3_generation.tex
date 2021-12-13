@@ -1,0 +1,102 @@
+\section{Implementierung der prozeduralen Generierung}
+Die Ansichten der \gls{gui} müssen anschließend prozedural generiert werden. Da unstrukturierte, valide Ansichten zum Training der Autoencoder ausreichen, können zufällig neue Ansichten generiert werden. Wichtig hierbei ist, dass alle \gls{gui}-Elemente des Mocks, aber auch möglichst viele valide Konfigurationen und Kombinationen dieser Elemente, abgedeckt sind.
+Im Proposal wurde die Frage aufgeworfen, ob die Generierung in Python oder Rust umgesetzt werden soll. Im ersten Fall müssten alle variablen Teile zur Verwendung durch Python freigegeben werden, womit die Schnittstelle zu Python komplexer werden würde. Dafür könnte der Quelltext, der die Generierung betrifft, in Python geschrieben werden, womit dieser Quelltext, wie im Proposal argumentiert, wartbarer, lesbarer und zugänglicher werden könnte. Letztere Argumentation hat sich im Lauf der Entwicklung als falsch herausgestellt. Durch die Kapselung in einen separatem Generator ist dieser sowohl wartbar als auch von der \gls{gui} separiert. Die Bedenken bezüglich der Lesbarkeit haben sich nicht bestätigt.
+Daher wurde der Generator in Rust implementiert.
+
+Um möglichst viel Variabilität von JADX abzudecken, ist ein hoher Grad an Randomisierung nötig. Jede Ansicht der Anwendung, die aus dynamischem Inhalt besteht, soll mit randomisiert generiertem Inhalt gefüllt werden. Dies betrifft den Projektbaum, die Tab-Navigation, den Inhalt des Editors, die Eingabefelder, Dropdown-Menüs~und~\mbox{Checkboxen}.
+
+\subsection{Generator}
+\label{subsec:generator}
+Um \gls{gui}-Daten zu generieren, müssen sowohl der Inhalt als auch die Struktur erstellt werden. Die Struktur des Mocks bezeichnet dabei die geöffneten Fenster, die geöffneten Menüs und die Größe der Fenster. Die generierten Strukturelemente und deren Wahrscheinlichkeiten werden in Tab.~\ref{tab:window_probabilities} dargestellt. Die Wahrscheinlichkeit, dass ein zusätzliches Fenster angezeigt wird, beträgt $50\%$. Unter der Bedingung, dass \emph{kein} zusätzliches Fenster angezeigt wird, wird wiederum mit 50-prozentiger Wahrscheinlichkeit ein Menü angezeigt. Falls ein zusätzliches Fenster angezeigt wird, können gleichzeitig keine Menüs existieren. Die Gesamtwahrscheinlichkeit, ob ein solches Menü angezeigt wird, beträgt demnach $\frac{1}{4}$. Falls die Entscheidung, ob ein Menü bzw. Fenster  angezeigt wird, positiv ausfällt, wird die Entscheidung, welches Menü bzw. Fenster angezeigt wird, randomisiert anhand einer Gleichverteilung getroffen.
+
+Der gesamte variable Inhalt des Mocks wird zufällig generiert. Dies bedeutet, dass alle Eingabefelder, Dropdown-Menüs und Checkboxen zufällig befüllt werden. Die möglichen Werte für die einzelnen Variationspunkte werden in Tab.~\ref{tab:variation_fields} beschrieben. In Tab.~\ref{tab:variation_components} werden weitere Komponenten beschrieben, deren Struktur generiert wird, die jedoch auch aus mehreren randomisiert generierten Bausteinen bestehen.
+
+Die Wahrscheinlichkeiten wurden so gewählt, dass Ansichten mit einer höheren Komplexität häufiger gezeigt werden, als Ansichten mit einer geringeren Komplexität. Ein Menü mit einigen statischen Icons und statischem Text ist dabei wesentlich weniger komplex, als ein größeres Fenster mit entsprechend mehr und vor allem dynamisch generiertem Inhalt. Fenster wurden deshalb gegenüber Menüs im Generator stärker gewichtet ($p_{fenster}=\frac{1}{12}$ gegenüber $p_{menu}=\frac{1}{20}$). Die Menüs sowie die Fenster untereinander werden gleich häufig angezeigt, um ein gleichmäßiges Lernen der Elemente zu gewährleisten.
+
+\subsection{Anmerkung}
+An dieser Stelle ist es wichtig zu erwähnen, dass sich die Wahrscheinlichkeitsverteilung \emph{nicht} an der Wahrscheinlichkeitsverteilung bei einer realistischen Nutzung orientiert. Das Ziel des Generators ist es, das Training zu optimieren, und nicht, eine realitätsnahe Wahrscheinlichkeitsverteilung abzubilden. Ein häufiges Problem bei maschinellem Lernen ist, dass Randfälle in den Trainingsdaten unterrepräsentiert sind, wie etwa im Bereich des autonomen Fahrens~\cite{karunakaranEfficientStatisticalValidation2020}. Ein Vorteil des Ansatzes dieser Masterarbeit ist es, Randfälle beliebig und einfach stärker gewichten zu können. Falls notwendig kann diese Gewichtung auch nachträglich durch Neuerstellung des Datensatzes verändert werden.
+
+% \newpage
+
+\begin{figure}[p]
+    \centering
+    \renewcommand*{\arraystretch}{1.5}
+    \begin{minipage}{\textwidth}
+    \captionof{table}{Strukturelemente mit dazugehöriger Anzeigewahrscheinlichkeit}
+    \label{tab:window_probabilities}
+    \smallskip
+    \begin{tabularx}{\textwidth}{ lX }
+        \toprule
+        Strukturelement & Anzeigewahrscheinlichkeit \\
+        \hline
+        kein zusätzliches Fenster & $P(X=kein Fenster) = 0,5$ \\
+        Einstellungsfenster & $P(X=Einstellungen) = \frac{1}{12}$\\
+        Textsuchfenster & $P(X=Textsuche) = \frac{1}{12}$ \\
+        Klassensuchfenster & $P(X=Klassensuche) = \frac{1}{12}$ \\
+        Suchfenster für Suche nach Benutzung & $P(X=Benutzungssuche) = \frac{1}{12}$ \\
+        Fenster zur Umbenennung & $P(X=Umbenennung) = \frac{1}{12}$\\
+        \glqq Über\grqq -Fenster & $P(X=\ddot{U}ber) = \frac{1}{12}$\\
+        Kein Menü & $P(Y=keinMen\ddot{u})=0,25$, $P(keinFenster | Y=keinMen\ddot{u}) = 0,5$\footnote{$P(\neg keinFenster | Y=keinMen\ddot{u}) = 1 $} \\
+        File-Menü & $P(Y=FileMen\ddot{u})=0,05$, $P(keinFenster | Y=FileMen\ddot{u}) = 0,1$\footnote{ $P(\neg keinFenster | Y=FileMen\ddot{u}) = P(\neg keinFenster | Y=ViewMen\ddot{u}) = \\ P(\neg keinFenster | Y=NavigationMen\ddot{u}) = P(\neg keinFenster | Y=ToolsMen\ddot{u}) = \\ P(\neg keinFenster | Y=HelpMen\ddot{u}) = 0 $\label{fn:tab:negate_prop}} \\
+        View-Menü & $P(Y=ViewMen\ddot{u})=0,05$, $P(keinFenster | Y=ViewMen\ddot{u}) = 0,1$\footref{fn:tab:negate_prop} \\
+        Navigation-Menü & $P(Y=NavigationMen\ddot{u})=0,05$, $P(keinFenster | Y=NavigationMen\ddot{u}) = 0.1$\footref{fn:tab:negate_prop} \\
+        Tools-Menü & $P(Y=ToolsMen\ddot{u})=0,05$, $P(keinFenster | Y=ToolsMen\ddot{u}) = 0,1$\footref{fn:tab:negate_prop}\\
+        Help-Menü & $P(Y=HelpMen\ddot{u})=0,05$, $P(keinFenster | Y=HelpMen\ddot{u}) = 0,1$\footref{fn:tab:negate_prop}\\
+        \bottomrule
+    \end{tabularx}
+\end{minipage}
+\end{figure}
+
+%     \footnotetext[20]{ $P(\neg keinFenster | Y=FileMen\ddot{u}) = P(\neg keinFenster | Y=ViewMen\ddot{u}) = \\ P(\neg keinFenster | Y=NavigationMen\ddot{u}) = P(\neg keinFenster | Y=ToolsMen\ddot{u}) = \\ P(\neg keinFenster | Y=HelpMen\ddot{u}) = 0 $\label{fn:tab:negate_dprop}}
+
+
+% \end{figure}
+
+\begin{table}[p]
+    \centering
+    \caption{\glsxtrshort{gui}-Elemente mit generiertem Inhalt}
+    \label{tab:variation_fields}
+    \smallskip
+
+\begin{tabularx}{\textwidth}{ XXX }
+    \toprule
+    Variationspunkt & Art der Befüllung & Inhaltsart \\
+    \hline
+    Checkbox & Zufällige Markierung & Ja/Nein \\
+    Dropdown-Menü & Zufällige Auswahl & Statische Elemente \\
+    Numerisches Feld & Zufällige Zahl & Realistischer Zahlenbereich (Bsp: 1..100) \\
+    Text(-feld) & Zufälliger Text & Alphanumerischer Text mit Länge in bestimmtem Bereich \\
+    Icon & Zufälliges Icon & Icons aus JADX (je nach Kontext nur Icons für Dateien oder Entitäten) \\
+    \bottomrule
+\end{tabularx}
+
+
+\end{table}
+
+\begin{table}[p]
+    \centering
+    \caption{JADX-Komponenten mit generierter Struktur und Inhalt}
+    \label{tab:variation_components}
+    \smallskip
+
+\begin{tabularx}{\textwidth}{ XXX }
+    \toprule
+    Variationspunkt & Elemente & Art der Befüllung  \\
+    \hline
+    Tab-Navigation & Tabs bestehend aus Icon und Text & 1..10 Tabs \\
+    Projektbaum & Einträge aus Icon und Text sowie Kindelementen & Baumstruktur: Jedes Element hat bis zu 10 Kindelemente, max. 100 Elemente \\
+    Suchergebnisse & Einträge aus Icon sowie 2 Texten (In JADX Name der Entität und ein Code-Ausschnitt ) & Max. 20 Einträge (zeilenweise) \\
+
+    \bottomrule
+\end{tabularx}
+\end{table}
+
+% \begin{itemize}
+%     \item Was ist das?
+%     \begin{itemize}
+%         \item Generierung der GUI über Parameter und Zufall
+%         \item Implementierung in Python oder Rust?
+%     \end{itemize}
+%     \item Warum prozedural Generieren?
+%     \item Was ist dabei wichtig?
+% \end{itemize}

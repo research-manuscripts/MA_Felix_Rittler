@@ -1,0 +1,114 @@
+\chapter{Entwicklung der Autoencoder}
+\label{cha:autoencoder}
+Die am \gls{fzi} entwickelten \glspl{ctrnn} können nur schlecht mit sehr hochdimensionalen Daten wie Ansichten von \glspl{gui} umgehen. \todo{Beleg - besser nach oben schieben? (evtl in Ziel oder in Absatz am Anfang des Kapitels)} Daher sollen Autoencoder eingesetzt werden, um die Dimensionalität der Eingabedaten zu verringern. Das Ziel ist es, eine möglichst effiziente Kodierung einer \gls{gui} zu erreichen, um die \glspl{ctrnn} sowohl effektiver als auch schneller zu trainieren.
+Zu diesem Zweck wurden mehrere Autoencoder-Architekturen implementiert und evaluiert, inwiefern sie sich für diesen Einsatzzweck eignen.
+
+Die Architekturen unterscheiden sich in der Anzahl, Abfolge und in der Art der einzelnen Schichten (beispielsweise Fully-Connected- oder Convolutional-Schichten). Des Weiteren wurden unterschiedliche Aktivierungsfunktionen eingesetzt. Die Autoencoder setzen Teile der Anforderungen an einen \gls{vae} um, können jedoch nicht als \gls{vae} bezeichnet werden. Die in Abschnitt~\ref{subsubsec:vae-layer} eingeführte \gls{vae}-Schicht ist jeweils vorhanden, während dort ebenfalls beschriebene Kullback-Leibler-Divergenz nicht verwendet wurde. Um dies umzusetzen, müssen die Kullback-Leibler-Divergenz zur Fehlerfunktion hinzugefügt und die Autoencoder neu trainiert werden.
+
+Die Architekturen werden zunächst einzeln vorgestellt und verglichen. Anschließend werden die Auswahl des Datensatzes und der Parameter der Experimente beschrieben und die einzelnen Experimente vorgestellt. Zum Schluss folgt die Erörterung der Ergebnisse.
+
+
+
+% \todo{welche?}
+% \begin{itemize}
+%     \item Warum?
+%     \begin{itemize}
+%         \item Möglichst effiziente Kodierung einer GUI
+%         \item Performance --> extrem aufwändig auf hochdimensionalen Pixeldaten zu lernen!
+%     \end{itemize}
+%     \item Mehrere Architekturen
+% \end{itemize}
+
+\section{Autoencoder-Architekturen}
+Alle Architekturen wurden mit der Bibliothek PyTorch\footnote{\url{https://pytorch.org}, letzter Zugriff: 13.12.2021} in Version 1.9.1 implementiert. Dabei wurden die vorimplementierten Schichten aus \texttt{torch.nn} und die Aktivierungsfunktionen aus den Modulen \texttt{torch.nn.functional} bzw. \texttt{torch} entnommen. Die einzelnen Architekturen werden in den Abb.~\ref{fig:arch1} bis \ref{fig:arch4} dargestellt, wobei die \gls{vae}-Schicht aus Gründen der Übersichtlichkeit nicht abgebildet wird. Deren Funktionsweise kann in Abschnitt~\ref{subsubsec:vae-layer} nachgelesen werden.
+
+\begin{figure}
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        % \def\svgwidth{\linewidth}
+        \scalebox{0.75}{\input{arch1.pdf_tex}}
+        \caption{Illustration der Architektur des Autoencoders 1 ohne VAE-Schicht}
+        \label{fig:arch1}
+    \end{minipage}\hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        % \def\svgwidth{\linewidth}
+        \scalebox{0.75}{\input{arch2.pdf_tex}}
+        \caption{Illustration der Architektur des Autoencoders 2 ohne VAE-Schicht}
+        \label{fig:arch2}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        % \def\svgwidth{\linewidth}
+        \scalebox{0.75}{\input{arch3.pdf_tex}}
+        \caption{Illustration der Architektur des Autoencoders 3 ohne VAE-Schicht}
+        \label{fig:arch3}
+    \end{minipage}\hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        % \def\svgwidth{\linewidth}
+        \scalebox{0.75}{\input{arch4.pdf_tex}}
+        \caption{Illustration der Architektur des Autoencoders 4 ohne VAE-Schicht}
+        \label{fig:arch4}
+    \end{minipage}
+\end{figure}
+
+\label{Autoencoder2VAEMediumConvBigKernel}
+% AE 3b7d5453ce41baeba6fcab6937df2c16a4fc9523
+\textbf{Autoencoder~\customlabel{a1}{1}} wird in Abb.~\ref{fig:arch1} dargestellt. Er realisiert die von Kies~\cite{kiesEntwicklungUndAnalyse2020} entwickelte Autoencoder-Architektur~4, welche Kies als die Beste der in der Bachelorarbeit entwickelten Architekturen bezeichnete. Der Encoder-Teil dieses Autoencoders besteht aus drei Convolutional-Schichten sowie zwei Fully-Connected-Schichten. Am Übergang zwischen den beiden Schichttypen findet ein Flattening, wie in Abschnitt~\ref{subsec:flattening} beschrieben, statt. Der Decoder ist entsprechend symmetrisch aufgebaut. Diese Architektur wurde gegenüber der von Kies insofern angepasst, dass den größeren Eingabebildern in dieser Masterarbeit Rechnung getragen werden kann. Daher enthält der Autoencoder eine weitere Convolutional-Schicht und die einzelnen Schichten wurden deutlich vergrößert.\linebreak Die Filtergröße der ersten Schicht wurde von 5x5 auf 32x32 vervielfacht und die Max-Pooling-Schichten von 4x4 auf 8x8 vergrößert. Die äußerste Fully-Connected-Schicht ist nun 10.000 statt 5.200 Neuronen breit. Die Vergrößerung des Kernels in der äußersten Schicht wurde durchgeführt, um eine Anpassung hinsichtlich der kleinsten Bildelemente zu erreichen. Diese sind hier deutlich komplexer als die kleinsten Elemente in der Arbeit von Kies. Das Bottleneck ist aufgrund der höheren Komplexität der Daten durch die größeren Bilder mit 60 Neuronen doppelt so groß wie bei Kies. Die Aktivierungsfunktionen der einzelnen Schichten sind identisch und entsprechen der ReLU-Funktion im Fall der Convolutional-Schichten im Encoder und der Sigmoid-Funktion im Fall der Fully-Connected-Schichten.
+
+\label{Autoencoder2VAEBigConvNoFully}
+% AE 3547a5236c708c442558e4691d60e000893a122f
+\textbf{Autoencoder~\customlabel{a2}{2}} wird in Abb.~\ref{fig:arch2} dargestellt. Im Vergleich zu Autoencoder~\ref{a1} enthält dieser Autoencoder, bis auf die \gls{vae}-Schicht, keine Fully-Connected-Schichten. Stattdessen sind die Convolutional-Schichten entsprechend größer gewählt und wurden um eine zusätzliche Schicht ergänzt. Insgesamt besteht der Autoencoder im Encoder-Teil somit aus vier Convolutional-Schichten bzw. im Decoder aus vier Transposed-Convolution-Schichten. Das Bottleneck besteht aus 320 Neuronen und ist somit deutlich größer. Ein weiterer signifikanter Unterschied ist der mit einer Größe von 12x12 deutlich kleinere Filter in der ersten Convolutional-Schicht. Die Filtergrößen wurden ausgewogener gestaltet um eine gleichmäßige Verkleinerung der Neuronenanzahl von Schicht zu Schicht zu erreichen. Die Aktivierungsfunktionen der einzelnen Schichten wurden verändert und entsprechen nun der LeakyReLU-Funktion im Fall der Convolutional-Schichten mit Ausnahme der letzten Schicht. In dieser wurde die Sigmoid-Funktionen verwendet.
+
+\label{Autoencoder2VAEMediumConvSmallKernelBigBottleneck}
+% AE 13694de2d2424a379efaa48beb645d2dabcb4604
+\textbf{Autoencoder~\customlabel{a3}{3}} ist an Autoencoder~\ref{a1} angelehnt und wird in Abb.~\ref{fig:arch3} dargestellt. Im Vergleich zu Autoencoder~\ref{a1} zeichnet sich dieser durch einen deutlich größeren Anteil an Fully-Connected-Schichten aus. Deren Anzahl ist zwar identisch, die einzelnen Schichten sind jedoch deutlich größer. Die erste Convolutional-Schicht hat mit einer Größe von 16x16 einen entsprechend kleineren Filter und die ersten beiden Max-Pooling-Schichten wurden in ihrer Größe von 8x8 auf 6x6 und 4x4 reduziert. Damit stellt dieser Autoencoder eine Art Gegenentwurf zu Autoencoder~\ref{a2} dar. Hierbei wird die tanh-Funktion als Aktivierungsfunktion der Fully-Connected-Schichten eingesetzt. Die LeakyReLU-Funktion kommt im Fall der Convolutional-Schichten bis auf die letzte Schicht zum Einsatz, in der die Sigmoid-Funktion verwendet wurde.
+
+\label{AutoencoderVAEMediumConvSmallKernel}
+% AE 012f2d5ce7ab9b1e437ffe10fc120ec1107fb3a6
+\textbf{Autoencoder~\customlabel{a4}{4}} ist eine Abwandlung von Autoencoder~\ref{a3} und wird in Abb.~\ref{fig:arch4} dargestellt. Auch dieser Autoencoder besteht aus drei Convolutional- und zwei Fully-Connected-Schichten, von denen die Convolutional-Schichten im Encoder identisch sind zu Autoencoder~\ref{a3}. Im Unterschied zu jenem Autoencoder wird hier die Sigmoid-Funktion für alle Transposed-Convolutional-Schichten des Decoders verwendet. Des Weiteren wurde die Breite des Bottlenecks von 360 Neuronen auf 180 Neuronen halbiert.
+
+\section{Datensatz}
+Der Datensatz wurde mit dem Generator aus Kapitel~\ref{cha:gui} erstellt und besteht aus insgesamt 191.124 Bildern. Die Abmessungen der einzelnen Bilder betragen 935x900 Pixel.
+Zur Durchführung der Experimente wurde der Datensatz in einen Trainingsdatensatz bestehend aus 133.786 Bildern (70\%) und einen Testdatensatz bestehend aus 57.338 Bildern (30\%) aufgeteilt. Die Aufteilung erfolgte durch die Zuteilung zufälliger Bilder zum Testdatensatz. Die restlichen Bilder bildeten den Trainingsdatensatz. Wie in Abschnitt~\ref{subsec:generator} beschrieben, ist es wichtig zu betonen, dass die Zusammensetzung des Datensatzes sich nicht an realem Nutzungsverhalten sondern an der Komplexität der \gls{gui}-Elemente orientiert um das Lernen zu optimieren.
+
+\section{Hyperparameter und Lernverfahren}
+\label{sec:hyperparameter}
+Alle Autoencoder wurden mit dem Trainingsdatensatz trainiert. Dabei kam das Adamax-Verfahren zum Einsatz, welches in Abschnitt~\ref{subsec:lernverfahren} beschrieben wird. Als initiale Lernrate wurde der von PyTorch standardmäßig eingestellte Wert $0,002$ verwendet. Im Rahmen des Trainings wurde die in PyTorch vorhandene Implementierung der binären Kreuzentropie (\gls{bce}) (\texttt{torch.nn.BCELoss})  als Fehlerfunktion verwendet.
+
+Alle Autoencoder wurden mit dem gesamten Trainingsdatensatz trainiert, wobei Autoencoder~\ref{a1} in 2 Epochen und die restlichen Autoencoder in 3 Epochen trainiert wurden. Insgesamt verarbeitete jeder Autoencoder damit 267.572 bzw. 401.358 Bilder während des Trainings. Die Batch-Größe betrug in der Regel 16 Bilder. Lediglich für Autoencoder~\ref{a3} musste die Größe der Batches aus Speichergründen auf 12 Bilder pro Batch verringert werden, da der Speicher der verwendeten \gls{gpu} sonst nicht ausgereicht hätte.
+
+\section{Trainingsverlauf}
+Die Werte der Fehlerfunktion wurden im Verlauf des Trainings gespeichert und werden in Abb.~\ref{fig:training_loss} dargestellt. Diese wurden dabei über den Verlauf von 25 Batches aufgezeichnet und gemittelt. Jeder einzelne gespeicherte Wert entspricht damit dem Mittelwert des Fehlers bei $25 \cdot b$ Bildern, wobei $b$ die Batch-Größe bezeichnet. Es ist zu beachten, dass die Werte im Mittel dennoch vergleichbar bleiben, lediglich die einzelnen Abweichungen können bei Autoencoder~\ref{a3} aufgrund der geringeren Batchgröße größer ausfallen. Da Autoencoder~\ref{a1} nur in 2 Epochen trainiert wurde, umfassen die Werte dieses Autoencoders nur $\frac{2}{3}$ der x-Achse des Diagramms. Wie ersichtlich wird, stagnieren die Werte dieses Autoencoders, sodass eine weitere Epoche nicht zu einer nennenswerten Verringerung des Fehlers beigetragen hätte.
+In Abb.~\ref{fig:training_loss_2500} wird darüber hinaus der Verlauf der Ergebnisse der Fehlerfunktion für die letzten 2500 Bilder für jeden Autoencoder dargestellt. Es ist erkennbar, dass Autoencoder~\ref{a3} und \ref{a4} in etwa gleich niedrige Werte aufweisen, während die Werte von Autoencoder~\ref{a1} und \ref{a2} darüber liegen. Daneben verhalten sich die Kurven der Autoencoder~\ref{a1}, \ref{a2} und \ref{a4} synchron, während die von Autoencoder~\ref{a3} davon abweicht. Dies ist kein Zeichen für ein gegenüber den anderen Autoencodern unterschiedliches Verhalten. Stattdessen kann man diesen Effekt durch die unterschiedliche Batch-Größe erklären, die eine andere Aufteilung der Einträge im Diagramm bedingt.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{center}
+
+        \rotatebox{90}{%
+          \begin{minipage}{.85\textheight}
+            \includegraphics[width=\textwidth]{bilder/training_diagram.png}
+            \captionof{figure}{Über 300 bzw. 400 Eingaben gemittelte binäre Kreuzentropie im Lauf des Trainings}
+            \label{fig:training_loss}
+                \renewcommand{\arraystretch}{1.5}
+        \end{minipage}
+        }
+        \end{center}
+\end{figure}
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{bilder/training_diagram_last2500.png}
+    \caption{Über 300 bzw. 400 Eingaben gemittelte binäre Kreuzentropie der 2500 letzten Batches jedes Autoencoders während des Trainings}
+    \label{fig:training_loss_2500}
+\end{figure}
+
+\input{inhalt/05_1_experimente.tex}

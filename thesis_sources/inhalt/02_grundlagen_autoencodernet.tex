@@ -1,0 +1,163 @@
+
+\begin{figure}[h]
+    \centering
+    \tikzstyle{line} = [draw, -latex']
+    \begin{tikzpicture}[
+        encodernode/.style={circle, draw=red!60, fill=red!10, minimum height=5mm, very thick},
+        decodernode/.style={circle, draw=green!60, fill=green!10, minimum height=5mm, very thick},
+        bottlenecknode/.style={circle, draw=blue!60, fill=blue!60, minimum height=5mm, very thick},
+        emptynode/.style={rectangle, very thick, minimum size=5mm},
+        ]
+        %Nodes
+        \node[encodernode] (00) {};
+        \node[encodernode] [below= 0.3cm of 00] (01) {};
+        \node[encodernode] [below= 0.3cm of 01] (02) {};
+        \node[encodernode] [below= 0.3cm of 02] (03) {};
+        \node[encodernode] [below= 0.3cm of 03] (04) {};
+        \node[encodernode] [below= 0.3cm of 04] (05) {};
+        \node[encodernode] [below= 0.3cm of 05] (06) {};
+        \node[encodernode] [below= 0.3cm of 06] (07) {};
+        \node[emptynode] [left= 1.9cm of 00] (x0) {};
+        \node[emptynode] [left= 1.9cm of 01] (x1) {};
+        \node[emptynode] [left= 1.9cm of 02] (x2) {};
+        \node[emptynode] [left= 1.9cm of 03] (x3) {};
+        \node[emptynode] [left= 1.9cm of 04] (x4) {};
+        \node[emptynode] [left= 1.9cm of 05] (x5) {};
+        \node[emptynode] [left= 1.9cm of 06] (x6) {};
+        \node[emptynode] [left= 1.9cm of 07] (x7) {};
+
+        \node[encodernode] [right= 1.9cm of 02] (10) {};
+        \node[encodernode] [below= 0.3cm of 10] (11) {};
+        \node[encodernode] [below= 0.3cm of 11] (12) {};
+        \node[encodernode] [below= 0.3cm of 12] (13) {};
+
+        \node[bottlenecknode] [right= 1.9cm of 11] (20) {};
+        \node[bottlenecknode] [below= 0.3cm of 20] (21) {};
+
+        \node[decodernode] [right= 1.9cm of 20] (31) {};
+        \node[decodernode] [above= 0.3cm of 31] (30) {};
+        \node[decodernode] [below= 0.3cm of 31] (32) {};
+        \node[decodernode] [below= 0.3cm of 32] (33) {};
+
+        \node[decodernode] [right= 1.9cm of 30] (42) {};
+        \node[decodernode] [above= 0.3cm of 42] (41) {};
+        \node[decodernode] [above= 0.3cm of 41] (40) {};
+        \node[decodernode] [below= 0.3cm of 42] (43) {};
+        \node[decodernode] [below= 0.3cm of 43] (44) {};
+        \node[decodernode] [below= 0.3cm of 44] (45) {};
+        \node[decodernode] [below= 0.3cm of 45] (46) {};
+        \node[decodernode] [below= 0.3cm of 46] (47) {};
+        \node[emptynode] [right= 1.9cm of 40] (y0) {};
+        \node[emptynode] [right= 1.9cm of 41] (y1) {};
+        \node[emptynode] [right= 1.9cm of 42] (y2) {};
+        \node[emptynode] [right= 1.9cm of 43] (y3) {};
+        \node[emptynode] [right= 1.9cm of 44] (y4) {};
+        \node[emptynode] [right= 1.9cm of 45] (y5) {};
+        \node[emptynode] [right= 1.9cm of 46] (y6) {};
+        \node[emptynode] [right= 1.9cm of 47] (y7) {};
+
+        \draw (00) -- (10);
+        \draw (00) -- (11);
+        \draw (00) -- (12);
+        \draw (00) -- (13);
+        \draw (01) -- (10);
+        \draw (01) -- (11);
+        \draw (01) -- (12);
+        \draw (01) -- (13);
+        \draw (02) -- (10);
+        \draw (02) -- (11);
+        \draw (02) -- (12);
+        \draw (02) -- (13);
+        \draw (03) -- (10);
+        \draw (03) -- (11);
+        \draw (03) -- (12);
+        \draw (03) -- (13);
+        \draw (04) -- (10);
+        \draw (04) -- (11);
+        \draw (04) -- (12);
+        \draw (04) -- (13);
+        \draw (05) -- (10);
+        \draw (05) -- (11);
+        \draw (05) -- (12);
+        \draw (05) -- (13);
+        \draw (06) -- (10);
+        \draw (06) -- (11);
+        \draw (06) -- (12);
+        \draw (06) -- (13);
+        \draw (07) -- (10);
+        \draw (07) -- (11);
+        \draw (07) -- (12);
+        \draw (07) -- (13);
+
+        \draw (10) -- (20);
+        \draw (10) -- (21);
+        \draw (11) -- (20);
+        \draw (11) -- (21);
+        \draw (12) -- (20);
+        \draw (12) -- (21);
+        \draw (13) -- (20);
+        \draw (13) -- (21);
+
+        \draw (20) -- (30);
+        \draw (20) -- (31);
+        \draw (20) -- (32);
+        \draw (20) -- (33);
+        \draw (21) -- (30);
+        \draw (21) -- (31);
+        \draw (21) -- (32);
+        \draw (21) -- (33);
+
+        \draw (30) -- (40);
+        \draw (30) -- (41);
+        \draw (30) -- (42);
+        \draw (30) -- (43);
+        \draw (30) -- (44);
+        \draw (30) -- (45);
+        \draw (30) -- (46);
+        \draw (30) -- (47);
+        \draw (31) -- (40);
+        \draw (31) -- (41);
+        \draw (31) -- (42);
+        \draw (31) -- (43);
+        \draw (31) -- (44);
+        \draw (31) -- (45);
+        \draw (31) -- (46);
+        \draw (31) -- (47);
+        \draw (32) -- (40);
+        \draw (32) -- (41);
+        \draw (32) -- (42);
+        \draw (32) -- (43);
+        \draw (32) -- (44);
+        \draw (32) -- (45);
+        \draw (32) -- (46);
+        \draw (32) -- (47);
+        \draw (33) -- (40);
+        \draw (33) -- (41);
+        \draw (33) -- (42);
+        \draw (33) -- (43);
+        \draw (33) -- (44);
+        \draw (33) -- (45);
+        \draw (33) -- (46);
+        \draw (33) -- (47);
+
+        \draw [-stealth] (x0) -- (00);
+        \draw [-stealth] (x1) -- (01);
+        \draw [-stealth] (x2) -- (02);
+        \draw [-stealth] (x3) -- (03);
+        \draw [-stealth] (x4) -- (04);
+        \draw [-stealth] (x5) -- (05);
+        \draw [-stealth] (x6) -- (06);
+        \draw [-stealth] (x7) -- (07);
+        \draw [-stealth] (40) -- (y0);
+        \draw [-stealth] (41) -- (y1);
+        \draw [-stealth] (42) -- (y2);
+        \draw [-stealth] (43) -- (y3);
+        \draw [-stealth] (44) -- (y4);
+        \draw [-stealth] (45) -- (y5);
+        \draw [-stealth] (46) -- (y6);
+        \draw [-stealth] (47) -- (y7);
+        %Lines
+    \end{tikzpicture}
+    \caption{Darstellung der Neuronen eines einfachen Autoencoders bestehend aus Fully-Connected-Schichten~\cite{alvernazAutoencoderaugmentedNeuroevolutionVisual2017}}
+    \label{fig:autoencoder_net}
+\end{figure}

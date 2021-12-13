@@ -1,0 +1,39 @@
+\chapter{Fazit und Ausblick}
+Ein Fazit zu dieser Masterarbeit lässt sich zu beiden Zielen ziehen. Einerseits zum Ansatz des Trainingsdatengenerators, mit welchem die für diese Arbeit notwendigen Daten generiert wurden und der dafür gedacht war die am \gls{fzi} entwickelten Netze zu trainieren. Andererseits zu den Autoencodern, die die hochdimensionalen Eingabedaten in Form von Bildern der \gls{gui} komprimieren sollen.
+
+% \subsubsection*{Fazit}
+
+Ein Generator, wie er hier entwickelt wurde, bietet einige Vorteile. Zunächst können Trainingsdaten so generiert werden, wie sie gerade benötigt werden. Die Wahrscheinlichkeitsverteilung des Generators konnte komplett an die Notwendigkeiten der Autoencoder angepasst werden. Dadurch ist es möglich die einzelnen Bestandteile der \gls{gui} so zu gewichten, dass alle Elemente und Komponenten gleichmäßig gut durch die Autoencoder erlernt werden. Jeder Randfall kann im Generator so gewichtet werden, dass der Autoencoder diesen Randfall erkennen und erlernen kann. Darüber hinaus kann so die aufwendige Erhebung und unter Umständen komplexe Vorverarbeitung von Datensätzen der realen Welt vermieden werden.
+
+Gleichzeitig sind die hier verwendeten \gls{gui}-Frameworks der Programmiersprache Rust noch nicht so weit, als dass sie sich in diesem Kontext produktiv einsetzen lassen. Bugs und fehlende Features wie das Offscreen Rendering machen einen Einsatz als Trainingsdatengenerator kompliziert. Der Ansatz, dass Trainingsdaten spontan generiert werden, um neuronale Netze zu trainieren, ist aufgrund der schlechten Performance und der umständlichen Handhabung nicht möglich.
+
+% \subsection*{Autoencoder}
+
+Ein positiveres Fazit lässt sich bezüglich der Autoencoder-Architekturen ziehen. Diese schaffen es, eine komplexe \gls{gui} -- wie die von JADX -- auf 60 bis 180 Neuronen zu komprimieren und dabei qualitativ hochwertige Ergebnisse zu erzielen. Dies gilt sowohl bei Betrachtung des \gls{mse} als auch bezüglich der qualitativen Analyse. Dabei kommen unterschiedliche Stärken und Schwächen zum Vorschein. Insbesondere Autoencoder~\ref{a4} schafft es, starke Kompression mit sehr guten Ergebnissen und einer akzeptablen Geschwindigkeit zu verbinden. Wenn eine höhere Geschwindigkeit benötigt wird oder der für Autoencoder~\ref{a4} nötige Grafikspeicher nicht zur Verfügung steht, liefert Autoencoder~\ref{a2} ähnlich gute Ergebnisse bei etwas schwächerer Kompression auf 320 Neuronen. Wenn umgekehrt eine besonders starke Kompression der Eingabe notwendig ist, kann Autoencoder~\ref{a1} die Eingabe immer noch in akzeptabler Qualität reproduzieren.
+
+Ein wichtiges Fazit in der Arbeit von Kies~\cite{kiesEntwicklungUndAnalyse2020} war, dass der \gls{mse} nur eine geringe Aussagekraft über die tatsächliche Qualität einer Autoencoder-Architektur hat. Diese These kann in dieser Arbeit nicht bestätigt werden. Der \gls{mse} korreliert bei allen Experimenten und Autoencodern mit den Ergebnissen der qualitativen Analyse. Dies könnte mit den gegenüber der Arbeit von Kies veränderten Daten zusammenhängen. Bei Kies waren Farbänderungen von Flächen ein wichtiger Teil der Information in der \gls{gui}, während dies hier nicht der Fall ist. Veränderungen ergeben sich über den Inhalt in Form von Text.
+
+Wie gut die Ergebnisse der einzelnen Autoencoder im Zusammenspiel mit den am \gls{fzi} entwickelten Netzen sind, kann zukünftig noch evaluiert werden. In diesem Kontext ist insbesondere interessant, welche Autoencoder-Kodierungen von den am \gls{fzi} entwickelten Netzen besonders gut verarbeitet werden können. Eine gute und effiziente Kodierung im Bottleneck muss nicht zwangsläufig gut geeignet für die am \gls{fzi} entwickelten Netze sein. Für diesen Zweck wird nur der Encoder-Teil der Autoencoder benötigt. Wenn ein Autoencoder eine Eingabe besonders gut und effizient kodiert, die Rekonstruktion des Decoders jedoch scheitert, wird dieser in hier durchgeführten Untersuchungen dennoch schlecht abschneiden. Nur im Kontext mit den am \gls{fzi} entwickelten Netzen kann daher der Encoder isoliert untersucht werden.
+
+Eine Untersuchung, wie gut die verschiedenen Autoencoder auf anderen Datensätzen abschneiden, könnte Gegenstand weiterer Fragestellungen sein. Die Ergebnisse aus Experiment 3 und 4 sind dahingehend vielversprechend, da sie zeigen, dass die Autoencoder auch auf ganz anderen Anwendungen gut abschneiden können (und nicht nur auf den Trainings- und Testdaten). Die Ergebnisse legen nahe, dass eine Generalisierung auf Anwendungen mit ähnlichen Designsprachen und Farbschemata sehr gut funktioniert. Im Rahmen dieser Masterarbeit wurde an dieser Stelle nur eine kleine Stichprobe analysiert, sodass hier noch weitere Untersuchungen nötig sind. Dies bezieht sich insbesondere auf die Frage, bei welchem Grad an Abweichungen zwischen Trainingsdaten und letztendlicher Eingabe die Ergebnisse eines Autoencoders schlechter werden.
+
+Der Ansatz bzgl. des Trainingsdatengenerators hat hier in Teilen gut funktioniert, die Schwächen der konkreten Umsetzung sind jedoch offensichtlich. Die Programmiersprache Rust und darin entwickelte \gls{gui}-Toolkits weisen noch nicht den nötigen Reifegrad auf. Der Einsatz eines solchen Generators bleibt weiterhin interessant. Die Realisierung durch andere Technologien ist dabei zu prüfen. Einen reinen Trainingsdatengenerator ließe sich auch mit geringerem Aufwand über Webtechnologien realisieren. Alternativ könnte man untersuchen, ob es für C oder C++ Technologien gibt, die die Anforderungen besser erfüllen als die Frameworks in Rust.
+
+% \begin{itemize}
+%     \item Vorteil Generator: Wahrscheinlichkeitsverteilung selbstbestimmt (unabhängig von Nutzung)
+% \end{itemize}
+% \subsection*{Autoencoder}
+% \begin{itemize}
+%     \item A4 >= A3 > A2 > A1
+%     \item A2 Stärke besonders schnell --> Kann auch sinnvoll sein den einzusetzen
+%     \item Auf Kies Fazit eingehen: Deren Fazit war, dass Farbänderungen nicht ausreichend durch MSE berücksichtigt werden
+% \end{itemize}
+
+% \subsection*{Ausblick}
+
+% \begin{itemize}
+%     % \item Die Fähigkeiten zur Generalisierung auf anderen Datensätzen können daher in zukünftigen Arbeiten untersucht werden.
+%     % \item Wichtig: Nur erster Aufschlag! In Experimenten nur sehr sehr wenige Bilder qualitativ untersucht.
+%     % \item Besserer Generator mit anderen Mitteln?
+%     % \item Wie funktionieren die Autoencoder an den Netzen?
+% \end{itemize}

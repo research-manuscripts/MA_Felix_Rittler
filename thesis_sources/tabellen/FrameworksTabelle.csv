@@ -1,0 +1,23 @@
+﻿Framework;Entwicklungsstand;Renderer / Basiert auf / Schnittstelle;Anmerkung;Zielplattform
+Azul~\cite{schuttFschuttAzul2018};Sehr instabil;WebRender;;Desktop
+Conrod~\cite{PistonDevelopersConrod2014};Instabil;Piston, Glium, Winit, GFX, Vulkano;;Desktop
+core-foundation~\cite{ServoCorefoundationrs2012};Beta;k.A.;Bindings;macOS, iOS
+druid~\cite{LinebenderDruid2018};Experimental;Piet, Direct2D, Core Graphics, Cairo,\dots;;Desktop, Web
+egui~\cite{ernerfeldtEmilkEgui2019};Instabil;built-in für Web, Glium (OpenGL),\dots;;Desktop, Web
+fltk~\cite{FltkrsFltkrs2019};Stabil;OpenGL;Bindings;Desktop
+GTK~\cite{GtkrsGtk3rs2020};Stabil;;Bindings;Desktop
+Iced~\cite{ramonHecrjIced2019};Experimental;wgpu (Vulkan, Metal);;Desktop, Web
+imgui~\cite{ImguirsImguirs2015};Instabil;Glium oder GFX;Bindings;Beliebig
+iui~\cite{tindallNoraCodesLibuirs2019};Mid-Alpha;Win32API, Cocoa, GTK;Bindings;Desktop
+KAS~\cite{KasguiKas2019};Instabil;wgpu (Vulkan, Metal);;Desktop
+lvgl~\cite{caricioRafaelcaricioLvglrs2020};Instabil;--;Bindings, Auf x86 nur Simulator;Embedded
+native-windows-gui~\cite{dubeGabdubeNativewindowsgui2016};Stabil;WinAPI;;Windows
+OrbTK~\cite{RedoxosOrbtk2015};Alpha;Raqote;;Desktop, Web
+qmetaobject~\cite{WoboqQmetaobjectrs2018};Alpha;Qt;Kein GUI Toolkit, nur Objekte;Desktop, Mobil, Web
+qt\_widgets~\cite{QtWidgetsCrates};Instabil;Qt; ritual-Generierte Bindings;Desktop, Mobil, Web
+relm~\cite{antoyoAntoyoRelm2017};Beta;GTK;;Desktop
+sciter-rs~\cite{ScitersdkRustsciter2016};Stabil;Direct2D, GDI+, CoreGraphics, Cairo, Skia/OpenGL;Bindings;Desktop
+SixtyFPS~\cite{SixtyfpsuiSixtyfps2020};Instabil;OpenGL oder Qt;;Desktop
+tauri~\cite{TauriappsTauri2019};Beta;WebKit, WebView2, WebKitGtk;Nicht nativ, Webanwendung;Desktop
+vgtk~\cite{stokkeBodilVgtk2019};Instabil;GTK;;Desktop
+WebRender~\cite{ServoWebrender2015};Instabil;built-in;Nur Renderer;Web

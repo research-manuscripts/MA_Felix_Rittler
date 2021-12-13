@@ -1,0 +1,207 @@
+%% LaTeX2e class for student theses
+%%
+%% Karlsruhe Institute of Technology
+%% Institute for Program Structures and Data Organization
+%% Chair for Software Design and Quality (SDQ)
+%%
+%% Dr.-Ing. Erik Burger
+%% burger@kit.edu
+%%
+%% See https://sdqweb.ipd.kit.edu/wiki/Dokumentvorlagen
+%%
+%% Version 1.3.5, 2020-06-26
+
+%% Available page modes: oneside, twoside
+%% Available languages: English, ngerman
+%% Available modes: draft, final (see README)
+\documentclass[twoside, ngerman, final]{sdqthesis}
+
+%% ---------------------------------
+%% | Information about the thesis  |
+%% ---------------------------------
+
+%% Name of the author
+\author{Felix Rittler}
+
+%% Title (and possibly subtitle) of the thesis
+\title{Entwicklung und Analyse von Autoencodern für GUI-basiertes Software-Testing durch KI}
+
+%% Type of the thesis
+\thesistype{Masterarbeit}
+
+%% The reviewers are the professors that grade your thesis
+\reviewerone{Prof. Dr.-Ing. Anne Koziolek}
+\reviewertwo{Prof. Dr. Ralf H. Reussner}
+
+%% The advisors are PhDs or Postdocs
+\advisorone{Dipl.-Ing. Daniel Zimmermann}
+%% The second advisor can be omitted
+%\advisortwo{M.Sc. D}
+
+%% Please enter the start end end time of your thesis
+\editingtime{14. Juni 2021}{14. Dezember 2021}
+
+\settitle
+
+%% --------------------------------
+%% | Settings for word separation |
+%% --------------------------------
+
+%% Describe separation hints here.
+%% For more details, see
+%% http://en.wikibooks.org/wiki/LaTeX/Text_Formatting#Hyphenation
+\hyphenation{
+% me-ta-mo-del
+JADX
+}
+
+%% --------------------------------
+%% | Bibliography                 |
+%% --------------------------------
+
+%% Use biber instead of BibTeX, see README
+\usepackage[citestyle=numeric,style=numeric,backend=biber]{biblatex}
+\addbibresource{thesis.bib}
+\usepackage{ wasysym }
+\usepackage{csvsimple}
+\usepackage{pgfplotstable}
+\usepackage{tabularx}
+% \usepackage{pdfpages}
+% \usepackage{svg}
+\usepackage{amsmath} % you need amsmath as the demo includes a use of \eqref
+% \usepackage{tikz}
+\usetikzlibrary{positioning,fit,calc}
+\usepackage[section]{placeins}
+\usepackage{color, colortbl}
+\usepackage{xltabular}
+\usepackage{icomma}
+\usepackage{svg}
+\usepackage{lscape}
+\usepackage[disable]{todonotes}
+\usepackage{tablefootnote}
+\usepackage{graphicx}
+\usepackage{makecell}
+\usepackage[linesnumbered,lined,boxed,commentsnumbered,german]{algorithm2e}
+\usepackage{epstopdf}
+\usepackage{multirow}
+
+\makeatletter
+\newcommand{\customlabel}[2]{%
+   \protected@write \@auxout {}{\string \newlabel {#1}{{#2}{\thepage}{#2}{#1}{}} }%
+   \hypertarget{#1}{#2}
+}
+\makeatother
+
+\usepackage[automake,abbreviations,symbols, toc,numberedsection=autolabel]{glossaries-extra}
+
+
+\usepackage{microtype}
+\usepackage{xurl}
+\usepackage{pgfgantt}
+\usepackage{bm}
+
+\newcommand{\zb}{z.\,B. }
+\renewcommand{\dh}{d.\,h. }
+\newcommand{\dhx}{d.\,h.}
+
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\makeatother
+
+\newcommand{\isep}{\mathrel{{.}\,{.}}\nobreak}
+
+%% ====================================
+%% ====================================
+%% ||                                ||
+%% || Beginning of the main document ||
+%% ||                                ||
+%% ====================================
+%% ====================================
+% \includeonly{inhalt/05_autoencoder.tex, inhalt/02_grundlagen.tex}
+
+\setabbreviationstyle{long-short}
+\setabbreviationstyle[common]{short}
+\setabbreviationstyle[english]{short}
+\newabbreviation[plural=VAEs, description=Variationsautoencoder (Variational Autoencoder), longplural=Variational Autoencoder]{vae}{VAE}{Variational Autoencoder}
+\newabbreviation[plural=GUIs,longplural=graphischen Benutzeroberflächen, long=graphische Benutzeroberfläche]{gui}{GUI}{graphische Benutzeroberfläche (Graphical User Interface)}
+\newabbreviation{fzi}{FZI}{Forschungszentrum Informatik}
+\newabbreviation[description=Zeit-kontinuierliches rekurrentes neuronales Netz (Continuous Time Recurrent Neural Network), longplural=Zeit-kontinuierliche rekurrente neuronale Netze]{ctrnn}{CTRNN}{Zeitkontinuierliches Rekurrentes Neuronales Netz}
+\newabbreviation[description=rekurrentes neuronales Netz (Recurrent Neural Network), longplural=rekurrente neuronale Netze]{rnn}{RNN}{rekurrentes neuronales Netz}
+\newabbreviation[description=Ziel Frage Metrik (Goal Question Metric) \cite{basiliMethodologyCollectingValid1984}]{gqm}{GQM}{Goal Question Metric}
+\newabbreviation[description=mittlere quadratische Abweichung (Mean Squared Error), category=english,long=mittlere quadratischen Abweichung (MSE{,} engl. Mean Squared Error)]{mse}{MSE}{mittlere quadratischen Abweichung (engl. Mean Squared Error)}
+\newabbreviation[description=binäre Kreuzentropie (Binary Cross-Entropy), category=english,long=binäre Kreuzentropie (BCE{,} engl. Binary Cross-Entropy)]{bce}{BCE}{binäre Kreuzentropie (engl. Binary Cross-Entropy)}
+\newabbreviation[description=Grafikprozessor (Graphics Processing Unit), category=common]{gpu}{GPU}{Graphics Processing Unit}
+\newabbreviation[description=Hauptprozessor (Central Processing Unit), category=common]{cpu}{CPU}{Central Processing Unit}
+\newabbreviation[description=Convolutional Neural Network (etwa \emph{faltendes neuronales Netz})]{cnn}{CNN}{Convolutional Neural Network}
+\makeglossaries
+
+\begin{document}
+\setlength\parfillskip{0pt plus .85\textwidth}
+\setlength\emergencystretch{1pt}
+%% Set PDF metadata
+\setpdf
+
+%% Set the title
+\maketitle
+
+%% The Preamble begins here
+\frontmatter
+
+\input{sections/declaration.tex}
+
+\setcounter{page}{1}
+\pagenumbering{roman}
+
+%% ----------------
+%% |   Abstract   |
+%% ----------------
+
+%% For theses written in English, an abstract both in English
+%% and German is mandatory.
+%%
+%% For theses written in German, a German abstract is sufficient.
+%%
+%% The text is included from the following files:
+%% - sections/abstract
+
+\includeabstract
+
+%% ------------------------
+%% |   Table of Contents  |
+%% ------------------------
+\tableofcontents
+
+\listoffigures
+\listoftables
+
+\printglossaries
+%% -----------------
+%% |   Main part   |
+%% -----------------
+
+\mainmatter
+
+\include{inhalt/01_einleitung}
+\include{inhalt/02_grundlagen}
+\include{inhalt/03_verwandte_arbeiten}
+\include{inhalt/04_0_guimock}
+\include{inhalt/05_autoencoder}
+\include{inhalt/06_evaluation}
+\include{inhalt/07_diskussion}
+\include{inhalt/08_fazit}
+%% --------------------
+%% |   Bibliography   |
+%% --------------------
+
+%% Add entry to the table of contents for the bibliography
+\setlength\emergencystretch{1em}
+
+\printbibliography[heading=bibintoc]
+
+%% ----------------
+%% |   Appendix   |
+%% ----------------
+\appendix
+\input{inhalt/appendix.tex}
+
+\end{document}
